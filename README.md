@@ -1,5 +1,5 @@
 # Chipathon 2023 
-# Working Area for the LTC1 Team
+# Working Area for the LTC2 Team
 Team Lead: Jorge Marin, Mario Romero
 Team members:
 
