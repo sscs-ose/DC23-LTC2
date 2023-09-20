@@ -1,9 +1,9 @@
 # Chipathon 2023 
 # Working Area for the LTC1 Team
+Team Lead: Jorge Marin, Mario Romero
 Team members:
 
-    - Scope input & MUX: Pakistan3
-    - ADC: Pakistan4	
-    - DAC: Pakistan1	
-    - AWG output & MUX: Pakistan5	
-    - Clocking: Pakistan2/6
+    - ADC: Chile 2 (SAR)	
+    - DAC: Korea	
+    - Clocking: Japan
+    - Voltage Reference: Japan
