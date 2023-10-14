@@ -5,9 +5,11 @@
 
 ## Directory structure
     .
-    ├── gds                 # Output layout
+    ├── Klayout             # Layout files
+    │   ├── gdsfactory      # Python generation
+    │   ├── gds             # Output layout
     ├── lvs                 # LVS logs and scripts
-    ├── magic               # Layout files
+    ├── magic               # Magic files
     │   ├── extract         # Extraction files
     │   ├── python          # Python programs
     │   ├── spice           # Extracted netlists
