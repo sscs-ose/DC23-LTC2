@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -61,7 +61,8 @@ N 980 -140 980 -120 {
 lab=vss}
 N 1080 -450 1080 -200 {
 lab=vss}
-N 1080 -200 1080 -140 {}
+N 1080 -200 1080 -140 {
+lab=vss}
 C {devices/iopin.sym} 710 -560 2 0 {name=p6 sig_type=std_logic lab=ref
 }
 C {devices/code.sym} 318.75 -791.875 0 0 {name=MODELS
@@ -78,7 +79,7 @@ value="
 C {devices/lab_pin.sym} 1005 -560 1 0 {name=l12 sig_type=std_logic lab=op_out
 
 }
-C {ota-ldo.sym} 800 -560 0 0 {name=X1}
+C {../ota-ldo/ota-ldo.sym} 800 -560 0 0 {name=X1}
 C {symbols/pfet_03v3.sym} 1120 -560 0 0 {name=M1
 L=0.7u
 W=100u

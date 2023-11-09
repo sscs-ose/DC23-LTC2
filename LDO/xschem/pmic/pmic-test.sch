@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -132,10 +132,10 @@ plot vdb(out)
 *plot load_current v(out)-1.8
 *.endc
 "}
-C {/home/designer/shared/Xschem/ldo.sym} 470 -480 0 0 {name=x1}
+C {../ldo/ldo.sym} 470 -480 0 0 {name=x1}
 C {devices/lab_pin.sym} 250 -500 1 0 {name=l3 sig_type=std_logic lab=ref}
 C {devices/lab_pin.sym} 470 -620 2 0 {name=l4 sig_type=std_logic lab=vin}
-C {/home/designer/shared/Xschem/bandgap.sym} 100 -500 0 0 {name=x2}
+C {../bandgap/bandgap.sym} 100 -500 0 0 {name=x2}
 C {devices/isource.sym} 0 -370 2 0 {name=I2 value=1.5u
 }
 C {devices/gnd.sym} 0 -320 0 0 {name=l5 lab=GND}

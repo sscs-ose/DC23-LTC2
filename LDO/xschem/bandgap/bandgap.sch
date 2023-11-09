@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -160,7 +160,7 @@ lab=#net4}
 N 170 -660 550 -660 {
 lab=VDD}
 N 400 -390 400 -340 {
-lab=VSS}
+lab=CUR}
 N 460 -500 460 -140 {
 lab=VSS}
 C {symbols/pfet_03v3.sym} 530 -590 0 0 {name=M1
@@ -191,7 +191,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {ota-bandgap.sym} 370 -480 3 0 {name=X1}
+C {../ota-bandgap/ota-bandgap.sym} 370 -480 3 0 {name=X1}
 C {symbols/pnp_10p00x10p00.sym} 190 -200 0 1 {name=Q1
 model=pnp_10p00x10p00
 spiceprefix=X
