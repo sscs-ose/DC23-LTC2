@@ -5,41 +5,15 @@ K {}
 V {}
 S {}
 E {}
-N 290 -300 290 -280 {
+N 130 -510 130 -490 {
 lab=GND}
-N 290 -460 290 -360 {
-lab=#net1}
-N 290 -460 320 -460 {
-lab=#net1}
-N 100 -440 100 -420 {
-lab=GND}
-N 600 -600 600 -580 {
-lab=GND}
-N 180 -500 320 -500 {
-lab=ref}
-N 600 -680 600 -660 {
+N 130 -590 130 -570 {
 lab=vin}
-N 470 -680 600 -680 {
+N 130 -590 170 -590 {
 lab=vin}
-N 470 -680 470 -550 {
-lab=vin}
-N 0 -340 0 -320 {
-lab=GND}
-N 0 -500 0 -400 {
-lab=#net2}
-N 0 -500 30 -500 {
-lab=#net2}
-N 100 -680 470 -680 {
-lab=vin}
-N 100 -680 100 -560 {
-lab=vin}
-C {devices/isource.sym} 290 -330 2 0 {name=I1 value=1.5u
+C {devices/gnd.sym} 260 -540 0 0 {name=l10 lab=GND}
+C {devices/opin.sym} 350 -590 0 0 {name=p3 lab=out
 }
-C {devices/gnd.sym} 290 -280 0 0 {name=l10 lab=GND}
-C {devices/gnd.sym} 470 -410 0 0 {name=l1 lab=GND}
-C {devices/opin.sym} 620 -480 0 0 {name=p3 lab=out
-}
-C {devices/gnd.sym} 100 -420 0 0 {name=l2 lab=GND}
 C {devices/code.sym} 188.75 -791.875 0 0 {name=MODELS
 only_toplevel=true
 place=header
@@ -55,21 +29,22 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
 
 "}
-C {devices/gnd.sym} 600 -580 0 0 {name=l9 lab=GND}
-C {devices/vsource.sym} 600 -630 0 0 {name=V3 value=4}
+C {devices/gnd.sym} 130 -490 0 0 {name=l9 lab=GND}
+C {devices/vsource.sym} 130 -540 0 0 {name=V3 value=4}
 C {devices/code_shown.sym} -541.25 -981.875 0 0 {name=NGSPICE
 only_toplevel=true
 format="tcleval( @value )"
 spice_ignore=false
 value="
 .param R=330
+
 R10 out 0 \{R\}
 *IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
 *CL out 0 1p
-.options savecurrents
 
+.options savecurrents
 .nodeset v(out)=0
-.nodeset v(x1.pos)=0
+.nodeset v(x1.x1.pos)=0
 
 *TRANSIENT
 *.control
@@ -97,12 +72,10 @@ R10 out 0 \{R\}
 *SUPPLY SWEEP
 .control
 save all
-save v(out) v(ref) v(x1.pos) v(vin) v(x1.op_out) i(x1.v4)
+save v(x1.out) v(x1.x1.ref) v(x1.x1.pos) v(x1.x1.vin) v(x1.x1.op_out) i(x1.x1.v4)
 dc V3 4 0 -0.01
-*plot v(out) v(ref) v(x1.pos) v(vin)
-plot v(out) v(ref) v(vin)
-plot v(x1.op_out)
-plot i(v.x1.v4)
+plot v(out) v(x1.ref) v(vin) v(x1.x1.op_out) 
+plot i(v.x1.x1.v4)
 .endc
 
 *PSRR_Analysis
@@ -132,10 +105,5 @@ plot vdb(out)
 *plot load_current v(out)-1.8
 *.endc
 "}
-C {../ldo/ldo.sym} 470 -480 0 0 {name=x1}
-C {devices/lab_pin.sym} 250 -500 1 0 {name=l3 sig_type=std_logic lab=ref}
-C {devices/lab_pin.sym} 470 -620 2 0 {name=l4 sig_type=std_logic lab=vin}
-C {../bandgap/bandgap.sym} 100 -500 0 0 {name=x2}
-C {devices/isource.sym} 0 -370 2 0 {name=I2 value=1.5u
-}
-C {devices/gnd.sym} 0 -320 0 0 {name=l5 lab=GND}
+C {/workspaces/DC23-LTC2/LDO/xschem/ldo-top/ldo-top.sym} 260 -590 0 0 {name=x1}
+C {devices/lab_pin.sym} 130 -590 0 0 {name=p1 sig_type=std_logic lab=vin}

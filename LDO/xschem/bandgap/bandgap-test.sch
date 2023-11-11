@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -57,7 +57,7 @@ plot v(out)
 "}
 C {devices/opin.sym} 60 -790 2 1 {name=p13 sig_type=std_logic lab=out
 }
-C {/home/designer/shared/Xschem/bandgap.sym} -20 -790 0 0 {name=x1}
+C {bandgap.sym} -20 -790 0 0 {name=x1}
 C {devices/lab_pin.sym} -20 -850 0 0 {name=l1 sig_type=std_logic lab=VDD
 }
 C {devices/lab_pin.sym} -20 -730 0 0 {name=l2 sig_type=std_logic lab=VSS}
