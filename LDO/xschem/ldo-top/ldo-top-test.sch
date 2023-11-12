@@ -105,5 +105,5 @@ plot vdb(out)
 *plot load_current v(out)-1.8
 *.endc
 "}
-C {/workspaces/DC23-LTC2/LDO/xschem/ldo-top/ldo-top.sym} 260 -590 0 0 {name=x1}
+C {ldo-top.sym} 260 -590 0 0 {name=x1}
 C {devices/lab_pin.sym} 130 -590 0 0 {name=p1 sig_type=std_logic lab=vin}

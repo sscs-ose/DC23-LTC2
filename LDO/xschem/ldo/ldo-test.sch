@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -120,6 +120,6 @@ plot vdb(out)
 *plot load_current v(out)-1.8
 *.endc
 "}
-C {/home/designer/shared/Xschem/ldo.sym} 470 -480 0 0 {name=x1}
+C {ldo.sym} 470 -480 0 0 {name=x1}
 C {devices/lab_pin.sym} 250 -500 1 0 {name=l3 sig_type=std_logic lab=ref}
 C {devices/lab_pin.sym} 470 -620 2 0 {name=l4 sig_type=std_logic lab=vin}
