@@ -10,14 +10,12 @@ N 290 -460 320 -460 {
 lab=#net1}
 N 180 -500 320 -500 {
 lab=ref}
-N 0 -500 30 -500 {
-lab=#net2}
-N -0 -500 0 -420 {
-lab=#net2}
-N 290 -460 290 -420 {
+N 180 -480 250 -480 {
 lab=#net1}
-C {devices/isource.sym} 290 -390 2 0 {name=I1 value=1.5u
-}
+N 250 -480 250 -460 {
+lab=#net1}
+N 250 -460 290 -460 {
+lab=#net1}
 C {devices/opin.sym} 620 -480 0 0 {name=p3 lab=out
 }
 C {devices/code.sym} 538.75 -761.875 0 0 {name=MODELS
@@ -38,13 +36,9 @@ value="
 C {../ldo/ldo.sym} 470 -480 0 0 {name=x1}
 C {devices/lab_pin.sym} 250 -500 1 0 {name=l3 sig_type=std_logic lab=ref}
 C {../bandgap/bandgap.sym} 100 -500 0 0 {name=x2}
-C {devices/isource.sym} 0 -390 2 0 {name=I2 value=1.5u
-}
 C {devices/iopin.sym} 100 -560 3 0 {name=p1 sig_type=std_logic lab=vin
 }
-C {devices/iopin.sym} 290 -360 1 0 {name=p2 sig_type=std_logic lab=vss}
 C {devices/iopin.sym} 470 -550 3 0 {name=p4 sig_type=std_logic lab=vin
 }
 C {devices/iopin.sym} 100 -440 1 0 {name=p5 sig_type=std_logic lab=vss}
 C {devices/iopin.sym} 470 -410 1 0 {name=p6 sig_type=std_logic lab=vss}
-C {devices/iopin.sym} 0 -360 1 0 {name=p7 sig_type=std_logic lab=vss}

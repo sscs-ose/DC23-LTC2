@@ -19,8 +19,6 @@ N 1140 -660 1140 -590 {
 lab=vdd}
 N 1240 -660 1240 -560 {
 lab=vdd}
-N 1140 -660 1240 -660 {
-lab=vdd}
 N 1140 -510 1140 -480 {
 lab=out}
 N 1140 -420 1140 -380 {
@@ -63,6 +61,10 @@ N 1080 -450 1080 -200 {
 lab=vss}
 N 1080 -200 1080 -140 {
 lab=vss}
+N 1240 -740 1240 -660 {
+lab=vdd}
+N 1140 -740 1240 -740 {
+lab=vdd}
 C {devices/iopin.sym} 710 -560 2 0 {name=p6 sig_type=std_logic lab=ref
 }
 C {devices/code.sym} 318.75 -791.875 0 0 {name=MODELS
@@ -84,7 +86,7 @@ C {symbols/pfet_03v3.sym} 1120 -560 0 0 {name=M1
 L=0.7u
 W=100u
 nf=1
-m=10
+m=20
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
 pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
 as="'int((nf+2)/2) * W/nf * 0.18u'"
