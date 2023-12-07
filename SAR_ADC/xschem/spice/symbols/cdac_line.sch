@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.0 file_version=1.2
 }
 G {}
 K {}
@@ -9,16 +9,16 @@ N 30 80 30 240 {
 lab=vdd}
 N 110 80 110 240 {
 lab=gnd}
-C {../spice/inv.sym} 70 80 3 0 {name=x1
+C {inv.sym} 70 80 3 0 {name=x1
 cl=0.28u
 wp=0.66u
 wn=0.22u}
-C {symbols/cap_mim_2p0fF.sym} 70 -50 0 0 {name=C1
+C {cap_mim_2p0fF.sym} 70 -50 0 0 {name=C1
 W=CW
 L=CL
 model=cap_mim_1f5fF
 m=1}
-C {../spice/inv.sym} 70 240 3 0 {name=x2
+C {inv.sym} 70 240 3 0 {name=x2
 cl=0.28u
 wp=0.66u
 wn=0.22u}

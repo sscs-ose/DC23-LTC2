@@ -23,17 +23,9 @@ C {devices/ipin.sym} 0 -40 0 0 {name=p1 lab=gnd}
 C {devices/ipin.sym} 120 -40 2 0 {name=p2 lab=vdd}
 C {devices/ipin.sym} 60 0 3 0 {name=p3 lab=vin}
 C {devices/opin.sym} 60 -40 3 0 {name=p4 lab=vout}
-C {devices/code.sym} -320 -220 0 0 {name=TT_MODELS 
-only_toplevel=true 
-format="tcleval(  @value  )"
-value="
-.include /foss/pdks/gf180mcuC/libs.tech/ngspice/design.ngspice
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
-"
-spice_ignore=false}
 C {symbols/nfet_03v3.sym} 30 -20 3 0 {name=M1
 L=0.28u
-W=4u
+W=.22u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -47,7 +39,7 @@ spiceprefix=X
 }
 C {symbols/pfet_03v3.sym} 90 -20 3 0 {name=M2
 L=0.28u
-W=4u
+W=.22u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"

@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.0 file_version=1.2
 }
 G {}
 K {}
@@ -107,6 +107,8 @@ N -70 -70 -70 -20 {
 lab=gnd}
 N -70 -30 1580 -30 {
 lab=gnd}
+N -70 -160 810 -160 {
+lab=in}
 N 870 -160 1580 -160 {
 lab=out}
 N 730 -210 730 -160 {
@@ -123,55 +125,56 @@ N 80 -50 1560 -50 {
 lab=vdd}
 N 100 -70 100 -30 {
 lab=gnd}
-N -70 -160 730 -160 {
-lab=in}
-N 730 -160 810 -160 {
-lab=in}
-C {../spice/cdac_line.sym} 80 -90 0 0 {name=x1
+C {cdac_line.sym} 80 -90 0 0 {name=x1
 CW=\{sqrt(2)*cu\}
 CL=\{sqrt(2)*cu\}}
-C {../spice/cdac_line.sym} 210 -90 0 0 {name=x2
+C {cdac_line.sym} 210 -90 0 0 {name=x2
 CW=\{sqrt(3)*cu\}
 CL=\{sqrt(3)*cu\}}
-C {../spice/cdac_line.sym} 340 -90 0 0 {name=x3
+C {cdac_line.sym} 340 -90 0 0 {name=x3
 CW=\{sqrt(4)*cu\}
 CL=\{sqrt(4)*cu\}}
-C {../spice/cdac_line.sym} 470 -90 0 0 {name=x4
+C {cdac_line.sym} 470 -90 0 0 {name=x4
 CW=\{sqrt(8)*cu\}
 CL=\{sqrt(8)*cu\}}
-C {../spice/cdac_line.sym} 600 -90 0 0 {name=x5
+C {cdac_line.sym} 600 -90 0 0 {name=x5
 CW=\{sqrt(16)*cu\}
 CL=\{sqrt(16)*cu\}}
-C {../spice/cdac_line.sym} 730 -90 0 0 {name=x6
+C {cdac_line.sym} 730 -90 0 0 {name=x6
 CW=\{sqrt(32)*cu\}
 CL=\{sqrt(32)*cu\}}
-C {/home/designer/.volare/gf180mcuD/libs.tech/xschem/symbols/cap_mim_2p0fF.sym} 840 -160 1 0 {name=CA
+C {cap_mim_2p0fF.sym} 840 -160 1 0 {name=CA
 W=\{cu\}
 L=\{cu\}
 model=cap_mim_1f5fF
 m=1}
-C {../spice/cdac_line.sym} 910 -90 0 0 {name=x7
+C {cdac_line.sym} 910 -90 0 0 {name=x7
 CW=\{sqrt(1)*cu\}
 CL=\{sqrt(1)*cu\}}
-C {../spice/cdac_line.sym} 1040 -90 0 0 {name=x8
+C {cdac_line.sym} 1040 -90 0 0 {name=x8
 CW=\{sqrt(2)*cu\}
 CL=\{sqrt(2)*cu\}}
-C {../spice/cdac_line.sym} 1170 -90 0 0 {name=x9
+C {cdac_line.sym} 1170 -90 0 0 {name=x9
 CW=\{sqrt(4)*cu\}
 CL=\{sqrt(4)*cu\}}
-C {../spice/cdac_line.sym} 1300 -90 0 0 {name=x10
+C {cdac_line.sym} 1300 -90 0 0 {name=x10
 CW=\{sqrt(8)*cu\}
 CL=\{sqrt(8)*cu\}}
-C {../spice/cdac_line.sym} 1430 -90 0 0 {name=x11
+C {cdac_line.sym} 1430 -90 0 0 {name=x11
 CW=\{sqrt(16)*cu\}
 CL=\{sqrt(16)*cu\}}
-C {../spice/cdac_line.sym} 1560 -90 0 0 {name=x12
+C {cdac_line.sym} 1560 -90 0 0 {name=x12
 CW=\{sqrt(32)*cu\}
 CL=\{sqrt(32)*cu\}}
 C {devices/res.sym} 820 -210 1 0 {name=R1
 value=100T
 footprint=1206
 device=resistor
+m=1}
+C {cap_mim_2p0fF.sym} -70 -100 0 0 {name=C0
+W=\{cu\}
+L=\{cu\}
+model=cap_mim_1f5fF
 m=1}
 C {devices/ipin.sym} 50 -100 1 0 {name=p1 lab=d[0]}
 C {devices/ipin.sym} 180 -100 1 0 {name=p2 lab=d[1]}
@@ -187,11 +190,5 @@ C {devices/ipin.sym} 1400 -100 1 0 {name=p11 lab=d[10]}
 C {devices/ipin.sym} 1530 -100 1 0 {name=p12 lab=d[11]}
 C {devices/ipin.sym} 80 -20 3 0 {name=p13 lab=vdd}
 C {devices/ipin.sym} -70 -20 3 0 {name=p14 lab=gnd}
-C {devices/iopin.sym} 1580 -160 0 0 {name=p15 lab=out}
+C {devices/opin.sym} 1580 -160 0 0 {name=p15 lab=out}
 C {devices/iopin.sym} -90 -160 2 0 {name=p16 lab=in}
-C {/home/designer/.volare/gf180mcuD/libs.tech/xschem/symbols/cap_mim_2p0fF.sym} -70 -100 0 0 {name=C1
-W=\{cu\}
-L=\{cu\}
-model=cap_mim_1f5fF
-spiceprefix=X
-m=1}

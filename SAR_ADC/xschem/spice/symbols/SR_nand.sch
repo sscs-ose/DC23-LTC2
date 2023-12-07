@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.1.0 file_version=1.2
 }
 G {}
 K {}
@@ -91,7 +91,7 @@ N 2550 -1690 2660 -1690 {
 lab=GND}
 N 2550 -1700 2550 -1690 {
 lab=GND}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2000 -2020 0 0 {name=M1
+C {pfet_03v3.sym} 2000 -2020 0 0 {name=M1
 L=0.28u
 W=1u
 nf=1
@@ -105,7 +105,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2140 -1860 0 1 {name=M2
+C {nfet_03v3.sym} 2140 -1860 0 1 {name=M2
 L=0.28u
 W=1u
 nf=1
@@ -119,7 +119,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2410 -2020 0 0 {name=M3
+C {pfet_03v3.sym} 2410 -2020 0 0 {name=M3
 L=0.28u
 W=1u
 nf=1
@@ -133,7 +133,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2670 -2020 0 1 {name=M4
+C {pfet_03v3.sym} 2670 -2020 0 1 {name=M4
 L=0.28u
 W=1u
 nf=1
@@ -147,7 +147,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2260 -2020 0 1 {name=M5
+C {pfet_03v3.sym} 2260 -2020 0 1 {name=M5
 L=0.28u
 W=1u
 nf=1
@@ -161,7 +161,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2100 -1740 0 0 {name=M6
+C {nfet_03v3.sym} 2100 -1740 0 0 {name=M6
 L=0.28u
 W=1u
 nf=1
@@ -175,7 +175,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2530 -1850 0 0 {name=M7
+C {nfet_03v3.sym} 2530 -1850 0 0 {name=M7
 L=0.28u
 W=1u
 nf=1
@@ -189,7 +189,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 2570 -1730 0 1 {name=M8
+C {nfet_03v3.sym} 2570 -1730 0 1 {name=M8
 L=0.28u
 W=1u
 nf=1

@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.0 file_version=1.2
 }
 G {}
 K {}
@@ -104,17 +104,17 @@ lab=gnd}
 N 300 -80 330 -80 {
 lab=gnd}
 C {inv.sym} -140 60 3 0 {name=x1}
-C {sky130_fd_pr/cap_mim_m3_1.sym} -140 -70 0 0 {name=C1
+C {cap_mim_2p0fF.sym} -140 -70 0 0 {name=C1
 W=CW
 L=CL
 model=cap_mim_1f5fF
 m=1}
-C {sky130_fd_pr/cap_mim_m3_1.sym} -260 -70 0 1 {name=C2
+C {cap_mim_2p0fF.sym} -260 -70 0 1 {name=C2
 W=CW
 L=CL
 model=cap_mim_1f5fF
 m=1}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} -160 -130 0 0 {name=M1
+C {nfet_03v3.sym} -160 -130 0 0 {name=M1
 L=0.28u
 W=0.22u
 nf=1
@@ -128,7 +128,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} -20 -130 0 0 {name=M4
+C {nfet_03v3.sym} -240 -130 0 1 {name=M2
 L=0.28u
 W=0.22u
 nf=1
@@ -142,12 +142,26 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/cap_mim_m3_1.sym} 0 -70 0 0 {name=C4
+C {nfet_03v3.sym} -20 -130 0 0 {name=M4
+L=0.28u
+W=0.22u
+nf=1
+m=1
+ad="'int((nf+1)/2) * W/nf * 0.18u'"
+pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
+as="'int((nf+2)/2) * W/nf * 0.18u'"
+ps="'2*int((nf+2)/2) * (W/nf + 0.18u)'"
+nrd="'0.18u / W'" nrs="'0.18u / W'"
+sa=0 sb=0 sd=0
+model=nfet_03v3
+spiceprefix=X
+}
+C {cap_mim_2p0fF.sym} 0 -70 0 0 {name=C3
 W=CW
 L=CL
 model=cap_mim_1f5fF
 m=1}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} -20 120 0 0 {name=M5
+C {nfet_03v3.sym} -20 120 0 0 {name=M5
 L=0.28u
 W=0.22u
 nf=1
@@ -168,7 +182,7 @@ C {devices/gnd.sym} -180 -240 0 0 {name=l2 lab=GND}
 C {devices/ipin.sym} -180 60 1 0 {name=p3 lab=vdd}
 C {devices/ipin.sym} -300 -190 0 0 {name=p4 lab=vdd}
 C {devices/ipin.sym} 50 30 0 0 {name=p5 lab=phi}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 210 -80 3 0 {name=M2
+C {nfet_03v3.sym} 210 -80 3 0 {name=M3
 L=0.28u
 W=0.22u
 nf=1
@@ -182,7 +196,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 230 60 2 0 {name=M6
+C {nfet_03v3.sym} 230 60 2 0 {name=M6
 L=0.28u
 W=0.22u
 nf=1
@@ -196,7 +210,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 300 70 1 0 {name=M7
+C {nfet_03v3.sym} 300 70 1 0 {name=M7
 L=0.28u
 W=0.22u
 nf=1
@@ -210,7 +224,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 380 70 1 0 {name=M8
+C {nfet_03v3.sym} 380 70 1 0 {name=M8
 L=0.28u
 W=0.22u
 nf=1
@@ -226,7 +240,7 @@ spiceprefix=X
 }
 C {devices/ipin.sym} 340 140 3 0 {name=p6 lab=vin}
 C {devices/opin.sym} 440 90 0 0 {name=p7 lab=vout}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 330 -120 1 0 {name=M9
+C {nfet_03v3.sym} 330 -120 1 0 {name=M9
 L=0.28u
 W=0.22u
 nf=1
@@ -240,7 +254,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 270 -120 1 0 {name=M10
+C {nfet_03v3.sym} 270 -120 1 0 {name=M10
 L=0.28u
 W=0.22u
 nf=1
@@ -267,17 +281,3 @@ C {devices/ipin.sym} 380 90 3 0 {name=p16 lab=gnd}
 C {devices/ipin.sym} 190 60 1 1 {name=p17 lab=gnd}
 C {devices/ipin.sym} 300 -80 3 0 {name=p18 lab=gnd}
 C {devices/ipin.sym} -100 60 3 0 {name=p19 lab=gnd}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} -240 -130 2 0 {name=M3
-L=0.28u
-W=0.22u
-nf=1
-m=1
-ad="'int((nf+1)/2) * W/nf * 0.18u'"
-pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
-as="'int((nf+2)/2) * W/nf * 0.18u'"
-ps="'2*int((nf+2)/2) * (W/nf + 0.18u)'"
-nrd="'0.18u / W'" nrs="'0.18u / W'"
-sa=0 sb=0 sd=0
-model=nfet_03v3
-spiceprefix=X
-}

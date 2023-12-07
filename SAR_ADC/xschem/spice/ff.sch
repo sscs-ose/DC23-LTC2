@@ -71,10 +71,10 @@ N 35 40 300 40 {
 lab=gnd}
 N 130 -220 130 -180 {
 lab=vdd}
-C {/foss/designs/sar_adc/xschem/spice/dffrsnq_1.sym} 0 0 0 0 {name=FF1}
-C {/foss/designs/sar_adc/xschem/spice/inv.sym} -100 -97.5 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}
-C {/foss/designs/sar_adc/xschem/spice/inv.sym} 75 -280 1 0 {name=x2 cl=0.28u wp=0.44u wn=0.22u}
-C {/foss/designs/sar_adc/xschem/spice/inv.sym} 77.5 100 1 1 {name=x3 cl=0.28u wp=0.44u wn=0.22u}
+C {dffrsnq_1.sym} 0 0 0 0 {name=FF1}
+C {inv.sym} -100 -97.5 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}
+C {inv.sym} 75 -280 1 0 {name=x2 cl=0.28u wp=0.44u wn=0.22u}
+C {inv.sym} 77.5 100 1 1 {name=x3 cl=0.28u wp=0.44u wn=0.22u}
 C {devices/ipin.sym} -200 -100 0 0 {name=p1 lab=data_in}
 C {devices/ipin.sym} -200 -60 0 0 {name=p2 lab=clock}
 C {devices/ipin.sym} -200 -220 0 0 {name=p3 lab=vdd}
@@ -82,4 +82,4 @@ C {devices/ipin.sym} -200 -180 0 0 {name=p4 lab=gnd}
 C {devices/opin.sym} 400 -100 0 0 {name=p5 lab=data_out}
 C {devices/ipin.sym} -180 160 0 0 {name=p6 lab=set}
 C {devices/ipin.sym} -200 -360 0 0 {name=p7 lab=reset}
-C {/foss/designs/sar_adc/xschem/spice/inv.sym} 300 -100 0 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}
+C {inv.sym} 300 -100 0 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}

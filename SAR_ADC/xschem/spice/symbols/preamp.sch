@@ -117,7 +117,7 @@ N 580 -350 580 -270 {
 lab=GND}
 N 580 -270 690 -270 {
 lab=GND}
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 670 -350 0 1 {name=M26
+C {symbols/nfet_03v3.sym} 670 -350 0 1 {name=M26
 L=.28u
 W=4u
 nf=1
@@ -131,7 +131,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 420 -350 0 0 {name=M27
+C {symbols/nfet_03v3.sym} 420 -350 0 0 {name=M27
 L=.28u
 W=4u
 nf=1
@@ -145,7 +145,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 520 -190 0 0 {name=M28
+C {symbols/nfet_03v3.sym} 520 -190 0 0 {name=M28
 L=.28u
 W=.22u
 nf=1
@@ -159,7 +159,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 440 -540 0 0 {name=M24
+C {symbols/pfet_03v3.sym} 440 -540 0 0 {name=M24
 L=0.28u
 W=.22u
 nf=1
@@ -173,7 +173,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_05v0_nvt.sym} 650 -540 0 1 {name=M25
+C {symbols/pfet_03v3.sym} 650 -540 0 1 {name=M25
 L=0.28u
 W=.22u
 nf=1

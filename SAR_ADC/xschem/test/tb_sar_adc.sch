@@ -1,56 +1,66 @@
-v {xschem version=3.4.0 file_version=1.2
+v {xschem version=3.1.0 file_version=1.2 
 }
 G {}
 K {}
 V {}
 S {}
 E {}
-N 0 30 25 30 {
-lab=#net1}
-N 25 20 25 30 {
-lab=#net1}
-N 0 -30 25 -30 {
-lab=#net2}
-N 25 -30 25 -20 {
-lab=#net2}
-C {/foss/designs/sar_adc/xschem/spice/sar_adc.sym} 120 0 0 0 {name=x1}
-C {devices/code_shown.sym} -795 -275 0 0 {name=NGSPICE only_toplevel=false value="
-.include /foss/pdks/gf180mcuC/libs.tech/ngspice/design.ngspice
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice cap_mim
+N -240 -270 -215 -270 {
+lab=vinn}
+N -240 -330 -215 -330 {
+lab=vinp}
+C {../spice/sar_adc.sym} -120 -290 0 0 {name=x1}
+C {devices/code_shown.sym} -795 -275 0 0 {name=NGSPICE
+only_toplevel=false
+value="
+.param period=10n
+.param stoptime=\{28*period\}
 
-.param cu=5u
-.param period=100u
-.param stoptime=\{15*period\}
+.model swm1 sw vt=1 vh=0.2 ron=0.1 roff=100k
 
-vd0  d[0]  0 PULSE(0 3.3 \{0*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd1  d[1]  0 PULSE(0 3.3 \{1*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd2  d[2]  0 PULSE(0 3.3 \{2*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd3  d[3]  0 PULSE(0 3.3 \{3*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd4  d[4]  0 PULSE(0 3.3 \{4*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd5  d[5]  0 PULSE(0 3.3 \{5*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd6  d[6]  0 PULSE(0 3.3 \{6*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd7  d[7]  0 PULSE(0 3.3 \{7*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd8  d[8]  0 PULSE(0 3.3 \{8*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd9  d[9]  0 PULSE(0 3.3 \{9*period\}  1ps 1ps \{period/2\} \{period\} 1)
-vd10 d[10] 0 PULSE(0 3.3 \{10*period\} 1ps 1ps \{period/2\} \{period\} 1)
-vd11 d[11] 0 PULSE(0 3.3 \{11*period\} 1ps 1ps \{period/2\} \{period\} 1)
+vclk clk 0 PULSE(0 3.3 \{0*period\} 1ps 1ps \{period/2\} \{period\})
+vr  rst 0 PULSE(0 5 \{0.5*period\}  1ps 1ps \{1*period\} \{12*period\} 1)
 
 .tran \{0.01*stoptime\} \{stoptime\} uic
 
 .control
 save all
 run
-plot V(out)
+plot \{V(d0)+V(d1)*2+V(d2)*4+V(d3)*8+V(d4)*8+V(d5)*16+V(d6)*32+V(d7)*64+V(d8)*128+V(d9)*256+V(d10)*512+V(d11)*1024\}
+plot V(clk)
+plot V(rst)
 .endc
 "}
-C {devices/vsource.sym} 0 0 0 1 {name=VIN value=3.3}
-C {devices/ipin.sym} 125 -80 1 0 {name=p1 lab=rst}
-C {devices/ipin.sym} 160 -80 1 0 {name=p2 lab=clk}
-C {devices/opin.sym} 255 0 0 0 {name=p3 lab=out}
-C {devices/vsource.sym} 0 120 0 1 {name=VIN1 value=3.3}
-C {devices/vdd.sym} 0 90 0 0 {name=l1 lab=VDD}
-C {devices/gnd.sym} 0 150 0 0 {name=l2 lab=GND}
-C {devices/vdd.sym} 210 -80 0 0 {name=l3 lab=VDD}
-C {devices/gnd.sym} 210 80 0 0 {name=l4 lab=GND}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=2.6}
+C {devices/ipin.sym} -115 -410 1 0 {name=p1 lab=rst}
+C {devices/ipin.sym} -80 -410 1 0 {name=p2 lab=clk}
+C {devices/opin.sym} 15 -350 0 0 {name=p3 lab=d0}
+C {devices/vsource.sym} -300 -300 0 1 {name=VIN1 value=3.3}
+C {devices/lab_pin.sym} -300 -330 1 0 {name=l1 lab=vdd}
+C {devices/lab_pin.sym} -300 -270 3 0 {name=l2 lab=gnd}
+C {devices/lab_pin.sym} -30 -410 1 0 {name=l3 lab=vdd}
+C {devices/opin.sym} 15 -340 0 0 {name=p4 lab=d1}
+C {devices/opin.sym} 15 -330 0 0 {name=p5 lab=d2}
+C {devices/opin.sym} 15 -320 0 0 {name=p6 lab=d3}
+C {devices/opin.sym} 15 -310 0 0 {name=p7 lab=d4}
+C {devices/opin.sym} 15 -300 0 0 {name=p8 lab=d5}
+C {devices/opin.sym} 15 -290 0 0 {name=p9 lab=d6}
+C {devices/opin.sym} 15 -280 0 0 {name=p10 lab=d7}
+C {devices/opin.sym} 15 -270 0 0 {name=p11 lab=d8}
+C {devices/opin.sym} 15 -260 0 0 {name=p12 lab=d9}
+C {devices/opin.sym} 15 -250 0 0 {name=p13 lab=d10}
+C {devices/opin.sym} 15 -240 0 0 {name=p14 lab=d11}
+C {devices/lab_pin.sym} -30 -190 3 0 {name=l4 lab=gnd}
+C {devices/lab_pin.sym} -240 -330 1 0 {name=l5 lab=vinp}
+C {devices/lab_pin.sym} -240 -270 3 0 {name=l6 lab=vinn}
+C {devices/code.sym} -800 -480 0 0 {name=Libraries/Includes
+format="tcleval(  @value  )"
+only_toplevel=false
+value="
+.include $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.include [pwd]/../spice/sar_logic.spice
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+"
+spice_ignore=false}

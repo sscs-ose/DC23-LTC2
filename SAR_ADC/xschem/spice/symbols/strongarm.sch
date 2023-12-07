@@ -87,15 +87,9 @@ N 920 -120 1150 -120 {
 lab=Vout2}
 N 1150 -120 1150 -100 {
 lab=Vout2}
-N 780 -370 780 -350 {
-lab=V}
 N 760 -30 760 -0 {
 lab=GND}
 N 320 100 510 100 {
-lab=V}
-N 320 -370 320 100 {
-lab=V}
-N 320 -370 780 -370 {
 lab=V}
 N 510 180 1010 180 {
 lab=GND}
@@ -137,13 +131,43 @@ N 680 -350 780 -350 {
 lab=V}
 N 630 0 760 -0 {
 lab=GND}
-N 780 -390 780 -370 {
-lab=V}
 N 940 -0 1010 -0 {
 lab=GND}
 N 390 50 690 50 {
 lab=#net1}
-C {symbols/pfet_03v3.sym} 650 -320 0 1 {name=x2
+N 770 -500 770 -470 {
+lab=V}
+N 770 -500 780 -500 {
+lab=V}
+N 770 -470 790 -470 {
+lab=V}
+N 790 -470 790 -440 {
+lab=V}
+N 770 -440 790 -440 {
+lab=V}
+N 770 -410 770 -350 {
+lab=V}
+N 320 -440 730 -440 {
+lab=#net1}
+N 320 -440 320 -360 {
+lab=#net1}
+N 80 100 320 100 {
+lab=V}
+N 80 -540 80 100 {
+lab=V}
+N 80 -540 750 -540 {
+lab=V}
+N 750 -540 750 -480 {
+lab=V}
+N 320 -360 320 50 {
+lab=#net1}
+N 320 50 390 50 {
+lab=#net1}
+N 750 -480 770 -480 {
+lab=V}
+N 770 -440 770 -410 {
+lab=V}
+C {symbols/pfet_03v3.sym} 650 -320 0 1 {name=M1
 L=0.28u
 W=2u
 nf=1
@@ -159,7 +183,7 @@ spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 410 -80 0 0 {name=M2
 L=0.28u
-W=7u
+W=2u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -187,7 +211,7 @@ spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 1170 -70 0 1 {name=M4
 L=0.28u
-W=7u
+W=2u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -213,7 +237,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {symbols/pfet_03v3.sym} 900 -320 0 0 {name=x6
+C {symbols/pfet_03v3.sym} 900 -320 0 0 {name=M6
 L=0.28u
 W=2u
 nf=1
@@ -241,7 +265,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {symbols/pfet_03v3.sym} 940 -200 0 1 {name=x8
+C {symbols/pfet_03v3.sym} 940 -200 0 1 {name=M8
 L=0.28u
 W=10u
 nf=1
@@ -255,21 +279,14 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {devices/iopin.sym} 780 -390 0 0 {name=p1 lab=V}
+C {devices/iopin.sym} 780 -500 0 0 {name=p1 lab=V
+W=2u}
 C {devices/iopin.sym} 430 -120 0 1 {name=p2 lab=Vout1}
 C {devices/iopin.sym} 590 -210 0 1 {name=p3 lab=Vin1}
 C {devices/iopin.sym} 960 -200 0 0 {name=p4 lab=Vin2}
 C {devices/iopin.sym} 1150 -120 0 0 {name=p5 lab=Vout2}
 C {devices/iopin.sym} 400 140 0 1 {name=p6 lab=CLK
 }
-C {devices/code.sym} 1360 -150 0 0 {name=TT_MODELS 
-only_toplevel=true 
-format="tcleval(  @value  )"
-value="
-.include /foss/pdks/gf180mcuC/libs.tech/ngspice/design.ngspice
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
-"
-spice_ignore=false}
 C {devices/iopin.sym} 760 -30 0 0 {name=p7 lab=GND
 }
-C {../spice/inv.sym} 510 140 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}
+C {inv.sym} 510 140 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}
