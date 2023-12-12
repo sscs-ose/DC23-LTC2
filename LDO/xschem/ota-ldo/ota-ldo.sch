@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -184,7 +184,7 @@ model=pfet_03v3
 spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 490 -170 0 0 {name=M7
-L=1u
+L=0.8u
 W=16u
 nf=1
 m=1
@@ -198,7 +198,7 @@ model=nfet_03v3
 spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 220 -170 0 0 {name=M8
-L=0.7u
+L=0.8u
 W=1.66u
 nf=1
 m=1
@@ -226,7 +226,7 @@ model=pfet_03v3
 spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 950 -240 0 0 {name=M6
-L=0.5u
+L=0.8u
 W=60u
 nf=1
 m=1
