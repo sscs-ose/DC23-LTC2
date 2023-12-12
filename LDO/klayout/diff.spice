@@ -1,0 +1,7 @@
+** sch_path: /workspaces/DC23-LTC2/LDO/xschem/isource/diff.sch
+.subckt diff GA GB A B C GND
+*.PININFO GA:I GB:I A:I B:I C:I GND:I
+M1 A GA C GND nfet_03v3 L=0.3u W=10u nf=1 m=1
+M2 B GB C GND nfet_03v3 L=0.3u W=10u nf=1 m=1
+.ends
+.end
