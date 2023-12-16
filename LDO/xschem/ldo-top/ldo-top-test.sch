@@ -36,11 +36,11 @@ only_toplevel=true
 format="tcleval( @value )"
 spice_ignore=false
 value="
-.param R=330
+.param R=66
 
 R10 out 0 \{R\}
 *IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
-*CL out 0 1p
+CL out 0 10p
 
 .options savecurrents
 .nodeset v(out)=0
@@ -49,7 +49,7 @@ R10 out 0 \{R\}
 *TRANSIENT
 *.control
 *save all
-*tran 1ns 2us
+*tran 1ns 10us
 *plot v(out) v(ref) v(pos) v(vin)
 *plot v(op_out)
 *plot v(out)
@@ -60,10 +60,10 @@ R10 out 0 \{R\}
 *Stability_Analysis
 *.control
 *alter IL 0
-*alter Vs AC =0
-*alter Vt AC=1
+*alter V3 AC =0
+*alter V3 AC=1
 *ac dec 10 1 1G
-*plot vdb(out)
+*plot vdb(x1.x1.op_out)
 *plot (180/pi)*vp(out)
 *let ph= (180/pi)*vp(out)
 *meas ac pm FIND ph WHEN vdb(out)=0
@@ -75,7 +75,7 @@ save all
 save v(x1.out) v(x1.x1.ref) v(x1.x1.pos) v(x1.x1.vin) v(x1.x1.op_out) i(x1.x1.v4)
 dc V3 4 0 -0.01
 plot v(out) v(x1.ref) v(vin) v(x1.x1.op_out) 
-plot i(v.x1.x1.v4)
+*plot i(v.x1.x1.v4)
 .endc
 
 *PSRR_Analysis
@@ -84,6 +84,8 @@ save all
 alter V3 AC =1
 ac dec 100 1 1G
 plot vdb(out)
+plot vdb(x1.x1.op_out)
+plot (180/pi)*vp(out)
 *let gm0=@m.xm0.m0[gm]
 *let Zout=(1.5)/(gm0*v(op_out))
 *let Zout2=v(out)/gm0

@@ -83,10 +83,10 @@ C {devices/lab_pin.sym} 1005 -560 1 0 {name=l12 sig_type=std_logic lab=op_out
 }
 C {../ota-ldo/ota-ldo.sym} 800 -560 0 0 {name=X1}
 C {symbols/pfet_03v3.sym} 1120 -560 0 0 {name=M1
-L=0.7u
+L=1u
 W=100u
 nf=1
-m=20
+m=30
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
 pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
 as="'int((nf+2)/2) * W/nf * 0.18u'"
@@ -98,13 +98,13 @@ spiceprefix=X
 }
 C {symbols/ppolyf_u.sym} 1140 -450 0 0 {name=R1
 W=1e-6
-L=200e-6
+L=164e-6
 model=ppolyf_u_1k
 spiceprefix=X
 m=1}
 C {symbols/ppolyf_u.sym} 1140 -200 0 0 {name=R2
 W=1e-6
-L=114e-6
+L=100e-6
 model=ppolyf_u_1k
 spiceprefix=X
 m=1}
