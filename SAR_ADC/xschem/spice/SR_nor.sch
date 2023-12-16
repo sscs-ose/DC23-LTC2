@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -71,5 +71,5 @@ C {devices/iopin.sym} 100 -190 0 1 {name=p3 lab=S}
 C {devices/iopin.sym} 130 -40 0 1 {name=p4 lab=R}
 C {devices/iopin.sym} 350 -180 0 0 {name=p5 lab=Qn}
 C {devices/iopin.sym} 370 -40 0 0 {name=p6 lab=Q}
-C {symbols/norgate.sym} 160 -140 0 0 {name=X1}
-C {symbols/norgate.sym} 170 -40 0 0 {name=X2}
+C {norgate.sym} 160 -140 0 0 {name=X1}
+C {norgate.sym} 170 -40 0 0 {name=X2}

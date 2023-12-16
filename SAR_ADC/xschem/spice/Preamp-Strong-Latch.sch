@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -94,5 +94,5 @@ C {inv.sym} 4910 -3480 0 0 {name=x2 cl=0.28u wp=0.44u wn=0.22u}
 C {inv.sym} 4750 -3480 0 0 {name=x3 cl=0.28u wp=0.44u wn=0.22u}
 C {inv.sym} 4910 -3330 0 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}
 C {inv.sym} 4750 -3330 0 0 {name=x5 cl=0.28u wp=0.44u wn=0.22u}
-C {strongarm.sym} 2570 -1890 0 0 {name=x6}
+C {strongarm.sym} 4470 -3380 0 0 {name=X6}
 C {preamp.sym} 4150 -3360 0 0 {name=X7}
