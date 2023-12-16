@@ -54,22 +54,22 @@ value="
 .param R=330
 R10 out 0 \{R\}
 *IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
-*CL out 0 1p
+CL out 0 10u
 .options savecurrents
 
 .nodeset v(out)=0
 .nodeset v(x1.pos)=0
 
 *TRANSIENT
-*.control
-*save all
-*tran 1ns 2us
-*plot v(out) v(ref) v(pos) v(vin)
-*plot v(op_out)
-*plot v(out)
-*plot i(v3)
-*plot i(v3)*v(vin)
-*.endc
+.control
+save all
+tran 1ns 10us
+plot v(out) v(ref) v(pos) v(vin)
+plot v(op_out)
+plot v(out)
+plot i(out)
+plot i(v3)*v(vin)
+.endc
 
 *Stability_Analysis
 *.control
@@ -89,8 +89,8 @@ save all
 save v(out) v(ref) v(x1.pos) v(vin) v(x1.op_out) i(x1.v4)
 dc V3 4 0 -0.01
 plot v(out) v(ref) v(x1.pos) v(vin)
-plot v(x1.op_out)
-plot i(v.x1.v4)
+*plot v(x1.op_out)
+*plot i(v.x1.v4)
 .endc
 
 *PSRR_Analysis
