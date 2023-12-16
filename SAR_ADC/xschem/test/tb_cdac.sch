@@ -1,17 +1,11 @@
-v {xschem version=3.4.0 file_version=1.2
+v {xschem version=3.1.0 file_version=1.2 
 }
 G {}
 K {}
 V {}
 S {}
 E {}
-N 80 -395 80 -165 {lab=d[11:0] bus=true}
-C {devices/code_shown.sym} -710 -560 0 0 {name=NGSPICE only_toplevel=false value="
-.include /foss/pdks/gf180mcuC/libs.tech/ngspice/design.ngspice
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice cap_mim
-
+C {devices/code_shown.sym} -510 -450 0 0 {name=NGSPICE only_toplevel=false value="
 .param cu=5u
 .param period=100u
 .param stoptime=\{15*period\}
@@ -38,19 +32,6 @@ plot V(out)
 plot V(d[0])
 .endc
 "}
-C {devices/vdd.sym} 80 -395 0 0 {name=l1 lab=d[11:0]}
-C {devices/bus_tap.sym} 80 -165 1 0 {name=l2 lab=[11]}
-C {devices/bus_tap.sym} 80 -185 1 0 {name=l3 lab=[10]}
-C {devices/bus_tap.sym} 80 -205 1 0 {name=l4 lab=[9]}
-C {devices/bus_tap.sym} 80 -225 1 0 {name=l5 lab=[8]}
-C {devices/bus_tap.sym} 80 -245 1 0 {name=l6 lab=[7]}
-C {devices/bus_tap.sym} 80 -265 1 0 {name=l7 lab=[6]}
-C {devices/bus_tap.sym} 80 -285 1 0 {name=l8 lab=[5]}
-C {devices/bus_tap.sym} 80 -305 1 0 {name=l9 lab=[4]}
-C {devices/bus_tap.sym} 80 -325 1 0 {name=l10 lab=[3]}
-C {devices/bus_tap.sym} 80 -345 1 0 {name=l11 lab=[2]}
-C {devices/bus_tap.sym} 80 -365 1 0 {name=l12 lab=[1]}
-C {devices/bus_tap.sym} 80 -385 1 0 {name=l13 lab=[0]}
 C {devices/vdd.sym} 230 -125 2 0 {name=l14 lab=vdd}
 C {devices/gnd.sym} 190 -125 0 0 {name=l15 lab=gnd}
 C {devices/opin.sym} 350 -265 0 0 {name=p1 lab=out}
@@ -58,3 +39,24 @@ C {devices/vsource.sym} 0 -250 0 0 {name=VDD value=3.3}
 C {devices/gnd.sym} 0 -220 0 0 {name=l17 lab=gnd}
 C {devices/vdd.sym} 0 -280 0 0 {name=l18 lab=vdd}
 C {../spice/cdac.sym} 210 -265 0 0 {name=xDUT cu=\{cu\}}
+C {devices/code_shown.sym} -525 -595 0 0 {name=LIB 
+only_toplevel=false
+format="tcleval(  @value  )"
+value="
+.include $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim \{0*period\}  1ps 1ps \{period/2\} \{period\} 1)
+"}
+C {devices/lab_pin.sym} 90 -375 0 0 {name=l1 sig_type=std_logic lab=d[11]}
+C {devices/lab_pin.sym} 90 -355 0 0 {name=l2 sig_type=std_logic lab=d[10]}
+C {devices/lab_pin.sym} 90 -335 0 0 {name=l3 sig_type=std_logic lab=d[9]}
+C {devices/lab_pin.sym} 90 -315 0 0 {name=l4 sig_type=std_logic lab=d[8]}
+C {devices/lab_pin.sym} 90 -295 0 0 {name=l5 sig_type=std_logic lab=d[7]}
+C {devices/lab_pin.sym} 90 -275 0 0 {name=l6 sig_type=std_logic lab=d[6]}
+C {devices/lab_pin.sym} 90 -255 0 0 {name=l7 sig_type=std_logic lab=d[5]}
+C {devices/lab_pin.sym} 90 -235 0 0 {name=l8 sig_type=std_logic lab=d[4]}
+C {devices/lab_pin.sym} 90 -215 0 0 {name=l9 sig_type=std_logic lab=d[3]}
+C {devices/lab_pin.sym} 90 -195 0 0 {name=l10 sig_type=std_logic lab=d[2]}
+C {devices/lab_pin.sym} 90 -175 0 0 {name=l11 sig_type=std_logic lab=d[1]}
+C {devices/lab_pin.sym} 90 -155 0 0 {name=l12 sig_type=std_logic lab=d[0]}
