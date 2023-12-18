@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -23,11 +23,10 @@ C {devices/code.sym} 10 -390 0 0 {name=TT_MODELS
 only_toplevel=true 
 format="tcleval(  @value  )"
 value="
-.include /foss/pdks/gf180mcuC/libs.tech/ngspice/design.ngspice
-.lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
+.include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice typical
 "
 spice_ignore=false}
-C {SAR_ADC/SAR_ADC_gf180/xschem/spice/inv.sym} 520 -250 0 0 {name=x7 cl=0.28u wp=0.44u wn=0.22u}
 C {devices/lab_wire.sym} 520 -290 0 0 {name=p1 sig_type=std_logic lab=V
 }
 C {devices/gnd.sym} 520 -210 0 0 {name=l1 lab=GND}
@@ -38,3 +37,4 @@ C {devices/lab_wire.sym} 460 -250 0 0 {name=p3 sig_type=std_logic lab=Vin
 }
 C {devices/lab_wire.sym} 620 -250 0 0 {name=p4 sig_type=std_logic lab=Vout
 }
+C {../../symbols/inv.sym} 520 -250 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}

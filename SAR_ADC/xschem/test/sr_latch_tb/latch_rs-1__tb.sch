@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -23,8 +23,8 @@ N 670 -240 670 -230 {
 lab=#net1}
 N 670 -240 760 -240 {
 lab=#net1}
-C {devices/vsource.sym} 150 -140 0 0 {name=V1 value="PULSE(0 3 0 100p 100p 1000n 2000n)"}
-C {devices/vsource.sym} 230 -140 0 0 {name=V2 value="PULSE(0 3 0 100p 100p 500n 1000n)"}
+C {devices/vsource.sym} 150 -140 0 0 {name=V1 value="PULSE(0 3 0 100p 100p 14n 20n)"}
+C {devices/vsource.sym} 230 -140 0 0 {name=V2 value="PULSE(0 3 0 100p 100p 7n 15n)"}
 C {devices/gnd.sym} 590 -190 0 0 {name=l1 lab=GND}
 C {devices/gnd.sym} 150 -110 0 0 {name=l2 lab=GND}
 C {devices/gnd.sym} 230 -110 0 0 {name=l3 lab=GND}
@@ -41,7 +41,7 @@ C {devices/lab_wire.sym} 590 -330 0 0 {name=p8 sig_type=std_logic lab=V
 C {devices/code_shown.sym} 220 -390 0 0 {name=SPICE1 only_toplevel=false value="
 .control
 save all
-tran 500p 10u  
+tran 500p 100n
 plot set reset vout
 plot vq
 .endc"}
@@ -53,7 +53,6 @@ value="
 .lib /foss/pdks/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
 "
 spice_ignore=false}
-C {jesusu/Simbolos/Vdiffmeter.sym} 660 -120 0 0 {name=X3}
 C {devices/gnd.sym} 790 -220 0 0 {name=l7 lab=GND}
 C {devices/lab_wire.sym} 860 -300 0 0 {name=p15 sig_type=std_logic lab=Vout
 }
@@ -63,6 +62,7 @@ footprint=1206
 device=resistor
 m=2}
 C {devices/gnd.sym} 860 -220 0 0 {name=l9 lab=GND}
-C {jesusu/Simbolos/SR_nand.sym} -1650 1570 0 0 {name=X1}
 C {devices/lab_wire.sym} 730 -280 0 0 {name=p3 sig_type=std_logic lab=Vq
 }
+C {../../../symbols/SR_nand.sym} 550 -210 0 0 {name=X1}
+C {../../../symbols/Vdiffmeter.sym} 760 -220 0 0 {name=X2}
