@@ -104,7 +104,11 @@ spiceprefix=X
 m=1}
 C {symbols/ppolyf_u.sym} 1140 -200 0 0 {name=R2
 W=1e-6
+<<<<<<< HEAD
 L=100e-6
+=======
+L=120e-6
+>>>>>>> bde7524 (Some python scripts that simplifies setup of design)
 model=ppolyf_u_1k
 spiceprefix=X
 m=1}
