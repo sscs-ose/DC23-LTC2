@@ -2,159 +2,192 @@ import pya
 import cells
 from pprint import pprint
 
-# Utilities
-###########
+class KlayoutUtilities:
+  _instances = {}
 
-def get_cell_information(cell: pya.Cell) -> None:
-  """Gives some information of a cell instance"""
-  print(f"{cell.name=}")
-  print(f"{cell.prop_id=}")
-  print(f"{cell.prop_id=}")
-  print(f"{cell.dbbox()=}")
-  print(f"{cell.basic_name()=}")
-  print(f"{cell.display_title()=}")
-  print(f"{cell.dump_mem_statistics()=}")
+  def __init__(self):
+    self.cell_cache = dict()
 
+    self.app: pya.Application = pya.Application.instance()
 
-def get_pcell_information(instance):
-  """Show some attributes from gf180mcu pcell"""
-  for param in instance.get_parameters():
-    #pprint(dir(param))
-    print(f"{param.name}:")
-    print(f"\thidden={param.hidden}")
-    print(f"\tvalues={param.choice_values()}")
-    print(f"\tdescription={param.description}")
-    print(f"\tdefault={param.default}")
-    print(f"\tdup={param.dup()}")
-    #print(f"\t={param.}")
+    self.layout_view: pya.LayoutView = self.app.main_window().current_view()
+    if self.layout_view is None:
+      print("There is any layout open... creating")
 
+      tech="gf180mcu"
+      mode=0
+      self.app.main_window().create_layout(tech, mode)
 
-def clear_top_cell():
-  """Removes all the cells in the hierarchy of the top cell"""
-  layout_view = pya.Application.instance().main_window().current_view()
-  if layout_view is None:
-    print("There is any layout open")
-    exit()
+      self.layout_view = self.app.main_window().current_view()
 
-  cell_view: pya.CellView = layout_view.active_cellview()
-  viewed_cell: pya.Cell= cell_view.cell
+    # Cell view can be pointing nothing
+    # If that's the case, a TOP cell is created and pointed
 
-  if viewed_cell is None:
-    print("Current cell is not setted (Ctrl-S over top cell)")
-    exit()
+    self.cell_view: pya.CellView = self.layout_view.active_cellview()
+    self.layout: pya.Layout = self.cell_view.layout()
 
-  viewed_cell.clear()
+    if self.cell_view.cell is None:
+      print("Current cell is not setted (Ctrl-S over top cell)")
+
+      if self.layout.cell("TOP") is None:
+        self.layout.create_cell("TOP")
+        self.cell_view.set_cell_name("TOP")
+
+    self.viewed_cell: pya.Cell= self.cell_view.cell
+
+  def __call__(cls, *args, **kwargs):
+    """Always returns the same KlayoutUtilities instance"""
+    if cls not in cls._instances:
+      instance = super().__call__(*args, **kwargs)
+      cls._instances[cls] = instance
+
+    return cls._instances[cls]
 
 
-# Decorators
-############
-cell_cache = dict()
+  @staticmethod
+  def register(func, *args, **kwargs):
+    """Assuming that func is a pure function, the register avoid cell duplication"""
+    k = KlayoutUtilities()
 
-def create_pcell(func):
-  """Used to insert the layout object required by draw_* functions"""
-  layout_view = pya.Application.instance().main_window().current_view()
-
-  if layout_view is None:
-    print("There is any layout open")
-    exit()
-
-  cell_view: pya.CellView = layout_view.active_cellview()
-  layout: pya.Layout = cell_view.layout()
-  viewed_cell: pya.Cell= cell_view.cell
-
-  if viewed_cell is None:
-    print("Current cell is not setted (Ctrl-S over top cell)")
-    exit()
-
-  global cell_cache
-  def _wrapper(*args, **kwargs):
+    func_key = func.__hash__()
     arg_key = "_".join(args)
     kwarg_key = "_".join(f"{key}_{value}" for key,value in kwargs.items())
-    cell_key = f"{func.__hash__()}-{arg_key}-{kwarg_key}"
-    if not cell_key in cell_cache.keys():
-      cell_cache[cell_key] = func(*args, layout=layout, **kwargs)
-    else:
-      print("match")
-  
-    pprint(cell_cache)
-    return cell_cache[cell_key]
 
-  return _wrapper
+    cell_key = f"{func_key}-{arg_key}-{kwarg_key}"
 
+    registered = True
+    if not cell_key in k.cell_cache.keys():
+      k.cell_cache[cell_key] = func(*args, **kwargs)
+      registered = False
 
-def create_pya(func):
-  """func returns something that can be inserted in top cell"""
-  layout_view: pya.LayoutView = pya.Application.instance().main_window().current_view()
+    # else:
+    #   print("match")
 
-  if layout_view is None:
-    print("There is any layout open")
-    exit()
-
-  cell_view: pya.CellView = layout_view.active_cellview()
-  layout: pya.Layout = cell_view.layout()
-  viewed_cell: pya.Cell = cell_view.cell
-
-  if viewed_cell is None:
-    print("Current cell is not setted (Ctrl-S over top cell)")
-    exit()
-
-  global cell_cache
-  def _wrapper(*args, **kwargs) -> pya.DCellInstArray:
-    arg_key = "_".join(args)
-    kwarg_key = "_".join(f"{key}_{value}" for key,value in kwargs.items())
-    cell_key = f"{func.__hash__()}-{arg_key}-{kwarg_key}"
-
-    if not cell_key in cell_cache.keys():
-      cell_inst_array: pya.DCellInstArray = func(*args, layout=layout, **kwargs)
-      viewed_cell.insert(cell_inst_array)
-      #viewed_cell.flatten(1)
-
-      cell_cache[cell_key] = cell_inst_array
-    else:
-      print("match")
-
-    return cell_cache[cell_key]
-
-  return _wrapper
+    return k.cell_cache[cell_key], registered
 
 
-def generate_pya(func):
-  """Decorator. Abstracts the usage of klayout api when instantiating klayout elements"""
-  layout_view: pya.LayoutView = pya.Application.instance().main_window().current_view()
+  @staticmethod
+  def create_pcell(func):
+    k = KlayoutUtilities()
 
-  if layout_view is None:
-    print("There is any layout open")
-    exit()
+    def _wrapper(*args, **kwargs):
+      cell, registered = k.register(func, *args, layout=k.layout, **kwargs)
 
-  cell_view: pya.CellView = layout_view.active_cellview()
-  layout: pya.Layout = cell_view.layout()
-  viewed_cell: pya.Cell = cell_view.cell
+      if not registered:
+        pass
 
-  if viewed_cell is None:
-    print("Current cell is not setted (Ctrl-S over top cell)")
-    exit()
+      return cell
 
-  # Some type playing
-  DType = pya.DPath | pya.DBox
-  def _wrapper(*args, **kwargs) -> tuple[tuple[int], DType]:
-    layer_tuple, instance = func(*args, **kwargs)
+    return _wrapper
 
-    layer = layout.layer(*layer_tuple)
-    viewed_cell.shapes(layer).insert(instance)
-    return layer, instance
 
-  return _wrapper
+  @staticmethod
+  def create_pya(func, split=False):
+    """func returns something that can be inserted in top cell"""
+    k = KlayoutUtilities()
+
+    def _wrapper(*args, **kwargs) -> pya.DCellInstArray:
+      cell_inst_array, registered = k.register(func, *args, layout=k.layout, **kwargs)
+
+      if not registered:
+        k.viewed_cell.insert(cell_inst_array)
+
+      return cell_inst_array
+
+    return _wrapper
+
+
+  @staticmethod
+  def generate_pya(func):
+    """Decorator. Abstracts the usage of klayout api when instantiating klayout elements"""
+    k = KlayoutUtilities()
+
+    # Some type playing
+    def _wrapper(*args, **kwargs):
+      layer_tuple, instance = func(*args, **kwargs)
+
+      layer = k.layout.layer(*layer_tuple)
+      k.viewed_cell.shapes(layer).insert(instance)
+      return layer, instance
+
+    return _wrapper
+
+
+  @staticmethod
+  def clear():
+    """Removes all the cells in the hierarchy of the top cell"""
+    k = KlayoutUtilities()
+
+    k.viewed_cell.clear()
+    k.cell_cache.clear()
+
+
+  @staticmethod
+  def get_cell_information(cell: pya.Cell) -> None:
+    """Gives some information of a cell instance"""
+    print(f"{cell.name=}")
+    print(f"{cell.prop_id=}")
+    print(f"{cell.prop_id=}")
+    print(f"{cell.dbbox()=}")
+    print(f"{cell.basic_name()=}")
+    print(f"{cell.display_title()=}")
+    print(f"{cell.dump_mem_statistics()=}")
+
+
+  @staticmethod
+  def get_pcell_information(instance):
+    """Show some attributes from gf180mcu pcell"""
+    for param in instance.get_parameters():
+      #pprint(dir(param))
+      print(f"{param.name}:")
+      print(f"\thidden={param.hidden}")
+      print(f"\tvalues={param.choice_values()}")
+      print(f"\tdescription={param.description}")
+      print(f"\tdefault={param.default}")
+      print(f"\tdup={param.dup()}")
+      #print(f"\t={param.}")
+
+
+  @staticmethod
+  def get_configuration():
+    k = KlayoutUtilities()
+
+    app: pya.Application = k.app
+
+    for config in app.get_config_names():
+      print(f"{config:<25} {app.get_config(config)}")
+
+
+  @staticmethod
+  def set_recommended_configuration():
+    k = KlayoutUtilities()
+    app: pya.Application = k.app
+
+    recommended = {
+      #"something": 10,
+    }
+
+    for config, value in recommended.items():
+      print(f"{config:<25} {app.get_config(config)}")
+      app.set_config(config, value)
+
+    app.commit_config()
+
+
+  @staticmethod
+  def set_visual_configuration():
+    k = KlayoutUtilities()
+    k.cell_view.set_cell_name("TOP")
+    k.layout_view.add_missing_layers()
+    k.layout_view.zoom_fit()
 
 
 # Resistor design
 #################
 
-@create_pya
+@KlayoutUtilities.create_pya
 def generate_resistor(layout: pya.Layout = None):
   """Generates the resistor to be used in a common centroid resistor"""
-
-  # Create resistor core
-  ######################
 
   res_core: pya.Cell = cells.draw_res.draw_ppolyf_res(
     layout = layout,
@@ -170,9 +203,6 @@ def generate_resistor(layout: pya.Layout = None):
   )
 
   #res_core.flatten(1)
-
-  # Create resistor array
-  #######################
   
   # Min space bewteen resistors: 0.4 um
   res_x_spacing = 0
@@ -192,7 +222,7 @@ def generate_resistor(layout: pya.Layout = None):
   return res
 
 
-@generate_pya
+@KlayoutUtilities.generate_pya
 def generate_resistor_bulk_connection():
   first = pya.DPoint(-1.7, 51.5)
   last  = pya.DPoint(-1.7, 0.5)
@@ -205,7 +235,7 @@ def generate_resistor_bulk_connection():
   return layer_tuple, path
 
 
-@create_pcell
+@KlayoutUtilities.create_pcell
 def generate_m1_m2_via(layout: pya.Layout):
   via_cell: pya.Cell = cells.via_generator.draw_via_dev(
     layout,
@@ -222,7 +252,7 @@ def generate_m1_m2_via(layout: pya.Layout):
   return via_cell
 
 
-@create_pya
+@KlayoutUtilities.create_pya
 def insert_resistor_core_vias(layout: pya.Layout) -> pya.DCellInstArray:
   via_cell: pya.Cell = generate_m1_m2_via()
 
@@ -247,9 +277,13 @@ def insert_resistor_core_vias(layout: pya.Layout) -> pya.DCellInstArray:
   return via_array
 
 
-@create_pya
+@KlayoutUtilities.create_pya
 def insert_resistor_inner_routing_vias(layout: pya.Layout) -> pya.DCellInstArray:
   via_cell: pya.Cell = generate_m1_m2_via()
+
+
+  # https://www.klayout.de/doc/manual/create_variants.html
+  # https://www.klayout.de/forum/discussion/1814/making-a-cell-variant-using-the-script
 
   # Array setting
   extension_x = 3
@@ -272,8 +306,8 @@ def insert_resistor_inner_routing_vias(layout: pya.Layout) -> pya.DCellInstArray
   return via_array
 
 
-@create_pya
-def insert_resistor_inner_outer_vias(layout: pya.Layout) -> pya.DCellInstArray:
+@KlayoutUtilities.create_pya
+def insert_resistor_outer_routing_vias(layout: pya.Layout) -> pya.DCellInstArray:
   via_cell: pya.Cell = generate_m1_m2_via()
 
   # Array setting
@@ -297,10 +331,25 @@ def insert_resistor_inner_outer_vias(layout: pya.Layout) -> pya.DCellInstArray:
   return via_array
 
 
+KlayoutUtilities.clear()
 
-clear_top_cell()
+# The process should be done in a specific order
+# 1. Generate inner and outer vias
+insert_resistor_inner_routing_vias()
+insert_resistor_outer_routing_vias()
+
+
+# We stop here. With manual handling one has to turn the vias into
+# variations
+# Edit > Selection > Make Cell Variants
+# Then run the following functions
+exit()
+
+# 1. Generate resistor fingers
+# 1. Generate bulk connection
+# 1. Generate resistor vias
 generate_resistor()
 generate_resistor_bulk_connection()
 insert_resistor_core_vias()
-insert_resistor_inner_routing_vias()
-insert_resistor_inner_outer_vias()
+
+KlayoutUtilities.set_visual_configuration()
