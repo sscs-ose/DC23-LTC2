@@ -33,9 +33,9 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
 
 "}
-C {../ldo/ldo.sym} 470 -480 0 0 {name=x1}
+C {ldo.sym} 470 -480 0 0 {name=x1}
 C {devices/lab_pin.sym} 250 -500 1 0 {name=l3 sig_type=std_logic lab=ref}
-C {../bandgap/bandgap.sym} 100 -500 0 0 {name=x2}
+C {bandgap.sym} 100 -500 0 0 {name=x2}
 C {devices/iopin.sym} 100 -560 3 0 {name=p1 sig_type=std_logic lab=vin
 }
 C {devices/iopin.sym} 470 -550 3 0 {name=p4 sig_type=std_logic lab=vin

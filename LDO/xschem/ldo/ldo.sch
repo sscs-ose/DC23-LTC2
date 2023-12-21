@@ -81,7 +81,7 @@ value="
 C {devices/lab_pin.sym} 1005 -560 1 0 {name=l12 sig_type=std_logic lab=op_out
 
 }
-C {../ota-ldo/ota-ldo.sym} 800 -560 0 0 {name=X1}
+C {ota-ldo.sym} 800 -560 0 0 {name=X1}
 C {symbols/pfet_03v3.sym} 1120 -560 0 0 {name=M1
 L=1u
 W=100u

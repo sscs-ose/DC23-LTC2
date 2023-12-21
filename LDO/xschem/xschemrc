@@ -1,0 +1,11 @@
+source $env(PDK_ROOT)/gf180mcuD/libs.tech/xschem/xschemrc
+
+set script_path [ file dirname [ file normalize [ info script ] ] ]
+
+append XSCHEM_LIBRARY_PATH :$script_path/ota-bandgap
+append XSCHEM_LIBRARY_PATH :$script_path/ota-ldo
+append XSCHEM_LIBRARY_PATH :$script_path/bandgap
+append XSCHEM_LIBRARY_PATH :$script_path/ldo
+append XSCHEM_LIBRARY_PATH :$script_path/ldo-top
+
+set XSCHEM_START_WINDOW {0_top.sch}

@@ -167,7 +167,7 @@ C {devices/lab_pin.sym} -540 -850 0 0 {name=l2 sig_type=std_logic lab=INM
 }
 C {devices/lab_pin.sym} -430 -970 0 0 {name=l5 sig_type=std_logic lab=V3V3
 }
-C {./ota-bandgap.sym} -450 -850 0 0 {name=X1}
+C {ota-bandgap.sym} -450 -850 0 0 {name=X1}
 C {devices/capa.sym} 170 -790 0 0 {name=C1
 m=1
 value=2.5p

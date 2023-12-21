@@ -77,6 +77,6 @@ value="
 C {devices/vsource.sym} 430 -750 0 0 {name=V2 value=0 savecurrent=false}
 C {devices/gnd.sym} 430 -700 0 0 {name=l4 lab=GND}
 C {devices/lab_pin.sym} 430 -800 0 0 {name=l6 sig_type=std_logic lab=VSS}
-C {/workspaces/DC23-LTC2/LDO/xschem/bandgap/bandgap.sym} -20 -790 0 0 {name=x1}
+C {bandgap.sym} -20 -790 0 0 {name=x1}
 C {devices/opin.sym} 100 -770 2 1 {name=p1 sig_type=std_logic lab=iref
 }
