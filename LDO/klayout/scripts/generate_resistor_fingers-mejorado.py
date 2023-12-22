@@ -23,7 +23,11 @@ class KlayoutUtilities:
     # Cell view can be pointing nothing
     # If that's the case, a TOP cell is created and pointed
 
+    # cell_view is pointing to "TOP"
     self.cell_view: pya.CellView = self.layout_view.active_cellview()
+
+    # layout points to TOP cell layout.
+    # We can get cells referenced by TOP
     self.layout: pya.Layout = self.cell_view.layout()
 
     if self.cell_view.cell is None:
@@ -33,6 +37,7 @@ class KlayoutUtilities:
         self.layout.create_cell("TOP")
         self.cell_view.set_cell_name("TOP")
 
+    # Direct reference to TOP cell.
     self.viewed_cell: pya.Cell= self.cell_view.cell
 
   def __call__(cls, *args, **kwargs):
@@ -67,49 +72,15 @@ class KlayoutUtilities:
 
 
   @staticmethod
-  def create_pcell(func):
+  def inject_top_layout(func):
+    """Decorator. Injects top cell and the layout"""
     k = KlayoutUtilities()
 
     def _wrapper(*args, **kwargs):
-      cell, registered = k.register(func, *args, layout=k.layout, **kwargs)
-
-      if not registered:
-        pass
+      cell, _ = k.register(func, *args, layout=k.layout, top=k.viewed_cell, **kwargs)
 
       return cell
-
-    return _wrapper
-
-
-  @staticmethod
-  def create_pya(func, split=False):
-    """func returns something that can be inserted in top cell"""
-    k = KlayoutUtilities()
-
-    def _wrapper(*args, **kwargs) -> pya.DCellInstArray:
-      cell_inst_array, registered = k.register(func, *args, layout=k.layout, **kwargs)
-
-      if not registered:
-        k.viewed_cell.insert(cell_inst_array)
-
-      return cell_inst_array
-
-    return _wrapper
-
-
-  @staticmethod
-  def generate_pya(func):
-    """Decorator. Abstracts the usage of klayout api when instantiating klayout elements"""
-    k = KlayoutUtilities()
-
-    # Some type playing
-    def _wrapper(*args, **kwargs):
-      layer_tuple, instance = func(*args, **kwargs)
-
-      layer = k.layout.layer(*layer_tuple)
-      k.viewed_cell.shapes(layer).insert(instance)
-      return layer, instance
-
+    
     return _wrapper
 
 
@@ -182,11 +153,16 @@ class KlayoutUtilities:
     k.layout_view.zoom_fit()
 
 
+  @staticmethod
+  def get_layer(name: str):
+    layer_tuple: tuple = cells.layers_def.layer[name]
+    return KlayoutUtilities().layout.layer(*layer_tuple)
+
 # Resistor design
 #################
 
-@KlayoutUtilities.create_pya
-def generate_resistor(layout: pya.Layout = None):
+@KlayoutUtilities.inject_top_layout
+def generate_resistor(top: pya.Cell, layout: pya.Layout = None):
   """Generates the resistor to be used in a common centroid resistor"""
 
   res_core: pya.Cell = cells.draw_res.draw_ppolyf_res(
@@ -219,24 +195,32 @@ def generate_resistor(layout: pya.Layout = None):
     18,
   )
 
+  top.insert(res)
+
   return res
 
 
-@KlayoutUtilities.generate_pya
-def generate_resistor_bulk_connection():
-  first = pya.DPoint(-1.7, 51.5)
-  last  = pya.DPoint(-1.7, 0.5)
-  metal1_width = 0.3 # min 0.23
+@KlayoutUtilities.inject_top_layout
+def generate_resistor_bulk_connection(top: pya.Cell, layout: pya.Layout):
+  metal1_width = 0.38 # min 0.23
 
-  path = pya.DPath([first, last], metal1_width)
+  path = pya.DPath([
+    pya.DPoint(-1.7, 51.5),
+    pya.DPoint(-1.7, 0.5)
+    ], 
+    metal1_width
+  )
 
-  layer_tuple: tuple = cells.layers_def.layer["metal1"]
+  layer = KlayoutUtilities.get_layer("metal1")
 
-  return layer_tuple, path
+  #bulk = layout.create_cell("res_bulk_connection")
+  top.shapes(layer).insert(path)
+
+  return top
 
 
-@KlayoutUtilities.create_pcell
-def generate_m1_m2_via(layout: pya.Layout):
+@KlayoutUtilities.inject_top_layout
+def generate_m1_m2_via(top: pya.Cell, layout: pya.Layout):
   via_cell: pya.Cell = cells.via_generator.draw_via_dev(
     layout,
     base_layer="M1",
@@ -247,13 +231,12 @@ def generate_m1_m2_via(layout: pya.Layout):
     y_max=1,
   )
 
-  # This removes the new cell hierarchy
   #via_cell.flatten(1)
   return via_cell
 
 
-@KlayoutUtilities.create_pya
-def insert_resistor_core_vias(layout: pya.Layout) -> pya.DCellInstArray:
+@KlayoutUtilities.inject_top_layout
+def insert_resistor_core_vias(top: pya.Cell, layout: pya.Layout) -> pya.DCellInstArray:
   via_cell: pya.Cell = generate_m1_m2_via()
 
   # Array setting
@@ -274,11 +257,13 @@ def insert_resistor_core_vias(layout: pya.Layout) -> pya.DCellInstArray:
     18
   )
 
+  top.insert(via_array)
+
   return via_array
 
 
-@KlayoutUtilities.create_pya
-def insert_resistor_inner_routing_vias(layout: pya.Layout) -> pya.DCellInstArray:
+@KlayoutUtilities.inject_top_layout
+def insert_resistor_inner_routing_vias(top: pya.Cell, layout: pya.Layout) -> pya.DCellInstArray:
   via_cell: pya.Cell = generate_m1_m2_via()
 
 
@@ -303,11 +288,16 @@ def insert_resistor_inner_routing_vias(layout: pya.Layout) -> pya.DCellInstArray
     18
   )
 
+  # for dtrans in via_array.each_trans():
+  #   top.insert(pya.DCellInstArray(via_cell, dtrans))
+
+  top.insert(via_array)
+
   return via_array
 
 
-@KlayoutUtilities.create_pya
-def insert_resistor_outer_routing_vias(layout: pya.Layout) -> pya.DCellInstArray:
+@KlayoutUtilities.inject_top_layout
+def insert_resistor_outer_routing_vias(top: pya.Cell, layout: pya.Layout) -> pya.DCellInstArray:
   via_cell: pya.Cell = generate_m1_m2_via()
 
   # Array setting
@@ -328,26 +318,34 @@ def insert_resistor_outer_routing_vias(layout: pya.Layout) -> pya.DCellInstArray
     18
   )
 
+  # for dtrans in via_array.each_trans():
+  #   top.insert(pya.DCellInstArray(via_cell, dtrans))
+
+  top.insert(via_array)
+
   return via_array
 
 
-KlayoutUtilities.clear()
 
 # The process should be done in a specific order
 # 1. Generate inner and outer vias
-insert_resistor_inner_routing_vias()
-insert_resistor_outer_routing_vias()
-
 
 # We stop here. With manual handling one has to turn the vias into
 # variations
 # Edit > Selection > Make Cell Variants
 # Then run the following functions
-exit()
+#exit()
 
 # 1. Generate resistor fingers
 # 1. Generate bulk connection
 # 1. Generate resistor vias
+
+KlayoutUtilities.clear()
+
+insert_resistor_inner_routing_vias()
+insert_resistor_outer_routing_vias()
+exit()
+
 generate_resistor()
 generate_resistor_bulk_connection()
 insert_resistor_core_vias()

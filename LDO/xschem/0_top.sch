@@ -20,3 +20,4 @@ C {ota-bandgap-test.sym} 530 -260 0 0 {name=x6}
 C {ota-ldo-test.sym} 530 -210 0 0 {name=x19}
 C {bandgap-test.sym} 190 -210 0 0 {name=x1}
 C {ldo-test.sym} 190 -160 0 0 {name=x7}
+C {resistor-test.sym} 870 -260 0 0 {name=x2}
