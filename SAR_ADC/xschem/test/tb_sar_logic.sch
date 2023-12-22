@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -15,7 +15,7 @@ N 0 -190 140 -190 {
 lab=vdd}
 N 140 -190 140 -150 {
 lab=vdd}
-C {../spice/sar_logic.sym} 40 130 0 0 {name=X1}
+C {sar_logic.sym} 40 130 0 0 {name=X1}
 C {devices/opin.sym} 140 150 1 0 {name=p2 lab=eoc}
 C {devices/ipin.sym} 20 0 0 0 {name=p3 lab=data_in}
 C {devices/ipin.sym} 80 -150 1 0 {name=p4 lab=clk}

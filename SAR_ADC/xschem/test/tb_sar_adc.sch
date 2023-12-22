@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -6,12 +6,12 @@ V {}
 S {}
 E {}
 N -240 -270 -215 -270 {
-lab=vinn}
+lab=gnd}
 N -240 -330 -215 -330 {
 lab=vinp}
 N -300 -270 -240 -270 {
-lab=vinn}
-C {../spice/sar_adc.sym} -120 -290 0 0 {name=x1}
+lab=gnd}
+C {sar_adc.sym} -120 -290 0 0 {name=x1}
 C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
 value="

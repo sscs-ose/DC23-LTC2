@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -38,7 +38,7 @@ C {devices/opin.sym} 350 -265 0 0 {name=p1 lab=out}
 C {devices/vsource.sym} 0 -250 0 0 {name=VDD value=3.3}
 C {devices/gnd.sym} 0 -220 0 0 {name=l17 lab=gnd}
 C {devices/vdd.sym} 0 -280 0 0 {name=l18 lab=vdd}
-C {../spice/cdac.sym} 210 -265 0 0 {name=xDUT cu=\{cu\}}
+C {cdac.sym} 210 -265 0 0 {name=xDUT cu=\{cu\}}
 C {devices/code_shown.sym} -525 -595 0 0 {name=LIB 
 only_toplevel=false
 format="tcleval(  @value  )"

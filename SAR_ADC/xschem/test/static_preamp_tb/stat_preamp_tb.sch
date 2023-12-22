@@ -21,13 +21,16 @@ N 1000 -280 1020 -280 { lab=INM}
 N 1710 -230 1710 -210 { lab=GND}
 N 1710 -320 1710 -290 { lab=OUT}
 N 1280 -140 1280 -120 { lab=#net1}
-N 1440 -320 1440 -280 { lab=OUT}
-N 1440 -140 1440 -100 { lab=INM}
-N 1440 -40 1440 -20 { lab=GND}
-N 1440 -120 1460 -120 { lab=INM}
-N 1440 -220 1440 -200 { lab=#net3}
 N 1360 -320 1440 -320 { lab=OUT}
 N 1440 -320 1710 -320 { lab=OUT}
+N 830 -240 830 -230 {
+lab=#net2}
+N 750 -230 830 -230 {
+lab=#net2}
+N 830 -320 830 -300 {
+lab=INM}
+N 830 -320 850 -320 {
+lab=INM}
 C {devices/code_shown.sym} 68.75 -841.875 0 0 {name=NGSPICE
 only_toplevel=true
 value="
@@ -88,18 +91,19 @@ print v(vov1)
 print v(vds1)
 print v(vdsat1)
 
+
 .endc
 "}
 C {devices/vsource.sym} 760 -440 0 0 {name=V1 value=3.3}
 C {devices/gnd.sym} 760 -390 0 0 {name=l2 lab=GND}
 C {devices/lab_pin.sym} 760 -490 0 0 {name=l3 sig_type=std_logic lab=V3V3
 }
-C {devices/isource.sym} 1280 -70 2 0 {name=I0 value=1u
+C {devices/isource.sym} 1280 -70 2 0 {name=I0 value=10u
 }
 C {devices/gnd.sym} 1280 -20 0 0 {name=l1 lab=GND}
 C {devices/vsource.sym} 750 -190 0 0 {name=V2 value=\{CM_VOLTAGE\}}
 C {devices/gnd.sym} 750 -140 0 0 {name=l16 lab=GND}
-C {devices/vsource.sym} 750 -270 0 0 {name=V3 value="AC 1.8"}
+C {devices/vsource.sym} 750 -270 0 0 {name=V3 value="AC 0.5"}
 C {devices/lab_pin.sym} 770 -320 2 0 {name=l18 sig_type=std_logic lab=INP
 }
 C {devices/lab_pin.sym} 1000 -360 0 0 {name=l19 sig_type=std_logic lab=INP
@@ -113,25 +117,11 @@ C {devices/lab_pin.sym} 1710 -320 2 0 {name=l23 sig_type=std_logic lab=OUT
 }
 C {devices/capa.sym} 1710 -260 0 0 {name=C1
 m=1
-value=5p
+value=20f
 footprint=1206
 device="ceramic capacitor"}
 C {devices/gnd.sym} 1710 -210 0 0 {name=l24 lab=GND}
-C {devices/res.sym} 1440 -170 0 0 {name=R1
-value=10E6
-footprint=1206
-device=resistor
-m=1}
-C {devices/vsource.sym} 1440 -250 0 0 {name=V4 value=\{OUTPUT_VOLTAGE-CM_VOLTAGE\}}
-C {devices/capa.sym} 1440 -70 0 0 {name=C2
-m=1
-value=1
-footprint=1206
-device="ceramic capacitor"}
-C {devices/gnd.sym} 1440 -20 0 0 {name=l4 lab=GND}
-C {devices/lab_pin.sym} 1460 -120 0 1 {name=l6 sig_type=std_logic lab=INM
-}
-C {../../../symbols/stat_preamp.sym} 1180 -320 0 0 {name=x1}
+C {stat_preamp.sym} 1180 -320 0 0 {name=x1}
 C {devices/code.sym} -181.25 -631.875 0 0 {name=MODELS
 only_toplevel=true
 place=header
@@ -147,3 +137,10 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
 
 "}
+C {devices/launcher.sym} 990 -70 0 0 {name=h2
+descr="Annotate OP" 
+tclcommand="set show_hidden_texts 1; xschem annotate_op"
+}
+C {devices/vsource.sym} 830 -270 0 0 {name=V4 value="AC -0.5"}
+C {devices/lab_pin.sym} 850 -320 2 0 {name=l4 sig_type=std_logic lab=INM
+}

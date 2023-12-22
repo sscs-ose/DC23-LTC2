@@ -1,4 +1,4 @@
-v {xschem version=3.4.0 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -33,7 +33,7 @@ C {devices/vdd.sym} 10 -120 3 0 {name=l8 lab=CLK}
 C {devices/vsource.sym} 300 -240 0 0 {name=V3 value="PULSE(0 3.3 50n 1ps 1ps 100n 200n)"}
 C {devices/gnd.sym} 300 -210 0 0 {name=l9 lab=GND}
 C {devices/vdd.sym} 300 -270 0 0 {name=l10 lab=CLK}
-C {/foss/designs/sar_adc/xschem/spice/ff.sym} 30 -70 0 0 {name=XFF
+C {ff.sym} 30 -70 0 0 {name=FFF
 model=gf180mcu_fd_sc_mcu7t5v0__dffrsnq_1
 }
 C {devices/gnd.sym} 45 -50 0 0 {name=l11 lab=GND}
