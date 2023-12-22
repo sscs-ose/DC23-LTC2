@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -113,12 +113,12 @@ N 390 35 390 50 {
 lab=eoc}
 N 430 -0 480 0 {
 lab=compout}
-C {../spice/cdac.sym} 130 160 1 1 {name=x1 cu=5u}
-C {../spice/cdac.sym} 130 -160 1 0 {name=x2 cu=5u}
+C {cdac.sym} 130 160 1 1 {name=x1 cu=5u}
+C {cdac.sym} 130 -160 1 0 {name=x2 cu=5u}
 C {devices/ipin.sym} -220 160 0 0 {name=p1 lab=vinn}
 C {devices/ipin.sym} -220 -160 0 0 {name=p2 lab=vinp}
-C {../spice/Preamp-Strong-Latch.sym} 340 30 0 0 {name=X5}
-C {../spice/sar_logic.sym} 520 130 0 0 {name=X6}
+C {Preamp-Strong-Latch.sym} 340 30 0 0 {name=X5}
+C {sar_logic.sym} 520 130 0 0 {name=X6}
 C {devices/ipin.sym} -220 0 0 0 {name=p3 lab=clk}
 C {devices/ipin.sym} 580 -340 1 0 {name=p5 lab=rst}
 C {devices/ipin.sym} -220 -340 0 0 {name=p6 lab=vdd}
@@ -159,8 +159,8 @@ C {devices/opin.sym} 680 50 0 0 {name=p33 sig_type=std_logic lab=d[8]}
 C {devices/opin.sym} 680 70 0 0 {name=p34 sig_type=std_logic lab=d[9]}
 C {devices/opin.sym} 680 90 0 0 {name=p35 sig_type=std_logic lab=d[10]}
 C {devices/opin.sym} 680 110 0 0 {name=p36 sig_type=std_logic lab=d[11]}
-C {../spice/switch.sym} -100 -120 2 1 {name=S1 model=swm1 initalstate=ON}
-C {../spice/switch.sym} -100 120 0 0 {name=S2 model=swm1 initalstate=ON}
+C {switch.sym} -100 -120 2 1 {name=S1 model=swm1 initalstate=ON}
+C {switch.sym} -100 120 0 0 {name=S2 model=swm1 initalstate=ON}
 C {devices/opin.sym} 300 -50 3 0 {name=p4 sig_type=std_logic lab=compp}
 C {devices/opin.sym} 300 50 1 0 {name=p8 sig_type=std_logic lab=compn}
 C {devices/opin.sym} 470 -50 3 0 {name=p9 sig_type=std_logic lab=compout}
