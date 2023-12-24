@@ -3,7 +3,11 @@
 
 PDK=gf180mcuD
 
-# We assume that all relevant spices share the same name
+# TOP is a directory that contains relevant files that share the same name.
+# - TOP/TOP.sch
+# - TOP/TOP.sym
+# - TOP/TOP-test.sch
+# - TOP/TOP.gds
 TOP=
 LVS_SCH_TOP:=$(TOP)
 LVS_LAY_TOP:=$(TOP)
@@ -209,12 +213,55 @@ klayout-edit: logdir outdir
 
 .PHONY: klayout-lvs
 klayout-lvs: logdir outdir xschem-lvs
-	python $(KLAYOUT_HOME)/lvs/run_lvs.py --layout=$(TOP_GDS) --netlist=$(TOP_NETLIST_SCH) --run_mode=flat --spice_comments --variant=D --run_dir=$(TOP) --verbose
+	python $(KLAYOUT_HOME)/lvs/run_lvs.py \
+		--variant=D \
+		--run_mode=flat \
+		--spice_comments \
+		--verbose
+		--run_dir=$(TOP) \
+		--layout=$(TOP_GDS) \
+		--netlist=$(TOP_NETLIST_SCH) \
 
 
 .PHONY: klayout-drc
 klayout-drc: logdir outdir
-	python $(KLAYOUT_HOME)/drc/run_drc.py --help
+	$(RM) $(TOP)/*.lyrdb
+	python $(KLAYOUT_HOME)/drc/run_drc.py \
+		--path $(TOP_GDS) \
+		--variant=D \
+		--topcell=$(TOP) \
+		--run_dir=$(TOP) \
+		--run_mode=flat \
+		--antenna \
+		--density \
+		--verbose || true
+
+	$(KLAYOUT) $(TOP_GDS) \
+		-m $(TOP)/$(TOP)_antenna.lyrdb \
+		-m $(TOP)/$(TOP)_density.lyrdb \
+		-m $(TOP)/$(TOP)_main.lyrdb
+
+
+.PHONY: klayout-drc-precheck
+klayout-drc-precheck: logdir outdir
+	$(RM) $(TOP)/precheck_$(TOP).lyrdb
+	$(KLAYOUT) -b -r $(KLAYOUT_HOME)/drc/gf180mcuD_mr.drc \
+		-rd input=$(TOP_GDS) \
+		-rd topcell=$(TOP) \
+		-rd report=precheck_$(TOP).lyrdb \
+		-rd conn_drc=true \
+		-rd split_deep=true \
+		-rd wedge=true \
+		-rd ball=true \
+		-rd gold=true \
+		-rd mim_option=B \
+		-rd offgrid=true \
+		-rd verbose=true \
+		-rd run_mode=flat \
+		-rd feol=true \
+		-rd beol=true
+
+	$(KLAYOUT) $(TOP_GDS) -m $(TOP)/precheck_$(TOP).lyrdb
 
 
 ########
