@@ -1,0 +1,6 @@
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/resistor_core/resistor_core.sch
+.subckt resistor_core B A BULK
+*.PININFO B:B A:B BULK:B
+XR2 B A BULK ppolyf_u r_width=1e-6 r_length=1e-20 m=1
+.ends
+.end

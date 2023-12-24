@@ -15,8 +15,59 @@ LVS_LAY_TOP:=$(TOP)
 TIMESTAMP_DAY=$$(date +%Y-%m-%d)
 TIMESTAMP_TIME=$$(date +%H-%M-%S)
 
-GREP=grep --color=auto
-RM=rm -rf
+
+# Getting source file
+#####################
+
+## 1. Get all files ##
+
+ALL_FILES:=$(wildcard ./bandgap/*) \
+		   $(wildcard ./isource/*) \
+		   $(wildcard ./ldo/*) \
+		   $(wildcard ./ldo-top/*) \
+		   $(wildcard ./ota-bandgap/*) \
+		   $(wildcard ./ota-ldo/*) \
+		   $(wildcard ./pmos/*) \
+		   $(wildcard ./resistor/*) \
+		   $(wildcard ./resistor_core/*)
+
+
+## 2. Filter by type #
+
+ALL_SCH:=$(filter %.sch,$(ALL_FILES))
+
+ALL_LAYOUT:=$(filter %.gds,$(ALL_FILES))
+
+ALL_NETLIST:=$(filter %.netlist,$(ALL_FILES))
+
+ALL_CIR:=$(filter %.cir,$(ALL_FILES))
+
+
+## 3. Filter by subtype ##
+
+# Schematics
+SCH:=$(filter-out %-test.sch,$(ALL_SCH))
+
+# Testbenches
+TB:=$(filter %-test.sch,$(ALL_SCH))
+
+# Layout (gds)
+GDS:=$(filter %.gds,$(ALL_LAYOUT))
+
+
+## 3. Files related with the TOP
+
+TOP_SCH:=$(filter %$(TOP).sch,$(SCH))
+
+TOP_TB:=$(filter %$(TOP)-test.sch,$(TB))
+
+TOP_GDS:=$(filter %$(TOP).gds,$(GDS))
+
+TOP_NETLIST_SCH:=$(filter %$(TOP).netlist,$(ALL_NETLIST))
+
+# Klayout calls it with .cir
+TOP_NETLIST_GDS:=$(filter %$(TOP).cir,$(ALL_CIR))
+
 
 # Relevant directories
 #################
@@ -48,65 +99,17 @@ MAGIC_PARASITIC=./scripts/magic_parasitic.tcl
 NETGEN_RCFILE=$(PDK_ROOT)/$(PDK)/libs.tech/netgen/setup.tcl
 
 
-# Required Files
-################
-
-
-# Getting source file
-#####################
-
-ALL_SCH:=$(wildcard ./bandgap/*.sch) \
-		 $(wildcard ./isource/*.sch) \
-		 $(wildcard ./ldo/*.sch) \
-		 $(wildcard ./ldo-top/*.sch) \
-		 $(wildcard ./ota-bandgap/*.sch) \
-		 $(wildcard ./ota-ldo/*.sch) \
-		 $(wildcard ./pmos/*.sch) \
-		 $(wildcard ./resistor/*.sch)
-
-
-ALL_LAYOUT:=$(wildcard ./bandgap/*.gds) \
-		    $(wildcard ./isource/*.gds) \
-		    $(wildcard ./ldo/*.gds) \
-		    $(wildcard ./ldo-top/*.gds) \
-		    $(wildcard ./ota-bandgap/*.gds) \
-		    $(wildcard ./ota-ldo/*.gds) \
-		    $(wildcard ./pmos/*.gds) \
-		    $(wildcard ./resistor/*.gds) \
-			$(wildcard ./../klayout/*.gds)
-
-# All circuit schematics have .sch suffix
-SCH:=$(filter-out %-test.sch,$(ALL_SCH))
-
-# All testbench schematics have -test.sch prefix.
-TB:=$(filter %-test.sch,$(ALL_SCH))
-
-# We can have 2 types of layout files: mag and gds.
-GDS:=$(filter %.gds,$(ALL_LAYOUT))
-MAG:=$(filter %.mag,$(ALL_LAYOUT))
-
-# Files based on TOP
-
-TOP_SCH:=$(filter %$(TOP).sch,$(SCH))
-
-TOP_TB:=$(filter %$(TOP)-test.sch,$(TB))
-
-TOP_LAYOUT:=$(strip \
-			$(filter %$(TOP).gds,$(GDS)) \
-	        $(filter %$(TOP).mag,$(MAG)) )
-
-
-LVS_SCH=$(wildcard ./output/*_sch.spice)
-LVS_LAY=$(wildcard ./output/*_lay.spice)
-
 
 # Program Aliases
 #################
 
+GREP=grep --color=auto
+RM=rm -rf
+
 # https://xschem.sourceforge.io/stefan/xschem_man/developer_info.html
 XSCHEM=xschem --rcfile $(XSCHEM_RCFILE)
 XSCHEM=xschem --rcfile ./xschemrc
-XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(OUTDIR) --netlist_filename $(TOP)_sch.spice --preinit 'set lvs_netlist 1' --no_x --quit
+XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(TOP) --netlist_filename $(TOP).netlist --preinit 'set lvs_netlist 1' --no_x --quit
 
 KLAYOUT=klayout -t -d 1
 
@@ -149,9 +152,12 @@ print-% : ; $(info $*: $(flavor $*) variable - $($*)) @true
 
 .PHONY: print-vars
 print-vars : \
-	print-TOP_SCH print-TOP_TB print-TOP_LAYOUT \
- 	print-SCH print-TB print-GDS print-MAG \
-	print-LVS_SCH print-LVS_LAY
+	print-TOP \
+	print-TOP_SCH \
+	print-TOP_TB \
+	print-TOP_GDS \
+ 	print-TOP_NETLIST_SCH \
+	print-TOP_NETLIST_GDS
 
 
 #########
@@ -193,17 +199,22 @@ klayout: klayout-view
 
 .PHONY: klayout-view
 klayout-view: logdir outdir
-	$(KLAYOUT) -ne $(TOP_LAYOUT) |& tee $(KLAYOUT_LOG)
+	$(KLAYOUT) -ne $(TOP_GDS) |& tee $(KLAYOUT_LOG)
 
 
 .PHONY: klayout-edit
 klayout-edit: logdir outdir
-	$(KLAYOUT) -e $(TOP_LAYOUT) |& tee $(KLAYOUT_LOG)
+	$(KLAYOUT) -e $(TOP_GDS) |& tee $(KLAYOUT_LOG)
 
 
 .PHONY: klayout-lvs
 klayout-lvs: logdir outdir xschem-lvs
-	python $(KLAYOUT_HOME)/lvs/run_lvs.py --run_mode=flat --combine --spice_comments --layout=$(TOP_LAYOUT) --netlist=output/$(TOP)_sch.spice --variant=D --run_dir=logs --verbose  |& tee $(KLAYOUT_LOG)
+	python $(KLAYOUT_HOME)/lvs/run_lvs.py --layout=$(TOP_GDS) --netlist=$(TOP_NETLIST_SCH) --run_mode=flat --spice_comments --variant=D --run_dir=$(TOP) --verbose
+
+
+.PHONY: klayout-drc
+klayout-drc: logdir outdir
+	python $(KLAYOUT_HOME)/drc/run_drc.py --help
 
 
 ########
@@ -224,12 +235,12 @@ magic-edit: logdir
 
 .PHONY: magic-lvs
 magic-lvs: logdir outdir
-	LAYOUT=$(TOP_LAYOUT) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_LVS) |& tee $(MAGIC_LVS_LOG)
+	LAYOUT=$(TOP_GDS) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_LVS) |& tee $(MAGIC_LVS_LOG)
 
 
 .PHONY: magic-pex
 magic-pex: logdir outdir
-	LAYOUT=$(TOP_LAYOUT) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_PARASITIC) |& tee $(MAGIC_PARASITIC_LOG)
+	LAYOUT=$(TOP_GDS) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_PARASITIC) |& tee $(MAGIC_PARASITIC_LOG)
 
 #########
 ## Netgen
@@ -237,7 +248,7 @@ magic-pex: logdir outdir
 
 .PHONY: netgen-lvs
 netgen-lvs: logdir magic-lvs xschem-lvs
-	$(NETGEN) "$(LVS_LAY) $(LVS_LAY_TOP)" "$(LVS_SCH) $(LVS_SCH_TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
+	$(NETGEN) "$(TOP_NETLIST_GDS) $(LVS_LAY_TOP)" "$(TOP_NETLIST_SCH) $(LVS_SCH_TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
 	grep "Netlist" comp.out
 
 

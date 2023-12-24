@@ -1,7 +1,0 @@
-** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/resistor/resistor.sch
-.subckt resistor OUT VSS VDD BULK
-*.PININFO OUT:B VSS:B VDD:B BULK:B
-XR1 OUT VDD BULK ppolyf_u_1k r_width=1e-6 r_length=20e-6 m=10
-XR2 VSS OUT BULK ppolyf_u_1k r_width=1e-6 r_length=20e-6 m=6
-.ends
-.end
