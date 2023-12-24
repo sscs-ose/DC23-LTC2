@@ -1,0 +1,15 @@
+* Extracted by KLayout with GF180MCU LVS runset on : 24/12/2023 17:54
+
+* cell pmos
+.SUBCKT pmos
+* device instance $1 r0 *1 0.54,0.5 pfet_03v3
+M$1 \$5 G D B pfet_03v3 L=0.7U W=1U AS=0.65P AD=0.26P PS=3.3U PD=1.52U
+* device instance $2 r0 *1 1.76,0.5 pfet_03v3
+M$2 \$6 G \$5 B pfet_03v3 L=0.7U W=1U AS=0.26P AD=0.26P PS=1.52U PD=1.52U
+* device instance $3 r0 *1 2.98,0.5 pfet_03v3
+M$3 \$7 G \$6 B pfet_03v3 L=0.7U W=1U AS=0.26P AD=0.26P PS=1.52U PD=1.52U
+* device instance $4 r0 *1 4.2,0.5 pfet_03v3
+M$4 \$8 G \$7 B pfet_03v3 L=0.7U W=1U AS=0.26P AD=0.26P PS=1.52U PD=1.52U
+* device instance $5 r0 *1 5.42,0.5 pfet_03v3
+M$5 S G \$8 B pfet_03v3 L=0.7U W=1U AS=0.26P AD=0.65P PS=1.52U PD=3.3U
+.ENDS pmos

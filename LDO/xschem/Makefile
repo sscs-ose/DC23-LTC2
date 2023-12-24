@@ -58,6 +58,15 @@ TB:=$(filter %-test.sch,$(ALL_SCH))
 # Layout (gds)
 GDS:=$(filter %.gds,$(ALL_LAYOUT))
 
+# Garbage
+CLEANABLE:=$(filter %.lyrdb,$(ALL_FILES)) \
+     $(filter %.lvsdb,$(ALL_FILES)) \
+	 $(filter %.log,$(ALL_FILES)) \
+	 $(filter %comp.out,$(ALL_FILES)) \
+	 $(filter %.ext,$(ALL_FILES)) \
+	 $(filter %.sim,$(ALL_FILES)) \
+	 $(filter %.nodes,$(ALL_FILES)) \
+	 $(filter %.drc,$(ALL_FILES))
 
 ## 3. Files related with the TOP
 
@@ -87,8 +96,6 @@ MAGIC_LVS_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-magic-lvs.log
 MAGIC_PARASITIC_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-magic-pex.log
 XSCHEM_LVS_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-xschem-lvs.log
 KLAYOUT_LVS_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-klayout-lvs.log
-
-OUTDIR=output
 
 # Configuration files
 #####################
@@ -131,22 +138,12 @@ all: xschem
 
 .PHONY: clean
 clean:
-	$(RM) *.lyrdb
-	$(RM) logs
-	$(RM) *.ext
-	$(RM) comp.out
-	$(RM) *.sim *.nodes
-	$(RM) output/*_lay.spice output/*_sch.spice output/*_parasitic.spice 
+	$(RM) $(CLEANABLE)
 
 
 .PHONY: logdir
 logdir:
 	mkdir -p $(LOGDIR)
-
-
-.PHONY: outdir
-outdir:
-	mkdir -p $(OUTDIR)
 
 
 # https://www.cmcrossroads.com/article/printing-value-makefile-variable
@@ -175,17 +172,17 @@ xschem:
 
 
 .PHONY: xschem-sch
-xschem-sch: logdir outdir
+xschem-sch: logdir
 	$(XSCHEM) $(TOP_SCH) |& tee $(XSCHEM_LOG)
 
 
 .PHONY: xschem-tb
-xschem-tb: logdir outdir
+xschem-tb: logdir
 	$(XSCHEM) $(TOP_TB) |& tee $(XSCHEM_LOG)
 
 
 .PHONY: xschem-lvs
-xschem-lvs: logdir outdir
+xschem-lvs: logdir
 	$(XSCHEM_NETLIST) $(TOP_SCH) |& tee $(XSCHEM_LVS_LOG)
 
 
@@ -202,29 +199,70 @@ klayout: klayout-view
 
 
 .PHONY: klayout-view
-klayout-view: logdir outdir
+klayout-view: logdir
 	$(KLAYOUT) -ne $(TOP_GDS) |& tee $(KLAYOUT_LOG)
 
 
 .PHONY: klayout-edit
-klayout-edit: logdir outdir
+klayout-edit: logdir
 	$(KLAYOUT) -e $(TOP_GDS) |& tee $(KLAYOUT_LOG)
 
 
+# KLAYOUT LVS
+#############
+# --help -h                           Print this help message.
+# --layout=<layout_path>              The input GDS file path.
+# --netlist=<netlist_path>            The input netlist file path.
+# --variant=<combined_options>        Select combined options of metal_top, mim_option, and metal_level. Allowed values (A, B, C, D).
+# --thr=<thr>                         The number of threads used in run.
+# --run_dir=<run_dir_path>            Run directory to save all the results [default: pwd]
+# --topcell=<topcell_name>            Topcell name to use.
+# --run_mode=<run_mode>               Select klayout mode Allowed modes (flat , deep, tiling). [default: deep]
+# --lvs_sub=<sub_name>                Substrate name used in your design.
+# --verbose                           Detailed rule execution log for debugging.
+# --schematic_simplify                Enable schematic simplification in input netlist.
+
+## Operations in extracted netlist
+# --no_net_names                      Discard net names in extracted netlist.
+# --spice_comments                    Enable netlist comments in extracted netlist.
+# --scale                             Enable scale of 1e6 in extracted netlist.
+# --net_only                          Enable netlist object creation only in extracted netlist.
+# --top_lvl_pins                      Enable top level pins only in extracted netlist.
+# --combine                           Enable netlist combine only in extracted netlist.
+# --purge                             Enable netlist purge all only in extracted netlist.
+# --purge_nets                        Enable netlist purge nets only in extracted netlist.
+
+.PHONY: klayout-lvs-view
+klayout-lvs-view: 
+	$(KLAYOUT) $(TOP_GDS) \
+		-mn $(TOP)/$(TOP).lvsdb
+
+
 .PHONY: klayout-lvs
-klayout-lvs: logdir outdir xschem-lvs
+klayout-lvs: logdir xschem-lvs
 	python $(KLAYOUT_HOME)/lvs/run_lvs.py \
 		--variant=D \
 		--run_mode=flat \
 		--spice_comments \
-		--verbose
+		--verbose \
 		--run_dir=$(TOP) \
 		--layout=$(TOP_GDS) \
 		--netlist=$(TOP_NETLIST_SCH) \
+		--combine || true
+
+	make TOP=$(TOP) klayout-lvs-view
+	
+
+.PHONY: klayout-drc-view
+klayout-drc-view:
+	$(KLAYOUT) -e $(TOP_GDS) \
+		-m $(TOP)/$(TOP)_antenna.lyrdb \
+		-m $(TOP)/$(TOP)_density.lyrdb \
+		-m $(TOP)/$(TOP)_main.lyrdb
 
 
 .PHONY: klayout-drc
-klayout-drc: logdir outdir
+klayout-drc: logdir
 	$(RM) $(TOP)/*.lyrdb
 	python $(KLAYOUT_HOME)/drc/run_drc.py \
 		--path $(TOP_GDS) \
@@ -236,14 +274,16 @@ klayout-drc: logdir outdir
 		--density \
 		--verbose || true
 
-	$(KLAYOUT) $(TOP_GDS) \
-		-m $(TOP)/$(TOP)_antenna.lyrdb \
-		-m $(TOP)/$(TOP)_density.lyrdb \
-		-m $(TOP)/$(TOP)_main.lyrdb
+	make TOP=$(TOP) klayout-drc-view
+
+
+.PHONY: klayout-drc-precheck-view
+klayout-drc-precheck-view: 
+	$(KLAYOUT) -e $(TOP_GDS) -m $(TOP)/precheck_$(TOP).lyrdb
 
 
 .PHONY: klayout-drc-precheck
-klayout-drc-precheck: logdir outdir
+klayout-drc-precheck: logdir
 	$(RM) $(TOP)/precheck_$(TOP).lyrdb
 	$(KLAYOUT) -b -r $(KLAYOUT_HOME)/drc/gf180mcuD_mr.drc \
 		-rd input=$(TOP_GDS) \
@@ -259,9 +299,9 @@ klayout-drc-precheck: logdir outdir
 		-rd verbose=true \
 		-rd run_mode=flat \
 		-rd feol=true \
-		-rd beol=true
+		-rd beol=true || true
 
-	$(KLAYOUT) $(TOP_GDS) -m $(TOP)/precheck_$(TOP).lyrdb
+	make TOP=$(TOP) klayout-drc-precheck-view
 
 
 ########
@@ -281,12 +321,12 @@ magic-edit: logdir
 
 
 .PHONY: magic-lvs
-magic-lvs: logdir outdir
+magic-lvs: logdir
 	LAYOUT=$(TOP_GDS) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_LVS) |& tee $(MAGIC_LVS_LOG)
 
 
 .PHONY: magic-pex
-magic-pex: logdir outdir
+magic-pex: logdir
 	LAYOUT=$(TOP_GDS) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_PARASITIC) |& tee $(MAGIC_PARASITIC_LOG)
 
 #########
