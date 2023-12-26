@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -10,11 +10,7 @@ lab=g1}
 N 1180 -290 1180 -230 {
 lab=d1}
 N 1180 -360 1260 -360 {
-lab=d1}
-N 1260 -360 1260 -290 {
-lab=d1}
-N 1180 -290 1260 -290 {
-lab=d1}
+lab=vsup}
 N 1180 -530 1180 -400 {
 lab=vsup}
 N 1180 -530 1330 -530 {
@@ -23,12 +19,16 @@ N 1180 -330 1180 -290 {
 lab=d1}
 N 1180 -400 1180 -390 {
 lab=vsup}
+N 1260 -420 1260 -360 {
+lab=vsup}
+N 1180 -420 1260 -420 {
+lab=vsup}
 C {devices/code_shown.sym} 1390 -570 0 0 {name=NGSPICE
 only_toplevel=true
 value="
-vsup vsup 0 dc=3.3
-vsg vsup g1 dc=2
-vsd vsup d1 dc=3.3
+vsup vsup 0 dc=3.5
+vsg g1 0 dc=2
+vsd d1 0 dc=1.8
 
 .control
 save all
@@ -71,7 +71,7 @@ C {devices/ipin.sym} 1090 -360 0 0 {name=p1 lab=g1}
 C {devices/iopin.sym} 1180 -230 0 0 {name=p2 lab=d1}
 C {devices/iopin.sym} 1330 -530 0 0 {name=p3 lab=vsup}
 C {symbols/pfet_03v3.sym} 1160 -360 0 0 {name=M1
-L=0.7u
+L=0.28u
 W=5u
 nf=5
 m=1

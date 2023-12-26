@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -69,9 +69,7 @@ op
 
 *wrdata /foss/designs/IPD413_2023_HW1_git/data_nmos_gmvgs_VDSp9.dat gmn
 
-
-
-*let id1  = @m.x1.xm3.m0[gm]
+*let id1  = @m.x1.xm1.m0[id]
 *let id2  = @m.x1.xm2.msky130_fd_pr__nfet_01v8_lvt[id]
 *let id3  = @m.x1.xm3.msky130_fd_pr__pfet_01v8_lvt[id]
 *let id4  = @m.x1.xm4.msky130_fd_pr__pfet_01v8_lvt[id]
@@ -111,7 +109,6 @@ let v_offset = v(inp)-v(inm)
 print v_offset
 
 print cgs5
-*print id1
 *print id2
 *print id5
 *print gm1
@@ -160,7 +157,7 @@ device="ceramic capacitor"}
 C {devices/gnd.sym} -80 -550 0 0 {name=l6 lab=GND}
 C {devices/lab_pin.sym} -60 -650 0 1 {name=l7 sig_type=std_logic lab=INM
 }
-C {devices/isource.sym} -840 -690 2 0 {name=I1 value=1.5u
+C {devices/isource.sym} -840 -690 2 0 {name=I1 value=100u
 }
 C {devices/gnd.sym} -840 -640 0 0 {name=l10 lab=GND}
 C {devices/lab_pin.sym} -540 -850 0 0 {name=l2 sig_type=std_logic lab=INM
