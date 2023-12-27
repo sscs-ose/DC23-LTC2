@@ -40,9 +40,9 @@ ALL_SCH:=$(filter %.sch,$(ALL_FILES))
 
 ALL_LAYOUT:=$(filter %.gds,$(ALL_FILES))
 
-ALL_NETLIST:=$(filter %.netlist,$(ALL_FILES))
-
-ALL_CIR:=$(filter %.cir,$(ALL_FILES))
+ALL_NETLIST:= \
+	$(filter %.spice,$(ALL_FILES)) \
+	$(filter %.cir,$(ALL_FILES))
 
 
 ## 3. Filter by subtype ##
@@ -76,10 +76,8 @@ TOP_TB:=$(filter %$(TOP)-test.sch,$(TB))
 
 TOP_GDS:=$(filter %$(TOP).gds,$(GDS))
 
-TOP_NETLIST_SCH:=$(filter %$(TOP).netlist,$(ALL_NETLIST))
-
-# Klayout calls it with .cir
-TOP_NETLIST_GDS:=$(filter %$(TOP).cir,$(ALL_CIR))
+TOP_NETLIST_SCH:=$(filter %$(TOP).spice,$(ALL_NETLIST))
+TOP_NETLIST_GDS:=$(filter %$(TOP).cir,$(ALL_NETLIST))
 
 
 # Relevant directories
@@ -110,7 +108,6 @@ MAGIC_PARASITIC=./scripts/magic_parasitic.tcl
 NETGEN_RCFILE=$(PDK_ROOT)/$(PDK)/libs.tech/netgen/setup.tcl
 
 
-
 # Program Aliases
 #################
 
@@ -120,7 +117,7 @@ RM=rm -rf
 # https://xschem.sourceforge.io/stefan/xschem_man/developer_info.html
 XSCHEM=xschem --rcfile $(XSCHEM_RCFILE)
 XSCHEM=xschem --rcfile ./xschemrc
-XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(TOP_DIR) --netlist_filename $(TOP).netlist --preinit 'set lvs_netlist 1' --no_x --quit
+XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(TOP_DIR) --netlist_filename $(TOP).spice --preinit 'set lvs_netlist 1' --no_x --quit
 
 KLAYOUT=klayout -t -d 1
 
