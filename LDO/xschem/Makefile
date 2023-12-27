@@ -9,11 +9,8 @@ PDK=gf180mcuD
 # - TOP/TOP-test.sch
 # - TOP/TOP.gds
 TOP=
-LVS_SCH_TOP:=$(TOP)
-LVS_LAY_TOP:=$(TOP)
 
 # TODO: Are we catching stderr into log files?
-# TODO: Can we replace TOP from cli?  (make TOP=cell magic)?
 
 
 TIMESTAMP_DAY=$$(date +%Y-%m-%d)
@@ -31,9 +28,10 @@ ALL_FILES:=$(wildcard ./bandgap/*) \
 		   $(wildcard ./ldo-top/*) \
 		   $(wildcard ./ota-bandgap/*) \
 		   $(wildcard ./ota-ldo/*) \
-		   $(wildcard ./pmos/*) \
 		   $(wildcard ./resistor/*) \
-		   $(wildcard ./resistor_core/*)
+		   $(wildcard ./test/resistor_core/*) \
+		   $(wildcard ./test/pmos1f/*) \
+		   $(wildcard ./test/pmos/*)
 
 
 ## 2. Filter by type #
@@ -59,18 +57,20 @@ TB:=$(filter %-test.sch,$(ALL_SCH))
 GDS:=$(filter %.gds,$(ALL_LAYOUT))
 
 # Garbage
-CLEANABLE:=$(filter %.lyrdb,$(ALL_FILES)) \
-     $(filter %.lvsdb,$(ALL_FILES)) \
-	 $(filter %.log,$(ALL_FILES)) \
-	 $(filter %comp.out,$(ALL_FILES)) \
-	 $(filter %.ext,$(ALL_FILES)) \
-	 $(filter %.sim,$(ALL_FILES)) \
-	 $(filter %.nodes,$(ALL_FILES)) \
-	 $(filter %.drc,$(ALL_FILES))
+CLEANABLE:= \
+	$(filter %.log,$(ALL_FILES)) \
+	$(filter %comp.out,$(ALL_FILES)) \
+	$(filter %.ext,$(ALL_FILES)) \
+	$(filter %.sim,$(ALL_FILES)) \
+	$(filter %.nodes,$(ALL_FILES)) \
+	$(filter %.drc,$(ALL_FILES))
+# $(filter %.lyrdb,$(ALL_FILES))
+# $(filter %.lvsdb,$(ALL_FILES))
 
 ## 3. Files related with the TOP
 
 TOP_SCH:=$(filter %$(TOP).sch,$(SCH))
+TOP_DIR:=$(abspath $(dir $(TOP_SCH)))
 
 TOP_TB:=$(filter %$(TOP)-test.sch,$(TB))
 
@@ -120,7 +120,7 @@ RM=rm -rf
 # https://xschem.sourceforge.io/stefan/xschem_man/developer_info.html
 XSCHEM=xschem --rcfile $(XSCHEM_RCFILE)
 XSCHEM=xschem --rcfile ./xschemrc
-XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(TOP) --netlist_filename $(TOP).netlist --preinit 'set lvs_netlist 1' --no_x --quit
+XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(TOP_DIR) --netlist_filename $(TOP).netlist --preinit 'set lvs_netlist 1' --no_x --quit
 
 KLAYOUT=klayout -t -d 1
 
@@ -154,6 +154,7 @@ print-% : ; $(info $*: $(flavor $*) variable - $($*)) @true
 .PHONY: print-vars
 print-vars : \
 	print-TOP \
+	print-TOP_DIR \
 	print-TOP_SCH \
 	print-TOP_TB \
 	print-TOP_GDS \
@@ -234,57 +235,53 @@ klayout-edit: logdir
 
 .PHONY: klayout-lvs-view
 klayout-lvs-view: 
-	$(KLAYOUT) $(TOP_GDS) \
-		-mn $(TOP)/$(TOP).lvsdb
+	$(KLAYOUT) -e $(TOP_GDS) \
+		-mn $(TOP_DIR)/$(TOP).lvsdb
 
 
-.PHONY: klayout-lvs
-klayout-lvs: logdir xschem-lvs
+.PHONY: klayout-lvs-only
+klayout-lvs-only: logdir xschem-lvs
 	python $(KLAYOUT_HOME)/lvs/run_lvs.py \
 		--variant=D \
 		--run_mode=flat \
 		--spice_comments \
 		--verbose \
-		--run_dir=$(TOP) \
+		--run_dir=$(TOP_DIR) \
 		--layout=$(TOP_GDS) \
 		--netlist=$(TOP_NETLIST_SCH) \
+		--top_lvl_pins \
+		--lvs_sub=B \
 		--combine || true
 
+
+.PHONY: klayout-lvs
+klayout-lvs: logdir klayout-lvs-only
 	make TOP=$(TOP) klayout-lvs-view
-	
+
 
 .PHONY: klayout-drc-view
 klayout-drc-view:
 	$(KLAYOUT) -e $(TOP_GDS) \
-		-m $(TOP)/$(TOP)_antenna.lyrdb \
-		-m $(TOP)/$(TOP)_density.lyrdb \
-		-m $(TOP)/$(TOP)_main.lyrdb
+		-m $(TOP_DIR)/$(TOP)_antenna.lyrdb \
+		-m $(TOP_DIR)/$(TOP)_density.lyrdb \
+		-m $(TOP_DIR)/$(TOP)_main.lyrdb \
+		-m $(TOP_DIR)/precheck_$(TOP).lyrdb
 
 
-.PHONY: klayout-drc
-klayout-drc: logdir
-	$(RM) $(TOP)/*.lyrdb
+.PHONY: klayout-drc-only
+klayout-drc-only: logdir
+	$(RM) $(TOP_DIR)/*.lyrdb
+
 	python $(KLAYOUT_HOME)/drc/run_drc.py \
 		--path $(TOP_GDS) \
 		--variant=D \
 		--topcell=$(TOP) \
-		--run_dir=$(TOP) \
+		--run_dir=$(TOP_DIR) \
 		--run_mode=flat \
 		--antenna \
 		--density \
 		--verbose || true
 
-	make TOP=$(TOP) klayout-drc-view
-
-
-.PHONY: klayout-drc-precheck-view
-klayout-drc-precheck-view: 
-	$(KLAYOUT) -e $(TOP_GDS) -m $(TOP)/precheck_$(TOP).lyrdb
-
-
-.PHONY: klayout-drc-precheck
-klayout-drc-precheck: logdir
-	$(RM) $(TOP)/precheck_$(TOP).lyrdb
 	$(KLAYOUT) -b -r $(KLAYOUT_HOME)/drc/gf180mcuD_mr.drc \
 		-rd input=$(TOP_GDS) \
 		-rd topcell=$(TOP) \
@@ -301,8 +298,13 @@ klayout-drc-precheck: logdir
 		-rd feol=true \
 		-rd beol=true || true
 
-	make TOP=$(TOP) klayout-drc-precheck-view
 
+.PHONY: klayout-drc
+klayout-drc: logdir klayout-drc-only
+	make TOP=$(TOP) klayout-drc-view
+
+.PHONY: klayout-eval
+klayout-eval: klayout-drc-only klayout-lvs-only
 
 ########
 ## Magic
@@ -335,7 +337,7 @@ magic-pex: logdir
 
 .PHONY: netgen-lvs
 netgen-lvs: logdir magic-lvs xschem-lvs
-	$(NETGEN) "$(TOP_NETLIST_GDS) $(LVS_LAY_TOP)" "$(TOP_NETLIST_SCH) $(LVS_SCH_TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
+	$(NETGEN) "$(TOP_NETLIST_GDS) $(TOP)" "$(TOP_NETLIST_SCH) $(TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
 	grep "Netlist" comp.out
 
 

@@ -1,0 +1,11 @@
+* Extracted by KLayout with GF180MCU LVS runset on : 27/12/2023 05:24
+
+* cell pmos1f
+* pin B
+* pin D
+* pin S
+* pin G
+.SUBCKT pmos1f B D S G
+* device instance $1 r0 *1 -0.5,0.025 pfet_03v3
+M$1 S G D B pfet_03v3 L=0.28U W=0.42U AS=0.2822P AD=0.2822P PS=2.18U PD=2.18U
+.ENDS pmos1f

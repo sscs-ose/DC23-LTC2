@@ -1,0 +1,8 @@
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/test/pmos1f/pmos1f.sch
+.subckt pmos1f S G D B
+*.PININFO S:B G:B D:B B:B
+XM1 D G S B pfet_03v3 L=0.28u W=0.21u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+.end

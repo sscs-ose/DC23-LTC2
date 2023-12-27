@@ -148,11 +148,11 @@ cython_debug/
 # Project specifics
 **/outputs/*.gds
 
+# **/*.lyrdb
+# **/*.lvsdb  # Maybe this files can be useful
 **/cells
-**/*.lyrdb
 **/comp.out
 **/*.ext
 **/*.nodes
 **/*.sim
-**/*.lvsdb
 **/*.drc
