@@ -1,0 +1,22 @@
+XM1 d1 g1 vsup d1 pfet_03v3 L=1u W=5u nf=5 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+
+.include /home/designer/.volare/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+vsup vsup 0 dc=3.3
+vsg vsup g1 dc=2
+vsd vsup d1 dc=3.3
+.control
+save all
+save @m.xm1.m0[id]
+let gmn = @xm1.pfet_03v3[gm]
+let vthn = @m.xm1.m0[vth]
+let vgsn = @m.xm1.m0[vgs]
+let vdsatn = @m.xm1.m0[vdsat]
+let vov2 = 2*idn/gmn
+let W = 5e-6
+let a = gmn/idn
+setscale a
+wrdata data_id_w_M0.dat idn/W
+wrdata data_id_vov_M0.dat vov2
+.endc
+.end

@@ -1,0 +1,7 @@
+** sch_path: /workspaces/DC23-LTC2/LDO/xschem/isource/cm.sch
+.subckt cm avdd A B
+*.PININFO avdd:B A:B B:B
+M3 A A avdd avdd pfet_03v3 L=0.8u W=2.25u nf=1 m=4
+M4 B A avdd avdd pfet_03v3 L=0.8u W=2.25u nf=1 m=4
+.ends
+.end
