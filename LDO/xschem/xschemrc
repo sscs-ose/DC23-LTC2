@@ -2,11 +2,16 @@ source $env(PDK_ROOT)/gf180mcuD/libs.tech/xschem/xschemrc
 
 set script_path [ file dirname [ file normalize [ info script ] ] ]
 
-append XSCHEM_LIBRARY_PATH :$script_path/resistor
-append XSCHEM_LIBRARY_PATH :$script_path/ota-bandgap
-append XSCHEM_LIBRARY_PATH :$script_path/ota-ldo
-append XSCHEM_LIBRARY_PATH :$script_path/bandgap
-append XSCHEM_LIBRARY_PATH :$script_path/ldo
-append XSCHEM_LIBRARY_PATH :$script_path/ldo-top
+foreach ldo_directory [ glob -nocomplain -type d * ] {
+
+    set ldo_files {}
+
+    append ldo_files [ glob -nocomplain ./$ldo_directory/*.sch ]
+    append ldo_files [ glob -nocomplain ./$ldo_directory/*.sym ]
+
+    if { [ llength $ldo_files ] > 0 } {
+        append XSCHEM_LIBRARY_PATH :$script_path/$ldo_directory
+    }
+}
 
 set XSCHEM_START_WINDOW {0_top.sch}

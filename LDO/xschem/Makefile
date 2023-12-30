@@ -22,7 +22,8 @@ TIMESTAMP_TIME=$$(date +%H-%M-%S)
 
 ## 1. Get all files ##
 
-ALL_FILES:=$(wildcard ./bandgap/*) \
+ALL_FILES:=$(wildcard ./*) \
+		   $(wildcard ./bandgap/*) \
 		   $(wildcard ./isource/*) \
 		   $(wildcard ./ldo/*) \
 		   $(wildcard ./ldo-top/*) \
@@ -31,7 +32,10 @@ ALL_FILES:=$(wildcard ./bandgap/*) \
 		   $(wildcard ./resistor/*) \
 		   $(wildcard ./test/resistor_core/*) \
 		   $(wildcard ./test/pmos1f/*) \
-		   $(wildcard ./test/pmos/*)
+		   $(wildcard ./test/pmos/*) \
+		   $(wildcard ./test/bjt/*) \
+		   $(wildcard ./test/cap_mim_2f/*) \
+		   $(wildcard ./test/pmos-automated/*)
 
 
 ## 2. Filter by type #
@@ -83,7 +87,7 @@ TOP_NETLIST_GDS:=$(filter %$(TOP).cir,$(ALL_NETLIST))
 # Relevant directories
 #################
 
-LOGDIR=logs/$(TIMESTAMP_DAY)
+LOGDIR=$(realpath logs)/$(TIMESTAMP_DAY)
 
 MAGIC_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-magic.log
 XSCHEM_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-xschem.log
@@ -99,11 +103,11 @@ KLAYOUT_LVS_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-klayout-lvs.log
 #####################
 
 #XSCHEM_RCFILE=$(PDK_ROOT)/$(PDK)/libs.tech/xschem/xschemrc
-XSCHEM_RCFILE=xschemrc
+XSCHEM_RCFILE=$(realpath ./xschemrc)
 
-MAGIC_RCFILE=$(PDK_ROOT)/$(PDK)/libs.tech/magic/$(PDK).magicrc
-MAGIC_LVS=./scripts/magic_lvs.tcl
-MAGIC_PARASITIC=./scripts/magic_parasitic.tcl
+MAGIC_RCFILE=$(realpath ./magicrc)
+MAGIC_LVS=$(realpath ../scripts/magic_lvs.tcl)
+MAGIC_PEX=$(realpath ../scripts/magic_pex.tcl)
 
 NETGEN_RCFILE=$(PDK_ROOT)/$(PDK)/libs.tech/netgen/setup.tcl
 
@@ -115,13 +119,19 @@ GREP=grep --color=auto
 RM=rm -rf
 
 # https://xschem.sourceforge.io/stefan/xschem_man/developer_info.html
+#--preinit 'set lvs_netlist 1; set spiceprefix 0'
 XSCHEM=xschem --rcfile $(XSCHEM_RCFILE)
-XSCHEM=xschem --rcfile ./xschemrc
-XSCHEM_NETLIST=$(XSCHEM) --netlist --netlist_path $(TOP_DIR) --netlist_filename $(TOP).spice --preinit 'set lvs_netlist 1' --no_x --quit
+XSCHEM_NETLIST=xschem --rcfile ./xschemrc \
+	--netlist \
+	--netlist_path $(TOP_DIR) \
+	--netlist_filename $(TOP).spice \
+	--preinit 'set lvs_netlist 1' \
+	--no_x \
+	--quit
 
 KLAYOUT=klayout -t -d 1
 
-MAGIC=magic -rcfile $(MAGIC_RCFILE) -noconsole
+MAGIC=LAYOUT=$(notdir $(TOP_GDS)) TOP=$(TOP) magic -rcfile $(MAGIC_RCFILE) -noconsole
 MAGIC_BATCH=$(MAGIC) -nowrapper -nowindow -D -dnull
 
 NETGEN=netgen -batch lvs
@@ -221,39 +231,48 @@ klayout-edit: logdir
 # --schematic_simplify                Enable schematic simplification in input netlist.
 
 ## Operations in extracted netlist
-# --no_net_names                      Discard net names in extracted netlist.
-# --spice_comments                    Enable netlist comments in extracted netlist.
-# --scale                             Enable scale of 1e6 in extracted netlist.
-# --net_only                          Enable netlist object creation only in extracted netlist.
-# --top_lvl_pins                      Enable top level pins only in extracted netlist.
-# --combine                           Enable netlist combine only in extracted netlist.
-# --purge                             Enable netlist purge all only in extracted netlist.
-# --purge_nets                        Enable netlist purge nets only in extracted netlist.
+# --no_net_names                      In extracted netlist Discard net names.
+# --spice_comments                    In extracted netlist Enable netlist comments.
+# --scale                             In extracted netlist Enable scale of 1e6.
+# --net_only                          In extracted netlist Enable netlist object creation only.
+# --top_lvl_pins                      In extracted netlist Enable top level pins only.
+# --combine                           In extracted netlist Enable netlist combine only.
+# --purge                             In extracted netlist Enable netlist purge all only.
+# --purge_nets                        In extracted netlist Enable netlist purge nets only.
+
+.PHONY: klayout-lvs-help
+klayout-lvs-help:
+	python $(KLAYOUT_HOME)/lvs/run_lvs.py --help
+
 
 .PHONY: klayout-lvs-view
-klayout-lvs-view: 
-	$(KLAYOUT) -e $(TOP_GDS) \
-		-mn $(TOP_DIR)/$(TOP).lvsdb
+klayout-lvs-view:
+	@echo "Klayout lvs NOT RECOMMENDED"
+	# $(KLAYOUT) -e $(TOP_GDS) \
+	# 	-mn $(TOP_DIR)/$(TOP).lvsdb
 
 
 .PHONY: klayout-lvs-only
 klayout-lvs-only: logdir xschem-lvs
-	python $(KLAYOUT_HOME)/lvs/run_lvs.py \
-		--variant=D \
-		--run_mode=flat \
-		--spice_comments \
-		--verbose \
-		--run_dir=$(TOP_DIR) \
-		--layout=$(TOP_GDS) \
-		--netlist=$(TOP_NETLIST_SCH) \
-		--top_lvl_pins \
-		--lvs_sub=B \
-		--combine || true
+	@echo "Klayout lvs NOT RECOMMENDED"
+	# python $(KLAYOUT_HOME)/lvs/run_lvs.py \
+	# 	--variant=D \
+	# 	--run_mode=flat \
+	# 	--spice_comments \
+	# 	--verbose \
+	# 	--run_dir=$(TOP_DIR) \
+	# 	--layout=$(TOP_GDS) \
+	# 	--netlist=$(TOP_NETLIST_SCH) \
+	# 	--top_lvl_pins \
+	# 	--lvs_sub=B \
+	# 	--purge \
+	# 	--combine || true
 
 
 .PHONY: klayout-lvs
 klayout-lvs: logdir klayout-lvs-only
-	make TOP=$(TOP) klayout-lvs-view
+	@echo "Klayout lvs NOT RECOMMENDED"
+	# make TOP=$(TOP) klayout-lvs-view
 
 
 .PHONY: klayout-drc-view
@@ -300,8 +319,10 @@ klayout-drc-only: logdir
 klayout-drc: logdir klayout-drc-only
 	make TOP=$(TOP) klayout-drc-view
 
+
 .PHONY: klayout-eval
 klayout-eval: klayout-drc-only klayout-lvs-only
+
 
 ########
 ## Magic
@@ -316,17 +337,19 @@ magic: magic-edit
 
 .PHONY: magic-edit
 magic-edit: logdir
-	$(MAGIC) $(MAG) |& tee $(MAGIC_LOG)
+	$(MAGIC) $(TOP_GDS) |& tee $(MAGIC_LOG)
 
 
+# Working on the TOP_DIR for simplicity, maybe we can change a internal variable to write all there.
 .PHONY: magic-lvs
 magic-lvs: logdir
-	LAYOUT=$(TOP_GDS) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_LVS) |& tee $(MAGIC_LVS_LOG)
+	cd $(TOP_DIR) && $(MAGIC_BATCH) $(MAGIC_LVS) |& tee $(MAGIC_LVS_LOG)
 
 
 .PHONY: magic-pex
 magic-pex: logdir
-	LAYOUT=$(TOP_GDS) TOP=$(TOP) $(MAGIC_BATCH) $(MAGIC_PARASITIC) |& tee $(MAGIC_PARASITIC_LOG)
+	cd $(TOP_DIR) && $(MAGIC_BATCH) $(MAGIC_PEX) |& tee $(MAGIC_PARASITIC_LOG)
+
 
 #########
 ## Netgen
@@ -334,8 +357,14 @@ magic-pex: logdir
 
 .PHONY: netgen-lvs
 netgen-lvs: logdir magic-lvs xschem-lvs
-	$(NETGEN) "$(TOP_NETLIST_GDS) $(TOP)" "$(TOP_NETLIST_SCH) $(TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
-	grep "Netlist" comp.out
+	cd $(TOP_DIR) && $(NETGEN) "$(notdir $(TOP_NETLIST_GDS)) $(TOP)" "$(notdir $(TOP_NETLIST_SCH)) $(TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
+	cd $(TOP_DIR) && grep "Netlist" comp.out
+
+
+.PHONY: netgen-magic-lvs
+netgen-magic-lvs: logdir magic-lvs xschem-lvs
+	cd $(TOP_DIR) && $(NETGEN) "$(notdir $(TOP_NETLIST_GDS)) $(TOP)_flat" "$(notdir $(TOP_NETLIST_SCH)) $(TOP)" $(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
+	cd $(TOP_DIR) && grep "Netlist" comp.out
 
 
 ##########

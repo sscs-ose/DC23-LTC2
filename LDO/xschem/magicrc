@@ -1,3 +1,5 @@
+source $env(PDK_ROOT)/$env(PDK)/libs.tech/magic/$env(PDK).magicrc
+
 proc debug { fname message } {
     puts "\[$fname\] $message"
 }
@@ -19,9 +21,15 @@ proc load_layout { layout cellname } {
 proc generate_lvs_spice { cellname } {
     debug "generate_lvs_spice" ""
 
+    flatten ${cellname}_flat
+    load ${cellname}_flat
+    box values 0 0 0 0
+
     extract
     ext2spice lvs
-    ext2spice -o "./output/${cellname}_lay.spice"
+    ext2spice -o "${cellname}.cir"
+
+    debug "generate_lvs_spice" [string cat [file normalize ./$cellname.cir] " was created"]
 }
 
 proc generate_parasitic_spice { cellname } {
@@ -44,7 +52,8 @@ proc generate_parasitic_spice { cellname } {
     ext2spice lvs
     ext2spice extresist on
     ext2spice cthresh 0
-    ext2spice -o "./output/${cellname}_parasitic.spice"
+    ext2spice -o "${cellname}.pex"
+    debug "generate_parasitic_spice" [string cat [file normalize ./$cellname.pex] " was created"]
 
     # https://open-source-silicon.slack.com/archives/C016YSAP6TZ/p1675532194275949
     # Floating might be an implementation error... ?
