@@ -6,7 +6,8 @@ from pathlib import Path
 from klayout_utilities import KlayoutUtilities
 from pya import DPoint, DCellInstArray, DTrans, Cell, Layout, DVector, DBox, DPath
 
-from math import ceil, floor
+import math
+from math import ceil, floor, sqrt
 
 # PMOS Waffle Design
 #############
@@ -49,7 +50,7 @@ def draw_pmos_central_layout(waffle_params, top: Cell = None, layout: Layout = N
     cell_b, *_ = read_gds(waffle_params["cell_b"])
 
     m = waffle_params["m"]
-    n = floor(m/2)
+    n = waffle_params["n"]
 
     dx = DPoint( cell_a.dbbox().width(), 0)
     dy = DPoint( 0, cell_a.dbbox().height())
@@ -103,7 +104,7 @@ def draw_pmos_left_bottom_layout(waffle_params, top: Cell = None, layout: Layout
     cell_b, *_ = read_gds(waffle_params["cell_d"])
 
     m = waffle_params["m"]
-    n = floor(m/2)
+    n = waffle_params["n"]
 
     dx = DPoint( cell_a.dbbox().width(), 0)
     dy = DPoint( 0, cell_a.dbbox().height())   
@@ -158,7 +159,7 @@ def draw_pmos_right_top_layout(waffle_params, top: Cell = None, layout: Layout =
     cell_b, *_ = read_gds(waffle_params["cell_f"])
 
     m = waffle_params["m"]
-    n = floor(m/2)
+    n = waffle_params["n"]
 
     dx = DPoint( cell_a.dbbox().width(), 0)
     dy = DPoint( 0, cell_a.dbbox().height())   
@@ -166,7 +167,7 @@ def draw_pmos_right_top_layout(waffle_params, top: Cell = None, layout: Layout =
     # Left
     array_A1 = DCellInstArray(
         cell_a, 
-        DTrans(-cell_a.dbbox().p1 + dx*m),
+        DTrans(-cell_a.dbbox().p1 + dx*2*n),
         dx * 2,
         dy * 2,
         0,
@@ -175,7 +176,7 @@ def draw_pmos_right_top_layout(waffle_params, top: Cell = None, layout: Layout =
 
     array_B1 = DCellInstArray(
         cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dx*m + dy),
+        DTrans(-cell_b.dbbox().p1 + dx*2*n + dy),
         dx * 2,
         dy * 2,
         0,
@@ -187,7 +188,7 @@ def draw_pmos_right_top_layout(waffle_params, top: Cell = None, layout: Layout =
 
     array_A2 = DCellInstArray(
         cell_a, 
-        DTrans(-cell_a.dbbox().p1 + dy*m),
+        DTrans(-cell_a.dbbox().p1 + dy*2*n),
         dx * 2,
         dy * 2,
         n,
@@ -196,7 +197,7 @@ def draw_pmos_right_top_layout(waffle_params, top: Cell = None, layout: Layout =
 
     array_B2 = DCellInstArray(
         cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dy*m + dx),
+        DTrans(-cell_b.dbbox().p1 + dx + dy*2*n),
         dx * 2,
         dy * 2,
         n,
@@ -215,7 +216,7 @@ def draw_pmos_corners_layout(waffle_params, top: Cell = None, layout: Layout = N
     cell_d, *_ = read_gds(waffle_params["cell_j"])
     
     m = waffle_params["m"]
-    n = floor(m/2)
+    n = waffle_params["n"]
 
     dx = DPoint( cell_a.dbbox().width(), 0)
     dy = DPoint( 0, cell_a.dbbox().height())   
@@ -227,17 +228,17 @@ def draw_pmos_corners_layout(waffle_params, top: Cell = None, layout: Layout = N
 
     array_B = DCellInstArray(
         cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dx*m - dy)
+        DTrans(-cell_b.dbbox().p1 + dx*2*n - dy)
     )
 
     array_C = DCellInstArray(
         cell_c, 
-        DTrans(-cell_c.dbbox().p1 + dx*m + dy*m),
+        DTrans(-cell_c.dbbox().p1 + dx*2*n + dy*2*n),
     )
 
     array_D = DCellInstArray(
         cell_d, 
-        DTrans(-cell_d.dbbox().p1 - dx + dy*m)
+        DTrans(-cell_d.dbbox().p1 - dx + dy*2*n)
     )
 
     top.insert(array_A)
@@ -246,12 +247,31 @@ def draw_pmos_corners_layout(waffle_params, top: Cell = None, layout: Layout = N
     top.insert(array_D)
 
 @KlayoutUtilities.inject_top_layout
-def draw_pmos_waffle(x=0, y=0, top: Cell = None, layout: Layout = None):
+def draw_pmos_waffle(x=0, y=0, m=60, top: Cell = None, layout: Layout = None):
+
+    temp =      int(1+2*m)
+    sqrt_temp = int(sqrt(temp))
     
+    if temp == sqrt_temp**2:
+        print(f"Multiplicity {m} can be obtained exactly")
+        n = (1 + int(sqrt(1+2*m)) ) // 2
+
+    else:
+        get_n = lambda m: ceil( (1 + sqrt(1+2*m) ) / 2 )
+        get_m = lambda n: 2 * n * (n-1)
+
+        n = get_n(m)
+        new_m = get_m(n)
+
+        print(f"Multiplicity {m} can't be obtained exactly. some alternatives are {get_m(n-1)} and {new_m} (default {new_m})")
+
+        m = new_m
+
     waffle_params = {
-      "x": 0,
-      "y": 0,
-      "m": 8,
+      "x": x,
+      "y": y,
+      "m": m,
+      "n": n,
       "cell_a": "dummyA",
       "cell_b": "dummyB",
       "cell_c": "dummyC",
@@ -273,7 +293,7 @@ def draw_pmos_waffle(x=0, y=0, top: Cell = None, layout: Layout = None):
 
 KlayoutUtilities.clear()
 
-draw_pmos_waffle()
+draw_pmos_waffle(m=10000)
 
 KlayoutUtilities.set_visual_configuration()
 

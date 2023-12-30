@@ -59,9 +59,9 @@ class KlayoutUtilities:
     """Assuming that func is a pure function, the register avoid cell duplication"""
     k = KlayoutUtilities()
 
-    print(f"{func=}")
-    print(f"{args=}")
-    print(f"{kwargs=}")
+    # print(f"{func=}")
+    # print(f"{args=}")
+    # print(f"{kwargs=}")
 
     func_key = func.__hash__()
     arg_key = "_".join(str(arg) for arg in args)
