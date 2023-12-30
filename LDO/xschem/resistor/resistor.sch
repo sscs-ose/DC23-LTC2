@@ -7,33 +7,52 @@ S {}
 E {}
 N 1140 -510 1140 -480 {
 lab=VDD}
-N 1140 -320 1230 -320 {
-lab=OUT}
+N 1140 -340 1230 -340 {
+lab=OUT1}
 N 1140 -170 1140 -140 {
 lab=VSS}
 N 1080 -450 1120 -450 {
-lab=BULK}
+lab=B}
 N 1080 -200 1120 -200 {
-lab=BULK}
+lab=B}
 N 1140 -140 1140 -120 {
 lab=VSS}
 N 1080 -450 1080 -200 {
-lab=BULK}
-N 1140 -420 1140 -230 {
-lab=OUT}
+lab=B}
+N 1140 -310 1230 -310 {
+lab=OUT2}
+N 1140 -420 1140 -340 {
+lab=OUT1}
+N 1140 -310 1140 -230 {
+lab=OUT2}
+N 1050 -450 1080 -450 {}
+N 1050 -200 1080 -200 {}
 C {symbols/ppolyf_u.sym} 1140 -450 0 0 {name=R1
 W=1e-6
-L=20e-6
-model=ppolyf_u_1k
+L=200e-6
+model=ppolyf_u
 spiceprefix=X
-m=10}
+m=1}
 C {symbols/ppolyf_u.sym} 1140 -200 0 0 {name=R2
 W=1e-6
-L=20e-6
-model=ppolyf_u_1k
+L=120e-6
+model=ppolyf_u
 spiceprefix=X
-m=6}
-C {devices/iopin.sym} 1230 -320 0 0 {name=p2 lab=OUT}
+m=1}
+C {devices/iopin.sym} 1230 -340 0 0 {name=p2 lab=OUT1}
 C {devices/iopin.sym} 1140 -120 0 0 {name=p4 lab=VSS}
 C {devices/iopin.sym} 1140 -510 0 0 {name=p3 lab=VDD}
-C {devices/iopin.sym} 1080 -330 2 0 {name=p5 lab=BULK}
+C {devices/iopin.sym} 1080 -330 2 0 {name=p5 lab=B}
+C {devices/iopin.sym} 1230 -310 0 0 {name=p1 lab=OUT2}
+C {symbols/ppolyf_u.sym} 1030 -450 2 0 {name=R3
+W=1e-6
+L=20e-6
+model=ppolyf_u
+spiceprefix=X
+m=1}
+C {symbols/ppolyf_u.sym} 1030 -200 2 0 {name=R4
+W=1e-6
+L=20e-6
+model=ppolyf_u
+spiceprefix=X
+m=1}

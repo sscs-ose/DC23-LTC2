@@ -129,6 +129,14 @@ XSCHEM_NETLIST=xschem --rcfile ./xschemrc \
 	--no_x \
 	--quit
 
+XSCHEM_NETLIST_WITHOUT_SPICEPREFIX=xschem --rcfile ./xschemrc \
+	--netlist \
+	--netlist_path $(TOP_DIR) \
+	--netlist_filename $(TOP).spice \
+	--preinit 'set lvs_netlist 1; set spiceprefix 0' \
+	--no_x \
+	--quit
+
 KLAYOUT=klayout -t -d 1
 
 MAGIC=LAYOUT=$(notdir $(TOP_GDS)) TOP=$(TOP) magic -rcfile $(MAGIC_RCFILE) -noconsole
@@ -194,6 +202,15 @@ xschem-lvs: logdir
 	$(XSCHEM_NETLIST) $(TOP_SCH) |& tee $(XSCHEM_LVS_LOG)
 
 
+.PHONY: xschem-lvs-klayout-compatible
+xschem-lvs-klayout-compatible: logdir
+	$(XSCHEM_NETLIST_WITHOUT_SPICEPREFIX) $(TOP_SCH) |& tee $(XSCHEM_LVS_LOG)
+	sed -i '/C.*cap_mim_2f0_m4m5_noshield/s/c_width/W/' $(TOP_DIR)/$(TOP).spice
+	sed -i '/C.*cap_mim_2f0_m4m5_noshield/s/c_length/L/' $(TOP_DIR)/$(TOP).spice
+	sed -i '/R.*ppoly/s/r_width/W/' $(TOP_DIR)/$(TOP).spice
+	sed -i '/R.*ppoly/s/r_length/L/' $(TOP_DIR)/$(TOP).spice
+
+
 ##########
 ## Klayout
 ##########
@@ -247,32 +264,26 @@ klayout-lvs-help:
 
 .PHONY: klayout-lvs-view
 klayout-lvs-view:
-	@echo "Klayout lvs NOT RECOMMENDED"
-	# $(KLAYOUT) -e $(TOP_GDS) \
-	# 	-mn $(TOP_DIR)/$(TOP).lvsdb
+	$(KLAYOUT) -e $(TOP_GDS) \
+		-mn $(TOP_DIR)/$(TOP).lvsdb
 
 
 .PHONY: klayout-lvs-only
-klayout-lvs-only: logdir xschem-lvs
-	@echo "Klayout lvs NOT RECOMMENDED"
-	# python $(KLAYOUT_HOME)/lvs/run_lvs.py \
-	# 	--variant=D \
-	# 	--run_mode=flat \
-	# 	--spice_comments \
-	# 	--verbose \
-	# 	--run_dir=$(TOP_DIR) \
-	# 	--layout=$(TOP_GDS) \
-	# 	--netlist=$(TOP_NETLIST_SCH) \
-	# 	--top_lvl_pins \
-	# 	--lvs_sub=B \
-	# 	--purge \
-	# 	--combine || true
+klayout-lvs-only: logdir xschem-lvs-klayout-compatible
+	python $(KLAYOUT_HOME)/lvs/run_lvs.py \
+		--variant=D \
+		--run_mode=flat \
+		--verbose \
+		--run_dir=$(TOP_DIR) \
+		--layout=$(TOP_GDS) \
+		--netlist=$(TOP_NETLIST_SCH) \
+		--top_lvl_pins \
+		--combine || true
 
 
 .PHONY: klayout-lvs
 klayout-lvs: logdir klayout-lvs-only
-	@echo "Klayout lvs NOT RECOMMENDED"
-	# make TOP=$(TOP) klayout-lvs-view
+	make TOP=$(TOP) klayout-lvs-view
 
 
 .PHONY: klayout-drc-view

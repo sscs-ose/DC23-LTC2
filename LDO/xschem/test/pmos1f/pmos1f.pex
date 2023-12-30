@@ -1,0 +1,20 @@
+* NGSPICE file created from pmos1f_flat.ext - technology: gf180mcuD
+
+.subckt pmos1f_flat G D S B
+X0 S.t0 G.t0 D.t0 B.t0 pfet_03v3 ad=0.2822p pd=2.18u as=0.2822p ps=2.18u w=0.42u l=0.28u
+R0 G G.t0 24.9576
+R1 D D.t0 12.0286
+R2 S S.t0 12.0298
+R3 B B.t0 713.689
+C0 S G 0.003155f
+C1 D B 0.011057f
+C2 S B 0.060891f
+C3 B G 0.145346f
+C4 D S 0.024882f
+C5 D G 0.003155f
+C6 S VSUBS 0.022255f
+C7 D VSUBS 0.033335f
+C8 G VSUBS 0.111172f
+C9 B VSUBS 0.850015f
+.ends
+

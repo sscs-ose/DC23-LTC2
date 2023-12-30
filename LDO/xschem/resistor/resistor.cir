@@ -1,9 +1,8 @@
-* Extracted by KLayout with GF180MCU LVS runset on : 24/12/2023 05:15
+* Extracted by KLayout with GF180MCU LVS runset on : 30/12/2023 05:58
 
-* cell resistor
-* pin OUT,VDD,VSS
-* pin gf180mcu_gnd
-.SUBCKT resistor OUT|VDD|VSS gf180mcu_gnd
-* device instance $1 r0 *1 10,0.5 ppolyf_u
-R$1 OUT|VDD|VSS OUT|VDD|VSS gf180mcu_gnd 388.888888889 ppolyf_u L=20U W=18U
+.SUBCKT resistor OUT1 OUT2 VSS VDD gf180mcu_gnd
+R$1 \$4 \$5 gf180mcu_gnd 7000 ppolyf_u L=20U W=1U
+R$12 OUT2 VSS gf180mcu_gnd 42000 ppolyf_u L=120U W=1U
+R$16 OUT1 VDD gf180mcu_gnd 70000 ppolyf_u L=200U W=1U
+R$18 \$58 \$59 gf180mcu_gnd 7000 ppolyf_u L=20U W=1U
 .ENDS resistor
