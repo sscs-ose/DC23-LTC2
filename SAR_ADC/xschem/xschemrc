@@ -1,0 +1,17 @@
+source $env(PDK_ROOT)/$env(PDK)/libs.tech/xschem/xschemrc
+
+set script_path [ file dirname [ file normalize [ info script ] ] ]
+
+append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem/
+append XSCHEM_LIBRARY_PATH :$script_path/designs
+append XSCHEM_LIBRARY_PATH :$script_path/designs/sw_design
+append XSCHEM_LIBRARY_PATH :$script_path/test
+append XSCHEM_LIBRARY_PATH :$script_path/test/dev_charac
+append XSCHEM_LIBRARY_PATH :$script_path/test/comp_full_tb
+append XSCHEM_LIBRARY_PATH :$script_path/test/preamp_tb
+append XSCHEM_LIBRARY_PATH :$script_path/test/sr_latch_tb
+append XSCHEM_LIBRARY_PATH :$script_path/test/static_preamp_tb
+append XSCHEM_LIBRARY_PATH :$script_path/test/strongarm_tb
+append XSCHEM_LIBRARY_PATH :$script_path/test/bootstrap_tb
+
+set XSCHEM_START_WINDOW {0_top.sch}
