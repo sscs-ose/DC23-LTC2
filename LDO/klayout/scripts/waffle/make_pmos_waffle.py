@@ -46,18 +46,19 @@ def read_gds(gds: Path | str, top: Cell = None, layout: Layout = None):
 
 @KlayoutUtilities.inject_top_layout
 def draw_pmos_central_layout(waffle_params, top: Cell = None, layout: Layout = None):
-    cell_a, *_ = read_gds(waffle_params["cell_a"])
-    cell_b, *_ = read_gds(waffle_params["cell_b"])
+    cell_source_in, *_ = read_gds(waffle_params["source_in"])
+    cell_drain_in, *_ = read_gds(waffle_params["drain_in"])
 
-    m = waffle_params["m"]
     n = waffle_params["n"]
 
-    dx = DPoint( cell_a.dbbox().width(), 0)
-    dy = DPoint( 0, cell_a.dbbox().height())
+    d = cell_source_in.dbbox().width()
+
+    dx = DPoint( d - waffle_params["dx_overlap"], 0)
+    dy = DPoint( 0, d - waffle_params["dy_overlap"])
 
     array_A1 = DCellInstArray(
-        cell_a, 
-        DTrans(-cell_a.dbbox().p1),
+        cell_source_in, 
+        DTrans(- cell_source_in.dbbox().p1),
         dx * 2,
         dy * 2,
         n,
@@ -65,8 +66,8 @@ def draw_pmos_central_layout(waffle_params, top: Cell = None, layout: Layout = N
     )
 
     array_A2 = DCellInstArray(
-        cell_a,
-        DTrans(-cell_a.dbbox().p1 + dx + dy),
+        cell_source_in,
+        DTrans(-cell_source_in.dbbox().p1 + dx + dy),
         dx * 2,
         dy * 2,
         n,
@@ -74,8 +75,8 @@ def draw_pmos_central_layout(waffle_params, top: Cell = None, layout: Layout = N
     )
 
     array_B1 = DCellInstArray(
-        cell_b,
-        DTrans(-cell_b.dbbox().p1 + dx),
+        cell_drain_in,
+        DTrans(-cell_drain_in.dbbox().p1 + dx),
         dx * 2,
         dy * 2,
         n,
@@ -83,8 +84,8 @@ def draw_pmos_central_layout(waffle_params, top: Cell = None, layout: Layout = N
     )
 
     array_B2 = DCellInstArray(
-        cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dy),
+        cell_drain_in, 
+        DTrans(-cell_drain_in.dbbox().p1 + dy),
         dx * 2,
         dy * 2,
         n,
@@ -99,11 +100,70 @@ def draw_pmos_central_layout(waffle_params, top: Cell = None, layout: Layout = N
 
 
 @KlayoutUtilities.inject_top_layout
-def draw_pmos_left_bottom_layout(waffle_params, top: Cell = None, layout: Layout = None):
-    cell_a, *_ = read_gds(waffle_params["cell_c"])
-    cell_b, *_ = read_gds(waffle_params["cell_d"])
+def draw_pmos_left_top_layout(waffle_params, top: Cell = None, layout: Layout = None):
+    cell_source_lt, *_ = read_gds(waffle_params["source_lt"])
+    cell_drain_lt, *_ = read_gds(waffle_params["drain_lt"])
 
-    m = waffle_params["m"]
+    n = waffle_params["n"]
+    d = cell_source_lt.dbbox().height()
+
+    source_base = -cell_source_lt.dbbox().p1 - DPoint(cell_source_lt.dbbox().width() - d, 0)
+    drain_base = -cell_drain_lt.dbbox().p1 - DPoint(cell_drain_lt.dbbox().width() - d, 0)
+    
+
+    dx = DPoint( d - waffle_params["dx_overlap"], 0)
+    dy = DPoint( 0, d - waffle_params["dy_overlap"])
+
+    # Left
+    array_A1 = DCellInstArray(
+        cell_source_lt, 
+        DTrans(source_base - dx + dy),
+        dx * 2,
+        dy * 2,
+        0,
+        n
+    )
+
+    array_B1 = DCellInstArray(
+        cell_drain_lt, 
+        DTrans(drain_base - dx),
+        dx * 2,
+        dy * 2,
+        0,
+        n
+    )
+
+    top.insert(array_A1)
+    top.insert(array_B1)
+
+    array_A2 = DCellInstArray(
+        cell_source_lt, 
+        DTrans(source_base + dy*2*n),
+        dx * 2,
+        dy * 2,
+        n,
+        0
+    )
+
+    array_B2 = DCellInstArray(
+        cell_drain_lt, 
+        DTrans(drain_base + dx + dy*2*n),
+        dx * 2,
+        dy * 2,
+        n,
+        0
+    )
+
+    top.insert(array_A2)
+    top.insert(array_B2)
+
+
+
+@KlayoutUtilities.inject_top_layout
+def draw_pmos_right_bottom_layout(waffle_params, top: Cell = None, layout: Layout = None):
+    cell_a, *_ = read_gds(waffle_params["cell_e"])
+    cell_b, *_ = read_gds(waffle_params["cell_f"])
+
     n = waffle_params["n"]
 
     dx = DPoint( cell_a.dbbox().width(), 0)
@@ -112,7 +172,7 @@ def draw_pmos_left_bottom_layout(waffle_params, top: Cell = None, layout: Layout
     # Left
     array_A1 = DCellInstArray(
         cell_a, 
-        DTrans(-cell_a.dbbox().p1 - dx + dy),
+        DTrans(-cell_a.dbbox().p1 + dx*2*n),
         dx * 2,
         dy * 2,
         0,
@@ -121,7 +181,7 @@ def draw_pmos_left_bottom_layout(waffle_params, top: Cell = None, layout: Layout
 
     array_B1 = DCellInstArray(
         cell_b, 
-        DTrans(-cell_b.dbbox().p1 - dx),
+        DTrans(-cell_b.dbbox().p1 + dx*2*n + dy),
         dx * 2,
         dy * 2,
         0,
@@ -153,60 +213,6 @@ def draw_pmos_left_bottom_layout(waffle_params, top: Cell = None, layout: Layout
     top.insert(array_B2)
 
 
-@KlayoutUtilities.inject_top_layout
-def draw_pmos_right_top_layout(waffle_params, top: Cell = None, layout: Layout = None):
-    cell_a, *_ = read_gds(waffle_params["cell_e"])
-    cell_b, *_ = read_gds(waffle_params["cell_f"])
-
-    m = waffle_params["m"]
-    n = waffle_params["n"]
-
-    dx = DPoint( cell_a.dbbox().width(), 0)
-    dy = DPoint( 0, cell_a.dbbox().height())   
-
-    # Left
-    array_A1 = DCellInstArray(
-        cell_a, 
-        DTrans(-cell_a.dbbox().p1 + dx*2*n),
-        dx * 2,
-        dy * 2,
-        0,
-        n
-    )
-
-    array_B1 = DCellInstArray(
-        cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dx*2*n + dy),
-        dx * 2,
-        dy * 2,
-        0,
-        n
-    )
-
-    top.insert(array_A1)
-    top.insert(array_B1)
-
-    array_A2 = DCellInstArray(
-        cell_a, 
-        DTrans(-cell_a.dbbox().p1 + dy*2*n),
-        dx * 2,
-        dy * 2,
-        n,
-        0
-    )
-
-    array_B2 = DCellInstArray(
-        cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dx + dy*2*n),
-        dx * 2,
-        dy * 2,
-        n,
-        0
-    )
-
-    top.insert(array_A2)
-    top.insert(array_B2)
-
 
 @KlayoutUtilities.inject_top_layout
 def draw_pmos_corners_layout(waffle_params, top: Cell = None, layout: Layout = None):
@@ -214,8 +220,7 @@ def draw_pmos_corners_layout(waffle_params, top: Cell = None, layout: Layout = N
     cell_b, *_ = read_gds(waffle_params["cell_h"])
     cell_c, *_ = read_gds(waffle_params["cell_i"])
     cell_d, *_ = read_gds(waffle_params["cell_j"])
-    
-    m = waffle_params["m"]
+
     n = waffle_params["n"]
 
     dx = DPoint( cell_a.dbbox().width(), 0)
@@ -246,54 +251,90 @@ def draw_pmos_corners_layout(waffle_params, top: Cell = None, layout: Layout = N
     top.insert(array_C)
     top.insert(array_D)
 
-@KlayoutUtilities.inject_top_layout
-def draw_pmos_waffle(x=0, y=0, m=60, top: Cell = None, layout: Layout = None):
 
-    temp =      int(1+2*m)
+def draw_pmos_waffle_approximate_m(m: int) -> tuple[int, int]:
+    """Given a target multiplicity, returns most approximate upper and lower bounds valid for waffle topology"""
+    temp =      1+2*m
     sqrt_temp = int(sqrt(temp))
-    
+
+    # Get real or approximate n
     if temp == sqrt_temp**2:
-        print(f"Multiplicity {m} can be obtained exactly")
-        n = (1 + int(sqrt(1+2*m)) ) // 2
+        # Multiplicity m can be obtained exactly
+        n = int( (1 + int(sqrt(1+2*m)) ) / 2 )
+
+        if n % 2 == 0:
+            n_top = n
+            n_bottom = n
+
+        else:
+            # Value is even
+            n_top = n + 1
+            n_bottom = n -1
 
     else:
-        get_n = lambda m: ceil( (1 + sqrt(1+2*m) ) / 2 )
-        get_m = lambda n: 2 * n * (n-1)
+        # Multiplicity m can't be obtained exactly
+        # n is approximated to upper bound
+        n = (1 + sqrt(1+2*m) ) / 2
+        n_top = ceil(n)
+        n_bottom = floor(n)
 
-        n = get_n(m)
-        new_m = get_m(n)
+        if n_top % 2 == 0:
+            # if n_top is even, n_bottom is odd
+            n_bottom -= 1
+        else:
+            n_top += 1
 
-        print(f"Multiplicity {m} can't be obtained exactly. some alternatives are {get_m(n-1)} and {new_m} (default {new_m})")
+    get_m = lambda n: 2 * n * (n-1)
 
-        m = new_m
+    return get_m(n_bottom), get_m(n_top)
+
+
+def recursive_m_exploration(until, m=0):
+    if until == 0:
+        return
+    _, m = draw_pmos_waffle_approximate_m(m)
+    print(f"{m = }")
+    recursive_m_exploration(until=until-1, m=m+1)
+
+
+@KlayoutUtilities.inject_top_layout
+def draw_pmos_waffle(x=0, y=0, m=60, top: Cell = None, layout: Layout = None):
+    # Supossition: Always using m_top as m
+    _, m = draw_pmos_waffle_approximate_m(m)
+
+    print(f"Using multiplicity {m}")
 
     waffle_params = {
       "x": x,
       "y": y,
       "m": m,
-      "n": n,
-      "cell_a": "dummyA",
-      "cell_b": "dummyB",
-      "cell_c": "dummyC",
-      "cell_d": "dummyD",
-      "cell_e": "dummyE",
-      "cell_f": "dummyF",
-      "cell_g": "dummyG",
-      "cell_h": "dummyH",
-      "cell_i": "dummyI",
-      "cell_j": "dummyJ",
+      "n": int( (1 + int(sqrt(1+2*m)) ) / 2 ),
+      "dx_overlap": 0.4,
+      "dy_overlap": 0.4,
+      "source_in": "pmos_source_in",       # "dummyA",
+      "drain_in": "pmos_drain_in",        # "dummyB",
+      "source_lt": "pmos_source_frame_lt", # "dummyC",
+      "drain_lt": "pmos_drain_frame_lt",  # "dummyD",
+      "cell_e": "pmos_source_frame_rb", # "dummyE",
+      "cell_f": "pmos_drain_frame_rb",  # "dummyF",
+      "cell_g": "pmos_waffle_corners",  # "dummyG",
+      "cell_h": "" "dummyH",
+      "cell_i": "" "dummyI",
+      "cell_j": "" "dummyJ",
     }
 
     draw_pmos_central_layout(waffle_params)
-    draw_pmos_left_bottom_layout(waffle_params)
-    draw_pmos_right_top_layout(waffle_params)
-    draw_pmos_corners_layout(waffle_params)
+    draw_pmos_left_top_layout(waffle_params)
+    #draw_pmos_right_bottom_layout(waffle_params)
+    #draw_pmos_corners_layout(waffle_params)
 
     return top
 
+#draw_pmos_waffle_approximate_m(23)
+
 KlayoutUtilities.clear()
 
-draw_pmos_waffle(m=10000)
+draw_pmos_waffle(m=0)
 
 KlayoutUtilities.set_visual_configuration()
 

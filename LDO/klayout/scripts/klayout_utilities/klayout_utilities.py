@@ -91,37 +91,6 @@ class KlayoutUtilities:
       return cell
     
     return _wrapper
-  
-  @staticmethod
-  def default_pmos_parameters():    
-    fet_3p3_l = float(0.28)
-    fet_3p3_w = float(0.22)
-    fet_grw = 0.38
-    fet_ld = 0.52
-    #fet_ld = 0.24
-
-    return dict({
-      "layout": None,                 # layout
-      "deepnwell": 0,                 # Deep NWELL
-      "pcmpgr": 0,                    # Deep NWELL Guard Ring
-      "volt": "3.3V",                 # Operating Voltage (3.3V 5V 6V)
-      "bulk": "None",                 # Bulk Type (None, Bulk Tie, Guard Ring)
-      "w_gate": fet_3p3_w,            # Width
-      "l_gate": fet_3p3_l,            # Length
-      "inter_sd_l": fet_ld,           # Diffusion Length
-      "nf": 1,                        # Number of Fingers
-      "grw": fet_grw,                 # Guard Ring Width
-      "gate_con_pos": "alternating",  # Gate Contact Position (top bottom alternating)
-      "con_bet_fin": 1,               # Contact Between Fingers
-      "sd_con_col": 1,                # Diffusion Contacts Columns
-      "interdig": 0,                  # Interdigitation
-      "patt": "",                     # Pattern in case of Interdigitation
-      "patt_lbl": 0,                  # Interdigitation pattern label
-      "lbl": 0,                       # Labels
-      "sd_lbl": list(),               # Pattern of Source/Drain Labels
-      "g_lbl": list(),                # Patterns of Gate Labels
-      "sub_lbl": "",                  # Substrate Label
-    })
 
 
   @staticmethod
