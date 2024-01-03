@@ -33,7 +33,7 @@ def read_gds(gds: Path | str, top: Cell = None, layout: Layout = None):
   k = KlayoutUtilities()
 
   existing_topcells: set(int) = {i for i in k.layout.each_top_cell()}
-  layermap: pya.LayerMap = layout.read(gds_path)
+  layermap: pya.LayerMap = layout.read(str(gds_path))
   updated_topcells: set(int) = {i for i in k.layout.each_top_cell()}
 
   new_topcells = updated_topcells - existing_topcells
@@ -67,32 +67,32 @@ def translate_layers():
     layout.swap_layers(layout.layer(71, 20), KlayoutUtilities.get_layer("metal5"))   # Metal 4
     layout.swap_layers(layout.layer(72, 20), KlayoutUtilities.get_layer("metaltop")) # Metal 5
 
-    #layout.swap_layers(layout.layer(65, 20), None), "")) # Active (diffusion) area (type opposite of well/substrate underneath)
-    #layout.swap_layers(layout.layer(65, 44), None), "")) # Active (diffusion) area (type equal to the well/substrate underneath) (i.e., N+ and P+)
-    #layout.swap_layers(layout.layer(75, 20), None), "")) # High voltage (5.0V) thick oxide gate regions
-    #layout.swap_layers(layout.layer(95, 20), None), "")) # Nitride poly cut (under licon1 areas)
+    layout.swap_layers(layout.layer(65, 20), KlayoutUtilities.get_layer("comp")) # Active (diffusion) area (type opposite of well/substrate underneath)
+    layout.swap_layers(layout.layer(65, 44), KlayoutUtilities.get_layer("comp")) # Active (diffusion) area (type equal to the well/substrate underneath) (i.e., N+ and P+)
+    layout.swap_layers(layout.layer(75, 20), KlayoutUtilities.get_layer("dualgate")) # High voltage (5.0V) thick oxide gate regions
+    layout.swap_layers(layout.layer(95, 20), None) # Nitride poly cut (under licon1 areas)
 
 
-def delete_sky130_layers():
-    k = KlayoutUtilities()
-    layout = k.viewed_cell.layout()
+# def delete_sky130_layers():
+#     k = KlayoutUtilities()
+#     layout = k.viewed_cell.layout()
 
-    layout.delete_layer(layout.layer(64, 20))
-    layout.delete_layer(layout.layer(66, 20))
-    layout.delete_layer(layout.layer(93, 44))
-    layout.delete_layer(layout.layer(94, 20))
-    layout.delete_layer(layout.layer(66, 44))
-    layout.delete_layer(layout.layer(67, 44))
-    layout.delete_layer(layout.layer(68, 44))
-    layout.delete_layer(layout.layer(69, 44))
-    layout.delete_layer(layout.layer(70, 44))
-    layout.delete_layer(layout.layer(71, 44))
-    layout.delete_layer(layout.layer(67, 20))
-    layout.delete_layer(layout.layer(68, 20))
-    layout.delete_layer(layout.layer(69, 20))
-    layout.delete_layer(layout.layer(70, 20))
-    layout.delete_layer(layout.layer(71, 20))
-    layout.delete_layer(layout.layer(72, 20))
+#     layout.delete_layer(layout.layer(64, 20))
+#     layout.delete_layer(layout.layer(66, 20))
+#     layout.delete_layer(layout.layer(93, 44))
+#     layout.delete_layer(layout.layer(94, 20))
+#     layout.delete_layer(layout.layer(66, 44))
+#     layout.delete_layer(layout.layer(67, 44))
+#     layout.delete_layer(layout.layer(68, 44))
+#     layout.delete_layer(layout.layer(69, 44))
+#     layout.delete_layer(layout.layer(70, 44))
+#     layout.delete_layer(layout.layer(71, 44))
+#     layout.delete_layer(layout.layer(67, 20))
+#     layout.delete_layer(layout.layer(68, 20))
+#     layout.delete_layer(layout.layer(69, 20))
+#     layout.delete_layer(layout.layer(70, 20))
+#     layout.delete_layer(layout.layer(71, 20))
+#     layout.delete_layer(layout.layer(72, 20))
     #layout.delete_layer(layout.layer(65, 20))
     #layout.delete_layer(layout.layer(65, 44))
     #layout.delete_layer(layout.layer(75, 20))
@@ -150,7 +150,6 @@ def fix_vias(cell: Cell):
 
         print(via_layer)
         print(via_shapes)
-        
 
         for via in via_shapes.each(via_shapes.SBoxes):
             # print(f"{type(via) = }")
@@ -216,13 +215,13 @@ KlayoutUtilities.clear()
 
 scale = 2.0
 
-#port_cell("pmos_source_in",       scale=scale, position=DPoint(0, 0))
+port_cell("pmos_source_in",       scale=scale, position=DPoint(0, 0))
 port_cell("pmos_drain_in",        scale=scale)#, position=DPoint(0, 20))
-#port_cell("pmos_source_frame_lt", scale=scale, position=DPoint(10, 0))
-#port_cell("pmos_drain_frame_lt",  scale=scale, position=DPoint(10, 20))
-#port_cell("pmos_source_frame_rb", scale=scale, position=DPoint(30, 0))
-#port_cell("pmos_drain_frame_rb",  scale=scale, position=DPoint(30, 20))
-#port_cell("pmos_waffle_corners",  scale=scale, position=DPoint(50, 0))
+port_cell("pmos_source_frame_lt", scale=scale, position=DPoint(10, 0))
+port_cell("pmos_drain_frame_lt",  scale=scale, position=DPoint(10, 20))
+port_cell("pmos_source_frame_rb", scale=scale, position=DPoint(30, 0))
+port_cell("pmos_drain_frame_rb",  scale=scale, position=DPoint(30, 20))
+port_cell("pmos_waffle_corners",  scale=scale, position=DPoint(50, 0))
 
 
 KlayoutUtilities().viewed_cell.flatten(-1)

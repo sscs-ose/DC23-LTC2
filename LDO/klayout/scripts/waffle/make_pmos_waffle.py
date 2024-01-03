@@ -4,7 +4,7 @@ from pprint import pprint
 from pathlib import Path
 
 from klayout_utilities import KlayoutUtilities
-from pya import DPoint, DCellInstArray, DTrans, Cell, Layout, DVector, DBox, DPath
+from pya import DPoint, DCellInstArray, DTrans, Cell, Layout, DVector, DBox, DPath, DCplxTrans
 
 import math
 from math import ceil, floor, sqrt
@@ -109,12 +109,10 @@ def draw_pmos_left_top_layout(waffle_params, top: Cell = None, layout: Layout = 
 
     source_base = -cell_source_lt.dbbox().p1 - DPoint(cell_source_lt.dbbox().width() - d, 0)
     drain_base = -cell_drain_lt.dbbox().p1 - DPoint(cell_drain_lt.dbbox().width() - d, 0)
-    
 
     dx = DPoint( d - waffle_params["dx_overlap"], 0)
     dy = DPoint( 0, d - waffle_params["dy_overlap"])
 
-    # Left
     array_A1 = DCellInstArray(
         cell_source_lt, 
         DTrans(source_base - dx + dy),
@@ -137,8 +135,8 @@ def draw_pmos_left_top_layout(waffle_params, top: Cell = None, layout: Layout = 
     top.insert(array_B1)
 
     array_A2 = DCellInstArray(
-        cell_source_lt, 
-        DTrans(source_base + dy*2*n),
+        cell_source_lt,
+        DCplxTrans.new(1, 270, True, source_base + dx + dy*2*n + dy),
         dx * 2,
         dy * 2,
         n,
@@ -146,8 +144,8 @@ def draw_pmos_left_top_layout(waffle_params, top: Cell = None, layout: Layout = 
     )
 
     array_B2 = DCellInstArray(
-        cell_drain_lt, 
-        DTrans(drain_base + dx + dy*2*n),
+        cell_drain_lt,
+        DCplxTrans.new(1, 270, True, drain_base + dx*2 + dy*2*n + dy),
         dx * 2,
         dy * 2,
         n,
@@ -161,18 +159,21 @@ def draw_pmos_left_top_layout(waffle_params, top: Cell = None, layout: Layout = 
 
 @KlayoutUtilities.inject_top_layout
 def draw_pmos_right_bottom_layout(waffle_params, top: Cell = None, layout: Layout = None):
-    cell_a, *_ = read_gds(waffle_params["cell_e"])
-    cell_b, *_ = read_gds(waffle_params["cell_f"])
+    cell_source_rb, *_ = read_gds(waffle_params["source_rb"])
+    cell_drain_rb, *_ = read_gds(waffle_params["drain_rb"])
 
     n = waffle_params["n"]
+    d = cell_source_rb.dbbox().height()
 
-    dx = DPoint( cell_a.dbbox().width(), 0)
-    dy = DPoint( 0, cell_a.dbbox().height())   
+    source_base = -cell_source_rb.dbbox().p1
+    drain_base = -cell_drain_rb.dbbox().p1
 
-    # Left
+    dx = DPoint( d - waffle_params["dx_overlap"], 0)
+    dy = DPoint( 0, d - waffle_params["dy_overlap"])
+
     array_A1 = DCellInstArray(
-        cell_a, 
-        DTrans(-cell_a.dbbox().p1 + dx*2*n),
+        cell_source_rb, 
+        DTrans(source_base + dx*2*n),
         dx * 2,
         dy * 2,
         0,
@@ -180,8 +181,8 @@ def draw_pmos_right_bottom_layout(waffle_params, top: Cell = None, layout: Layou
     )
 
     array_B1 = DCellInstArray(
-        cell_b, 
-        DTrans(-cell_b.dbbox().p1 + dx*2*n + dy),
+        cell_drain_rb, 
+        DTrans(drain_base + dx*2*n + dy),
         dx * 2,
         dy * 2,
         0,
@@ -192,8 +193,8 @@ def draw_pmos_right_bottom_layout(waffle_params, top: Cell = None, layout: Layou
     top.insert(array_B1)
 
     array_A2 = DCellInstArray(
-        cell_a, 
-        DTrans(-cell_a.dbbox().p1 + dx - dy),
+        cell_source_rb, 
+        DCplxTrans.new(1, 270, True, source_base + 2*dx),
         dx * 2,
         dy * 2,
         n,
@@ -201,8 +202,8 @@ def draw_pmos_right_bottom_layout(waffle_params, top: Cell = None, layout: Layou
     )
 
     array_B2 = DCellInstArray(
-        cell_b, 
-        DTrans(-cell_b.dbbox().p1 - dy),
+        cell_drain_rb, 
+        DCplxTrans.new(1, 270, True, drain_base + dx),
         dx * 2,
         dy * 2,
         n,
@@ -315,8 +316,8 @@ def draw_pmos_waffle(x=0, y=0, m=60, top: Cell = None, layout: Layout = None):
       "drain_in": "pmos_drain_in",        # "dummyB",
       "source_lt": "pmos_source_frame_lt", # "dummyC",
       "drain_lt": "pmos_drain_frame_lt",  # "dummyD",
-      "cell_e": "pmos_source_frame_rb", # "dummyE",
-      "cell_f": "pmos_drain_frame_rb",  # "dummyF",
+      "source_rb": "pmos_source_frame_rb", # "dummyE",
+      "drain_rb": "pmos_drain_frame_rb",  # "dummyF",
       "cell_g": "pmos_waffle_corners",  # "dummyG",
       "cell_h": "" "dummyH",
       "cell_i": "" "dummyI",
@@ -325,7 +326,7 @@ def draw_pmos_waffle(x=0, y=0, m=60, top: Cell = None, layout: Layout = None):
 
     draw_pmos_central_layout(waffle_params)
     draw_pmos_left_top_layout(waffle_params)
-    #draw_pmos_right_bottom_layout(waffle_params)
+    draw_pmos_right_bottom_layout(waffle_params)
     #draw_pmos_corners_layout(waffle_params)
 
     return top
@@ -334,7 +335,7 @@ def draw_pmos_waffle(x=0, y=0, m=60, top: Cell = None, layout: Layout = None):
 
 KlayoutUtilities.clear()
 
-draw_pmos_waffle(m=0)
+draw_pmos_waffle(m=2520)
 
 KlayoutUtilities.set_visual_configuration()
 
