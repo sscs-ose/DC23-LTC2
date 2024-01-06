@@ -150,9 +150,9 @@ cython_debug/
 
 # **/*.lyrdb
 # **/*.lvsdb  # Maybe this files can be useful
-**/cells
 **/comp.out
 **/*.ext
 **/*.nodes
 **/*.sim
 **/*.drc
+**/drc_run_*/

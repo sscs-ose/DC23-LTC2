@@ -1,9 +1,14 @@
 import pya
+from pya import Cell, Layout
 import cells
 from pprint import pprint
+from pathlib import Path
 
 class KlayoutUtilities:
   _instances = {}
+  _load_options = pya.LoadLayoutOptions()
+
+
 
   def __init__(self):
     self.cell_cache = dict()
@@ -182,3 +187,39 @@ class KlayoutUtilities:
   def get_layer(name: str):
     layer_tuple: tuple = cells.layers_def.layer[name]
     return KlayoutUtilities().layout.layer(*layer_tuple)
+
+
+  @staticmethod
+  def read_gds(gds: Path | str):
+    "Based on gf180mcu draw_bjt pcell."
+    gds_path = Path(gds).resolve()
+
+    if gds_path.suffix == "":
+      gds_path = Path(f"{gds_path}.gds")
+
+    if not gds_path.exists():
+      print(f"GDS {gds} don't exists")
+      return None
+
+    # I haven't figured it out how to get cells from the LayerMap returned by
+    # layout.read(gds_path). So that's why is compared the cells before and after.
+
+    # Rely on "KlayoutUtilities.clear()" for avoid troubles if gds is already
+    # loaded.
+
+    layout = KlayoutUtilities().layout
+
+    existing_topcells: set[int] = {i for i in layout.each_top_cell()}
+    layermap: pya.LayerMap = layout.read(gds_path, KlayoutUtilities._load_options)
+    updated_topcells: set[int] = {i for i in layout.each_top_cell()}
+
+    new_topcells = updated_topcells - existing_topcells
+
+    # Returning cell indexes
+    #return list(i for i in new_topcells)
+
+    # Returning cell names
+    #return list(layout.cell(i).name for i in new_topcells)
+
+    # Returning cells
+    return list(layout.cell(i) for i in new_topcells)
