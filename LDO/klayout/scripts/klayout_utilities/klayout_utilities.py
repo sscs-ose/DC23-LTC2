@@ -1,5 +1,5 @@
 import pya
-from pya import Cell, Layout
+from pya import Cell, Layout, DCplxTrans
 import cells
 from pprint import pprint
 from pathlib import Path
@@ -223,3 +223,78 @@ class KlayoutUtilities:
 
     # Returning cells
     return list(layout.cell(i) for i in new_topcells)
+
+
+  @staticmethod
+  def set_load_mapping(mapping):
+    lm = pya.LayerMap()
+
+    for layer_source_tuple, layer_target_tuple in mapping.items():
+      source_layer_info = pya.LayerInfo(*layer_source_tuple)
+
+      if layer_target_tuple is None:
+        continue
+
+      if lm.is_mapped(source_layer_info):
+        print(f"Layer {source_layer_info} is already mapped!!")
+        continue
+
+      target_layer = KlayoutUtilities().layout.layer(*layer_target_tuple)
+
+      lm.map(source_layer_info, target_layer)
+
+    print(f"{KlayoutUtilities._load_options = }")
+    KlayoutUtilities._load_options.layer_map = lm
+
+
+  @staticmethod  
+  def recursive_remove_layer(cell: Cell, layer_tuple: tuple[int]):
+    layer_index = cell.layout().layer(*layer_tuple)
+    cell.shapes(layer_index).clear()
+
+    for subcell in cell.each_child_cell():
+      KlayoutUtilities.recursive_remove_layer(cell.layout().cell(subcell), layer_tuple)
+
+
+  @staticmethod
+  def sky130_gf180_mapping():
+    return dict({
+      (64, 20): cells.layers_def.layer["nwell"],    # N-well region
+      (66, 20): cells.layers_def.layer["poly2"],    # Polysilicon
+      (93, 44): cells.layers_def.layer["nplus"],    # N+ source/drain implant
+      (94, 20): cells.layers_def.layer["pplus"],    # P+ source/drain implant
+
+      (66, 44): cells.layers_def.layer["contact"],  # Contact to local interconnect
+      (67, 44): cells.layers_def.layer["via1"],     # Contact from local interconnect to metal1
+      (68, 44): cells.layers_def.layer["via2"],     # Contact from metal 1 to metal 2
+      (69, 44): cells.layers_def.layer["via3"],     # Contact from metal 2 to metal 3
+      (70, 44): cells.layers_def.layer["via4"],     # Contact from metal 3 to metal 4
+      (71, 44): cells.layers_def.layer["via5"],     # Contact from metal 4 to metal 5
+
+      (67, 20): cells.layers_def.layer["metal1"],   # Local interconnect
+      (68, 20): cells.layers_def.layer["metal2"],   # Metal1
+      (69, 20): cells.layers_def.layer["metal3"],   # Metal 2
+      (70, 20): cells.layers_def.layer["metal4"],   # Metal 3
+      (71, 20): cells.layers_def.layer["metal5"],   # Metal 4
+      (72, 20): cells.layers_def.layer["metaltop"], # Metal 5
+
+      (65, 20): cells.layers_def.layer["comp"],     # Active (diffusion) area (type opposite of well/substrate underneath)
+      (65, 44): cells.layers_def.layer["comp"],     # Active (diffusion) area (type equal to the well/substrate underneath) (i.e., N+ and P+)
+      (75, 20): cells.layers_def.layer["dualgate"], # High voltage (5.0V) thick oxide gate regions
+      (95, 20): None                                # Nitride poly cut (under licon1 areas)
+    })
+
+  @staticmethod  
+  def recursive_transform_layer_shapes(cell: Cell, transformation: DCplxTrans, layer_index: int):
+      cell_shapes = cell.shapes(layer_index)
+
+      cell_shapes.transform(transformation)
+
+      for subcell in cell.each_child_cell():
+          KlayoutUtilities.recursive_transform_layer_shapes(cell.layout().cell(subcell), transformation, layer_index)
+
+  @staticmethod  
+  def recursive_transform_shapes(cell: Cell, transformation: DCplxTrans):
+      for layer_index in range(cell.layout().layers()):
+          KlayoutUtilities.recursive_transform_layer_shapes(cell, transformation, layer_index)
+

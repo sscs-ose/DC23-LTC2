@@ -9,7 +9,7 @@ from math import ceil, floor, sqrt
 
 class FetWaffleLayout:
     """This class should be able to create waffle cells and position them on the layout"""
-    def __init__(self, m: int = 0):
+    def __init__(self, m: int = 0, waffle_cells: dict[str, Cell]= None):
 
         # This parameters are observations over the layout
         dx_overlap=0.4
@@ -20,16 +20,30 @@ class FetWaffleLayout:
         _, self.m = FetWaffleLayout.approximate_m(m)
         self.n = int( (1 + int(sqrt(1+2*m)) ) / 2 )
 
-        self.source_in, *_ = KlayoutUtilities.read_gds("pmos_source_in")
-        self.drain_in, *_ = KlayoutUtilities.read_gds("pmos_drain_in")
-        self.source_lt, *_ = KlayoutUtilities.read_gds("pmos_source_frame_lt")
-        self.drain_lt, *_ = KlayoutUtilities.read_gds("pmos_drain_frame_lt")
-        self.source_rb, *_ = KlayoutUtilities.read_gds("pmos_source_frame_rb")
-        self.drain_rb, *_ = KlayoutUtilities.read_gds("pmos_drain_frame_rb")
-        self.corner_lb, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_lb")
-        self.corner_lt, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_lt")
-        self.corner_rb, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_rb")
-        self.corner_rt, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_rt")
+        if waffle_cells is None:
+            self.source_in, *_ = KlayoutUtilities.read_gds("pmos_source_in")
+            self.drain_in, *_ = KlayoutUtilities.read_gds("pmos_drain_in")
+            self.source_lt, *_ = KlayoutUtilities.read_gds("pmos_source_frame_lt")
+            self.drain_lt, *_ = KlayoutUtilities.read_gds("pmos_drain_frame_lt")
+            self.source_rb, *_ = KlayoutUtilities.read_gds("pmos_source_frame_rb")
+            self.drain_rb, *_ = KlayoutUtilities.read_gds("pmos_drain_frame_rb")
+            self.corner_lb, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_lb")
+            self.corner_lt, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_lt")
+            self.corner_rb, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_rb")
+            self.corner_rt, *_ = KlayoutUtilities.read_gds("pmos_waffle_corners_rt")
+
+        else:
+            self.source_in = waffle_cells["pmos_source_in"]
+            self.drain_in = waffle_cells["pmos_drain_in"]
+            self.source_lt = waffle_cells["pmos_source_frame_lt"]
+            self.drain_lt = waffle_cells["pmos_drain_frame_lt"]
+            self.source_rb = waffle_cells["pmos_source_frame_rb"]
+            self.drain_rb = waffle_cells["pmos_drain_frame_rb"]
+            self.corner_lb = waffle_cells["pmos_waffle_corners_lb"]
+            self.corner_lt = waffle_cells["pmos_waffle_corners_lt"]
+            self.corner_rb = waffle_cells["pmos_waffle_corners_rb"]
+            self.corner_rt = waffle_cells["pmos_waffle_corners_rt"]
+
 
 
         # Each cell is a square.
