@@ -2,9 +2,9 @@
 
 ## BGR : diode + current mirror
 
-- core schematic file: bgr-diode.sch
-- symbol file: bgr-diode.sym
-- test bench file: tb-dc_bgr-diode.sch
+- core schematic file: bgr_diode.sch
+- symbol file: bgr_diode.sym
+- test bench file: tbdc_bgr_diode.sch
 - pin list: vdd (3.3 V supply), vss (ground), vout (voltage output)
 - output voltage (target) : 1.2 V
 
@@ -20,9 +20,9 @@ Against temperature variation (-50 deg. - 125 deg.), output voltage fluctuation 
 
 ## Current source : Vth referenced current source + current mirror
 
-- core schematic file: cs-vth-ref.sch
-- symbol file: cs-vth-ref.sym
-- test bench file: tb-dc_cs-vth-ref.sch
+- core schematic file: cs_vthref.sch
+- symbol file: cs_vthref.sym
+- test bench file: tbdc_cs_vthref.sch
 - pin list: vdd (3.3 V supply), vss (ground), vb (bias voltage for pMOS current mirror)
 - current: 20 uA
 
