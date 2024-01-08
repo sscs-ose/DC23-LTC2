@@ -2,7 +2,8 @@
 
 ## BGR
 
-- GDSII file: bgr-diode.gds
+- GDSII file: bgr_diode.gds
+- Netlist for LVS: bgr_diode.cdl
 - pin list: vdd (3.3 V supply), vss (ground), vout (voltage output)
 - size: 72 um x 142 um
 
@@ -10,7 +11,8 @@
 
 ## Current source
 
-- GDSII file: cs-vth-ref.gds
+- GDSII file: cs_vthref.gds
+- Netlist for LVS: cs_vthref.cdl
 - pin list: vdd (3.3 V supply), vss (ground), vb (bias voltage for pMOS current mirror)
 - size: 33 um x 43 um
 
