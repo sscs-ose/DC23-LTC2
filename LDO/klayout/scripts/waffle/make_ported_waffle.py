@@ -435,6 +435,61 @@ class PortPmosFrame:
         self.cell.insert(DCellInstArray(poly_cell, vertical_placement))
 
 
+    def draw_pmos_frame_lt_fets(self):
+        poly_name = f"poly_{self.name}_{self.w}_{self.l}"
+        poly_cell = self.cell.layout().create_cell(poly_name)
+
+        poly_raw = f"poly_raw_{self.name}_{self.w}_{self.l}"
+        poly_lateral_cell = self.cell.layout().create_cell(poly_raw)
+
+        # POLY2 layer
+        #############
+        poly_corner = DPoint(self.dx.x, self.l/2)
+        poly_box = DBox(-poly_corner, poly_corner)
+        
+        poly_cell.shapes(KlayoutUtilities.get_layer("poly2")).insert(poly_box)
+        poly_lateral_cell.shapes(KlayoutUtilities.get_layer("poly2")).insert(poly_box)
+        
+        # COMP layer
+        ############
+        # DF.6_MV : Min. COMP extend beyond gate (it also means source/drain overhang). : 0.4µm
+        gap_between_poly_comp = 0.4
+        comp_corner = DPoint(
+            self.w/2, 
+            self.l/2 + gap_between_poly_comp)
+        comp_box: DBox = DBox(-comp_corner, comp_corner)
+
+        poly_cell.shapes(KlayoutUtilities.get_layer("comp")).insert(comp_box)
+
+        # PPLUS Layer
+        #############
+        # PP.5a : Overlap of P-channel gate. : 0.23µm 
+        p_channel_overlap = 0.23
+
+        # PP.5di
+        # PP.5b : Extension beyond COMP for COMP (1) Inside NWELL (2) outside LVPWELL but inside DNWELL. : 0.16µm
+        # PP.5dii : Extension beyond COMP: For Outside DNWELL (ii) For Pplus to NWELL space < 0.43um for Pfield or LVPWELL tap. : 0.16µm
+        pplus_comp_min_gap = 0.16
+
+        pplus_corner = comp_corner + DPoint(
+            p_channel_overlap, 
+            pplus_comp_min_gap
+        )
+        pplus_box = DBox(-pplus_corner, pplus_corner)
+
+        poly_cell.shapes(KlayoutUtilities.get_layer("pplus")).insert(pplus_box)
+
+        # Placement
+        ###########
+
+        horizontal_placement = DCplxTrans(1, 0, False, self.dy)
+        vertical_placement = DCplxTrans(1, 90, False, -self.dx)
+
+        # self.cell.insert(DCellInstArray(poly_cell, DTrans(DPoint())))
+        self.cell.insert(DCellInstArray(poly_cell, horizontal_placement))
+        self.cell.insert(DCellInstArray(poly_lateral_cell, vertical_placement))
+
+
     def draw_drain_top(self):
         # M2 - M3 Via placement
         #######################
@@ -472,6 +527,89 @@ class PortPmosFrame:
         )
         self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(-separation)))
         self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(separation)))
+
+
+    def draw_via_stack_frame_lt(self):
+        # M2 - M3 Via placement
+        #######################
+        m2_m3_params = via_filter_parameters({
+            "x_max": 3,
+            "y_max": 3,
+            "base_layer": "comp",
+            "metal_level": "M3",
+        })
+        vias_m2_m3 = create_via_cell(self.cell, params=m2_m3_params)
+        self.cell.insert(DCellInstArray(vias_m2_m3, DTrans(DPoint())))
+
+        # Metal 2 Via connection
+        ####################
+        # The 4 vias should be connected in metal2.
+
+        metal2_corner = self.via_poly_proximity_x + self.via_poly_proximity_y
+        metal2_box = DBox(-metal2_corner, metal2_corner)
+        
+        vias_m2_m3.shapes(KlayoutUtilities.get_layer("metal2")).insert(metal2_box)
+
+        # M3-MTop Via placement
+        #######################
+        m3_mtop_params = via_filter_parameters({
+            "x_max": 1.5,
+            "y_max": 1.5,
+            "base_layer": "M3",
+            "metal_level": "Mtop",
+        })
+        vias_m3_mtop = create_via_cell(self.cell, params=m3_mtop_params)
+
+        separation = DPoint(
+            -vias_m3_mtop.dbbox().width() / 2,
+            vias_m3_mtop.dbbox().height() / 2,
+        )
+        self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(-separation)))
+        self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(separation)))
+
+
+    def draw_extension_via_stack_frame_lt(self):
+        track1_position = DPoint(-6.25000, 0.25000)
+        track2_position = DPoint(-6.25000, 1.62000)
+
+        # Track 1 Via placement
+        #######################
+        track1_params = via_filter_parameters({
+            "x_max": 3.0,
+            "y_max": 5.5,
+            "base_layer": "comp",
+            "metal_level": "M2",
+        })
+        track1_cell = create_via_cell(self.cell, params=track1_params)
+        self.cell.insert(DCellInstArray(track1_cell, DTrans(track1_position)))
+
+        track1_cell_width = track1_cell.dbbox().width()
+        track1_cell_height = track1_cell.dbbox().height()
+
+        # Track 1 NWELL
+        ###############
+        # DF.4d_LV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.12µm
+        # NP.5b : Extension beyond COMP for the COMP (1) inside LVPWELL (2) outside Nwell and DNWELL. : 0.16µm
+        # NP.5di : Extension beyond COMP: For Outside DNWELL, inside Nwell: (i) For Nwell overlap of Nplus < 0.43um. : 0.16µm
+        
+        nwell_gap =  1 # Toy chato
+        nwell_corner = DPoint(
+            track1_cell_width / 2 + nwell_gap,
+            track1_cell_height / 2 + nwell_gap
+        )
+        nwell_box = DBox(-nwell_corner, nwell_corner)
+        track1_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
+
+        # Track 2 Via placement
+        #######################
+        track2_params = via_filter_parameters({
+            "x_max": 1.2,
+            "y_max": 1.2,
+            "base_layer": "M2",
+            "metal_level": "Mtop",
+        })
+        track2_cell = create_via_cell(self.cell, params=track2_params)
+        self.cell.insert(DCellInstArray(track2_cell, DTrans(track2_position)))
 
 
     def draw_source_top(self):
@@ -528,10 +666,8 @@ class PortPmosFrame:
         #via_connection_length = 4.38 # Original
         via_connection_length_gap = 0.28 # M1.2a, M2.2a: Proximity between metals
         via_connection_width = 0.4
-        via_connection_length = 2*self.via_poly_proximity_x.x - via_connection_width - 2*via_connection_length_gap
-
-        EXPLORATION=2*self.via_poly_proximity_x.x
-        via_connection_length = EXPLORATION
+        #via_connection_length = 2*self.via_poly_proximity_x.x - via_connection_width - 2*via_connection_length_gap
+        via_connection_length = 2*self.via_poly_proximity_x.x
 
         via_parameters = via_filter_parameters({
             "x_max": via_connection_length,
@@ -556,7 +692,6 @@ class PortPmosFrame:
         # comp_box = DBox(-comp_corner, comp_corner)
         # via_cell.shapes(KlayoutUtilities.get_layer("comp")).insert(comp_box)
 
-
         # PP.5di : Extension beyond COMP: For Outside DNWELL (i) For Pplus to NWELL space >= 0.43um for Pfield or LVPWELL tap. : 0.02µm
         # PP.5b : Extension beyond COMP for COMP (1) Inside NWELL (2) outside LVPWELL but inside DNWELL. : 0.16µm
         pplus_comp_min_gap = 0.16
@@ -574,6 +709,48 @@ class PortPmosFrame:
         self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 0, False,  self.via_poly_proximity_y)))
 
 
+    def draw_vias_frame_lt(self):
+        via_connection_length = 2*self.via_poly_proximity_x.x
+
+        via_parameters = via_filter_parameters({
+            "x_max": via_connection_length,
+            "y_max": 0,
+            "base_layer": "comp",
+            "metal_level": "M2",
+        })
+
+        via_cell = create_via_cell(self.cell, params=via_parameters)
+
+        # DRC Error fixing
+        ##################
+        # COMP should be extended to avoid this little corners
+
+        # PL.5a_LV : Space from field Poly2 to unrelated COMP Spacer from field Poly2 to Guard-ring. : 0.1µm
+        # PL.5b_LV : Space from field Poly2 to related COMP. : 0.1µm
+        # This extention is adding DRC problems
+        # # comp_corner = DPoint(
+        # #     self.source_proximity_x.x + via_connection_width/2,
+        # #     via_cell.dbbox().p2.y,
+        # )
+        # comp_box = DBox(-comp_corner, comp_corner)
+        # via_cell.shapes(KlayoutUtilities.get_layer("comp")).insert(comp_box)
+
+        # PP.5di : Extension beyond COMP: For Outside DNWELL (i) For Pplus to NWELL space >= 0.43um for Pfield or LVPWELL tap. : 0.02µm
+        # PP.5b : Extension beyond COMP for COMP (1) Inside NWELL (2) outside LVPWELL but inside DNWELL. : 0.16µm
+        pplus_comp_min_gap = 0.16
+        pplus_corner = via_cell.dbbox().p2 + DPoint(pplus_comp_min_gap, pplus_comp_min_gap)
+        pplus_box = DBox(-pplus_corner, pplus_corner)
+
+        via_cell.shapes(KlayoutUtilities.get_layer("pplus")).insert(pplus_box)
+
+        # Placement
+        ###########
+
+        self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 90, False,  self.via_poly_proximity_x)))
+        self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 0, False, -self.via_poly_proximity_y)))
+        self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 0, False,  self.via_poly_proximity_y)))
+
+
     def big_nwell(self):
         nwell_corner = 2 * DPoint( self.dx.x, self.dy.y )
         nwell_box = DBox(-nwell_corner, nwell_corner)
@@ -581,8 +758,12 @@ class PortPmosFrame:
         self.cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
 
 
-    def remove_layers_drain_in(self):
+    def draw_big_box(self, layer: str, dimentions: DPoint):
+        box = DBox(DPoint(), dimentions) * DTrans(-dimentions/2)
+        self.cell.shapes(KlayoutUtilities.get_layer(layer)).insert(box)
 
+
+    def remove_layers_required(self):
         # LAYERS THAT SHOULD BE REMOVED (always uncommented)
         ####################################################
 
@@ -609,15 +790,9 @@ class PortPmosFrame:
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal5"])
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metaltop"])
 
-        # LAYERS THAT COULD BE MANTAINED OR REMOVED
-        ###########################################
 
-        # It's used to make a ring. I'm not sure if that's relevant considering the DRC problems it's making
-        # The pattern is followed by
-        # - COMP
-        # - PPLUS
-        # - METAL1
-        # - METAL2, it is filled
+    def remove_layers_drain_in(self):
+        self.remove_layers_required()
 
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
@@ -630,42 +805,7 @@ class PortPmosFrame:
 
 
     def remove_layers_source_in(self):
-
-        # LAYERS THAT SHOULD BE REMOVED (always uncommented)
-        ####################################################
-
-        # # Always remove this sky130 layer
-        KlayoutUtilities.recursive_remove_layer(self.cell, (95,20))
-
-        # USING 3V3 DEVICES, NOT 5V
-        # This layer is not removed from transation because it will be useful in other cases.
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dualgate"])
-
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["poly2"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["via5"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["via4"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["via3"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["via2"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["via1"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["contact"])
-
-        # LAYERS THAT SHOULD NOT BE REMOVED (always commented)
-        ######################################################
-
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal3"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal4"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal5"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metaltop"])
-
-        # LAYERS THAT COULD BE MANTAINED OR REMOVED
-        ###########################################
-
-        # It's used to make a ring. I'm not sure if that's relevant considering the DRC problems it's making
-        # The pattern is followed by
-        # - COMP
-        # - PPLUS
-        # - METAL1
-        # - METAL2, it is filled
+        self.remove_layers_required()
 
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
@@ -674,6 +814,19 @@ class PortPmosFrame:
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"]) 
         #KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
+
+    
+    def remove_layers_source_frame_lt(self):
+        self.remove_layers_required()
+
+        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
+
+        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
+        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
 
@@ -724,6 +877,30 @@ class PortPmosFrame:
         self.draw_vias()
 
         self.draw_drain_top() # It's OK
+
+        pass
+
+
+    def draw_source_frame_lt(self):
+        self.name = "pmos_source_frame_lt"
+
+        self.remove_layers_source_frame_lt()
+        #self.remove_all_layers()
+
+        self.big_nwell()
+        #self.draw_big_box("pplus", DPoint(10, 10))
+
+        self.draw_pmos_frame_lt_fets()
+        self.draw_gate(position=-self.dx + self.dy)
+
+        self.draw_vias_frame_lt()
+
+        self.draw_via_stack_frame_lt() # It's OK
+        self.draw_extension_via_stack_frame_lt()
+        
+        ########################################
+        # PP.5b : Extension beyond COMP for COMP (1) Inside NWELL (2) outside LVPWELL but inside DNWELL. : 0.16µm
+        # PP.5dii : Extension beyond COMP: For Outside DNWELL (ii) For Pplus to NWELL space < 0.43um for Pfield or LVPWELL tap. : 0.16µm
 
         pass
 
@@ -831,5 +1008,45 @@ def main_waffle():
     # Si hago que se toquen, no tendré problemas
 
 
+def main_specific():
+    KlayoutUtilities.clear()
+
+    overlap = 0.4
+
+    # gds_path="pmos_source_in",
+    # gds_path="pmos_drain_in",
+    gds_path = "pmos_source_frame_lt"
+    # gds_path = "pmos_drain_frame_lt"
+    # gds_path = "pmos_source_frame_rb"
+    # gds_path = "pmos_drain_frame_rb"
+    # gds_path = "pmos_waffle_corners_lb"
+    # gds_path = "pmos_waffle_corners_lt"
+    # gds_path = "pmos_waffle_corners_rb"
+    # gds_path = "pmos_waffle_corners_rt"
+
+    port = PortPmosFrame(
+        gds_path=gds_path,
+        dx=DVector(2.75, 0),
+        dy=DVector(0, 2.75),
+        center=DVector(0.25, -0.25)+DVector(2.75, 2.75)
+    )
+
+    # Comment to avoid porting  
+    #port.draw_source_in_frame()
+    #port.draw_drain_in_frame()
+    port.draw_source_frame_lt()
+    overlap = 5.5
+    
+    top = KlayoutUtilities().viewed_cell
+    top.insert(DCellInstArray(port.get_cell(), DTrans(0, 0)))
+
+    top
+
+
+    KlayoutUtilities.set_visual_configuration()
+
+
 if __name__ == "__main__":
-    main_waffle()
+
+    main_specific()
+    # main_waffle()
