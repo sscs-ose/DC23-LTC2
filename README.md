@@ -7,3 +7,6 @@ Team members:
     - DAC: Korea	
     - Clocking: Japan
     - Voltage Reference: Japan
+
+## How to open files (DAC)
+- xschem files : should be opened in **xschem** folder in which **xschemrc** filed is located for relative path.
