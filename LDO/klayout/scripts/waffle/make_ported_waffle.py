@@ -439,8 +439,8 @@ class PortPmosFrame:
         poly_name = f"poly_{self.name}_{self.w}_{self.l}"
         poly_cell = self.cell.layout().create_cell(poly_name)
 
-        poly_raw = f"poly_raw_{self.name}_{self.w}_{self.l}"
-        poly_lateral_cell = self.cell.layout().create_cell(poly_raw)
+        poly_lateral_name = f"poly_raw_{self.name}_{self.w}_{self.l}"
+        poly_lateral_cell = self.cell.layout().create_cell(poly_lateral_name)
 
         # POLY2 layer
         #############
@@ -529,18 +529,78 @@ class PortPmosFrame:
         self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(separation)))
 
 
-    def draw_via_stack_frame_lt(self):
-        # M2 - M3 Via placement
-        #######################
-        m2_m3_params = via_filter_parameters({
-            "x_max": 3,
-            "y_max": 3,
-            "base_layer": "comp",
-            "metal_level": "M3",
-        })
-        vias_m2_m3 = create_via_cell(self.cell, params=m2_m3_params)
-        self.cell.insert(DCellInstArray(vias_m2_m3, DTrans(DPoint())))
+    def draw_via_stack(self):
+        if self.frame_type == "source_in":
+            return
+        if self.frame_type == "drain_in":
+            return
+        elif self.frame_type == "source_lt":
+            track_1_params = via_filter_parameters({
+                "x_max": 3,
+                "y_max": 3,
+                "base_layer": "comp",
+                "metal_level": "M3",
+            })
 
+            track_2_params = via_filter_parameters({
+                "x_max": 1.5,
+                "y_max": 1.5,
+                "base_layer": "M3",
+                "metal_level": "Mtop",
+            })
+
+        elif self.frame_type == "drain_lt":
+            track_1_params = via_filter_parameters({
+                "x_max": 3,
+                "y_max": 3,
+                "base_layer": "M2",
+                "metal_level": "M3",
+            })
+
+            track_2_params = via_filter_parameters({
+                "x_max": 1.5,
+                "y_max": 1.5,
+                "base_layer": "M3",
+                "metal_level": "Mtop",
+            })
+
+        elif self.frame_type == "source_rb":
+            track_1_params = via_filter_parameters({
+                "x_max": 3,
+                "y_max": 3,
+                "base_layer": "comp",
+                "metal_level": "M3",
+            })
+
+            track_2_params = via_filter_parameters({
+                "x_max": 1.5,
+                "y_max": 1.5,
+                "base_layer": "M3",
+                "metal_level": "Mtop",
+            })
+
+        elif self.frame_type == "drain_rb":
+            return
+
+        elif self.frame_type == "corner_lb":
+            return
+
+        elif self.frame_type == "corner_lt":
+            return
+
+        elif self.frame_type == "corner_rb":
+            return
+
+        elif self.frame_type == "corner_rt":
+            return
+
+        else:
+            raise ValueError(f"{self.frame_type} is not valid. only source or drain")
+
+        track_1_via_cell = create_via_cell(self.cell, params=track_1_params)
+        track_2_via_cell = create_via_cell(self.cell, params=track_2_params)
+
+        #if self.frame_type == "source_lt" or self.frame_type == "drain_lt":
         # Metal 2 Via connection
         ####################
         # The 4 vias should be connected in metal2.
@@ -548,43 +608,99 @@ class PortPmosFrame:
         metal2_corner = self.via_poly_proximity_x + self.via_poly_proximity_y
         metal2_box = DBox(-metal2_corner, metal2_corner)
         
-        vias_m2_m3.shapes(KlayoutUtilities.get_layer("metal2")).insert(metal2_box)
+        track_1_via_cell.shapes(KlayoutUtilities.get_layer("metal2")).insert(metal2_box)
 
-        # M3-MTop Via placement
-        #######################
-        m3_mtop_params = via_filter_parameters({
-            "x_max": 1.5,
-            "y_max": 1.5,
-            "base_layer": "M3",
-            "metal_level": "Mtop",
-        })
-        vias_m3_mtop = create_via_cell(self.cell, params=m3_mtop_params)
+        # Placement
+        ###########
 
-        separation = DPoint(
-            -vias_m3_mtop.dbbox().width() / 2,
-            vias_m3_mtop.dbbox().height() / 2,
+        track_2_separation = DPoint(
+            -track_2_via_cell.dbbox().width() / 2,
+            track_2_via_cell.dbbox().height() / 2,
         )
-        self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(-separation)))
-        self.cell.insert(DCellInstArray(vias_m3_mtop, DTrans(separation)))
+
+        self.cell.insert(DCellInstArray(track_1_via_cell, DTrans(DPoint())))
+        self.cell.insert(DCellInstArray(track_2_via_cell, DTrans(-track_2_separation)))
+        self.cell.insert(DCellInstArray(track_2_via_cell, DTrans(track_2_separation)))
 
 
-    def draw_extension_via_stack_frame_lt(self):
-        track1_position = DPoint(-6.25000, 0.25000)
-        track2_position = DPoint(-6.25000, 1.62000)
+    def draw_extension_via_stack_frame(self):
+        if self.frame_type.endswith("lt"):
+            track_1_position = DPoint(-6.25000, 0.25000)
+            track_2_position = DPoint(-6.25000, 1.62000)
+
+        if self.frame_type.endswith("rb"):
+            track_1_position = DPoint(6.25000, +0.25000)
+            track_2_position = DPoint(6.25000, -1.62000)
+
+
+        if self.frame_type == "source_in":
+            return
+
+        elif self.frame_type == "drain_in":
+            return
+
+        elif self.frame_type == "source_lt":
+            track_1_params = via_filter_parameters({
+                "x_max": 3.0,
+                "y_max": 5.5,
+                "base_layer": "comp",
+                "metal_level": "M2",
+            })
+
+            track_2_params = via_filter_parameters({
+            "x_max": 1.2,
+            "y_max": 1.2,
+            "base_layer": "M2",
+            "metal_level": "Mtop",
+            })
+
+        elif self.frame_type == "drain_lt":
+            track_1_params = via_filter_parameters({
+                "x_max": 3.0,
+                "y_max": 5.5,
+                "base_layer": "comp",
+                "metal_level": "M2",
+            })
+
+            track_2_params = None
+
+        elif self.frame_type == "source_rb":
+            track_1_params = via_filter_parameters({
+                "x_max": 3.0,
+                "y_max": 5.5,
+                "base_layer": "comp",
+                "metal_level": "M2",
+            })
+
+            track_2_params = via_filter_parameters({
+            "x_max": 1.2,
+            "y_max": 1.2,
+            "base_layer": "M2",
+            "metal_level": "Mtop",
+            })
+
+        elif self.frame_type == "corner_lb":
+            return
+        
+        elif self.frame_type == "corner_lt":
+            return
+        
+        elif self.frame_type == "corner_rb":
+            return
+        
+        elif self.frame_type == "corner_rt":
+            return
+
+        else:
+            raise ValueError(f"{self.frame_type} is not valid. only source or drain")
 
         # Track 1 Via placement
         #######################
-        track1_params = via_filter_parameters({
-            "x_max": 3.0,
-            "y_max": 5.5,
-            "base_layer": "comp",
-            "metal_level": "M2",
-        })
-        track1_cell = create_via_cell(self.cell, params=track1_params)
-        self.cell.insert(DCellInstArray(track1_cell, DTrans(track1_position)))
+        track_1_cell = create_via_cell(self.cell, params=track_1_params)
+        self.cell.insert(DCellInstArray(track_1_cell, DTrans(track_1_position)))
 
-        track1_cell_width = track1_cell.dbbox().width()
-        track1_cell_height = track1_cell.dbbox().height()
+        track_1_cell_width = track_1_cell.dbbox().width()
+        track_1_cell_height = track_1_cell.dbbox().height()
 
         # Track 1 NWELL
         ###############
@@ -594,22 +710,18 @@ class PortPmosFrame:
         
         nwell_gap =  1 # Toy chato
         nwell_corner = DPoint(
-            track1_cell_width / 2 + nwell_gap,
-            track1_cell_height / 2 + nwell_gap
+            track_1_cell_width / 2 + nwell_gap,
+            track_1_cell_height / 2 + nwell_gap
         )
         nwell_box = DBox(-nwell_corner, nwell_corner)
-        track1_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
+        track_1_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
 
         # Track 2 Via placement
         #######################
-        track2_params = via_filter_parameters({
-            "x_max": 1.2,
-            "y_max": 1.2,
-            "base_layer": "M2",
-            "metal_level": "Mtop",
-        })
-        track2_cell = create_via_cell(self.cell, params=track2_params)
-        self.cell.insert(DCellInstArray(track2_cell, DTrans(track2_position)))
+
+        if track_2_params:        
+            track_2_cell = create_via_cell(self.cell, params=track_2_params)
+            self.cell.insert(DCellInstArray(track_2_cell, DTrans(track_2_position)))
 
 
     def draw_source_top(self):
@@ -709,15 +821,64 @@ class PortPmosFrame:
         self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 0, False,  self.via_poly_proximity_y)))
 
 
-    def draw_vias_frame_lt(self):
+    def draw_vias_frame(self):
         via_connection_length = 2*self.via_poly_proximity_x.x
 
-        via_parameters = via_filter_parameters({
-            "x_max": via_connection_length,
-            "y_max": 0,
-            "base_layer": "comp",
-            "metal_level": "M2",
-        })
+        right = DCplxTrans(1, 90, False,  self.via_poly_proximity_x)
+        left = DCplxTrans(1, 90, False,  -self.via_poly_proximity_x)
+        top = DCplxTrans(1, 0, False,  self.via_poly_proximity_y)
+        bottom = DCplxTrans(1, 0, False, -self.via_poly_proximity_y)
+
+        if self.frame_type == "source_in":
+            return
+        
+        elif self.frame_type == "drain_in":
+            pass
+
+        elif self.frame_type == "source_lt":
+            via_parameters = via_filter_parameters({
+                "x_max": via_connection_length,
+                "y_max": 0,
+                "base_layer": "comp",
+                "metal_level": "M2",
+            })
+
+            left = None
+
+        elif self.frame_type == "drain_lt":
+            via_parameters = via_filter_parameters({
+                "x_max": via_connection_length,
+                "y_max": 0,
+                "base_layer": "comp",
+                "metal_level": "M2",
+            })
+
+            left = None
+
+        elif self.frame_type == "source_rb":
+            via_parameters = via_filter_parameters({
+                "x_max": via_connection_length,
+                "y_max": 0,
+                "base_layer": "comp",
+                "metal_level": "M2",
+            })
+
+            right = None
+
+        elif self.frame_type == "drain_rb":
+            return
+
+        elif self.frame_type == "corner_lb":
+            return
+        
+        elif self.frame_type == "corner_lt":
+            return
+        
+        elif self.frame_type == "corner_rb":
+            return
+        
+        elif self.frame_type == "corner_rt":
+            return
 
         via_cell = create_via_cell(self.cell, params=via_parameters)
 
@@ -746,9 +907,10 @@ class PortPmosFrame:
         # Placement
         ###########
 
-        self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 90, False,  self.via_poly_proximity_x)))
-        self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 0, False, -self.via_poly_proximity_y)))
-        self.cell.insert(DCellInstArray(via_cell, DCplxTrans(1, 0, False,  self.via_poly_proximity_y)))
+        if right: self.cell.insert(DCellInstArray(via_cell, right))
+        if left: self.cell.insert(DCellInstArray(via_cell, left))
+        if top: self.cell.insert(DCellInstArray(via_cell, top))
+        if bottom: self.cell.insert(DCellInstArray(via_cell, bottom))
 
 
     def big_nwell(self):
@@ -763,7 +925,7 @@ class PortPmosFrame:
         self.cell.shapes(KlayoutUtilities.get_layer(layer)).insert(box)
 
 
-    def remove_layers_required(self):
+    def remove_layers(self):
         # LAYERS THAT SHOULD BE REMOVED (always uncommented)
         ####################################################
 
@@ -790,44 +952,77 @@ class PortPmosFrame:
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal5"])
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metaltop"])
 
+        if self.frame_type == "source_in":
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
 
-    def remove_layers_drain_in(self):
-        self.remove_layers_required()
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"]) 
+            #KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
+        elif self.frame_type == "drain_in":
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
 
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
+        elif self.frame_type == "source_lt":
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
 
-    def remove_layers_source_in(self):
-        self.remove_layers_required()
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
+        elif self.frame_type == "drain_lt":
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
 
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"]) 
-        #KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
-    
-    def remove_layers_source_frame_lt(self):
-        self.remove_layers_required()
+        elif self.frame_type == "source_rb":
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
 
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
-        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
+        elif self.frame_type == "drain_rb":
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
+
+            KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+            # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
+
+        elif self.frame_type == "corner_lb":
+            return
+        
+        elif self.frame_type == "corner_lt":
+            return
+        
+        elif self.frame_type == "corner_rb":
+            return
+        
+        elif self.frame_type == "corner_rt":
+            return
 
 
     def remove_all_layers(self):
@@ -839,9 +1034,10 @@ class PortPmosFrame:
 
     def draw_source_in_frame(self):
         self.name = "pmos_source_in"
+        self.frame_type = "source_in"
 
-        self.remove_layers_source_in()
-        #self.remove_all_layers()
+        self.remove_layers()
+        # #self.remove_all_layers()
 
         self.big_nwell()
 
@@ -865,8 +1061,9 @@ class PortPmosFrame:
 
     def draw_drain_in_frame(self):
         self.name = "pmos_drain_in"
+        self.frame_type = "drain_in"
 
-        self.remove_layers_drain_in()
+        self.remove_layers()
         #self.remove_all_layers()
 
         self.big_nwell()
@@ -883,8 +1080,9 @@ class PortPmosFrame:
 
     def draw_source_frame_lt(self):
         self.name = "pmos_source_frame_lt"
+        self.frame_type = "source_lt"
 
-        self.remove_layers_source_frame_lt()
+        self.remove_layers()
         #self.remove_all_layers()
 
         self.big_nwell()
@@ -893,14 +1091,52 @@ class PortPmosFrame:
         self.draw_pmos_frame_lt_fets()
         self.draw_gate(position=-self.dx + self.dy)
 
-        self.draw_vias_frame_lt()
+        self.draw_vias_frame()
 
-        self.draw_via_stack_frame_lt() # It's OK
-        self.draw_extension_via_stack_frame_lt()
+        self.draw_via_stack() # It's OK
+        self.draw_extension_via_stack_frame()
         
         ########################################
         # PP.5b : Extension beyond COMP for COMP (1) Inside NWELL (2) outside LVPWELL but inside DNWELL. : 0.16µm
         # PP.5dii : Extension beyond COMP: For Outside DNWELL (ii) For Pplus to NWELL space < 0.43um for Pfield or LVPWELL tap. : 0.16µm
+
+        pass
+
+
+    def draw_drain_frame_lt(self):
+        self.name = "pmos_drain_frame_lt"
+
+        self.remove_layers_drain_frame_lt()
+
+        self.big_nwell()
+        self.draw_pmos_frame_lt_fets()
+
+        self.draw_gate(position=-self.dx + self.dy)
+        self.draw_vias_frame()
+        self.draw_via_stack(frame_type="drain")
+        self.draw_extension_via_stack_frame(frame_type="drain")
+
+        pass
+
+
+    def draw_frame(self, frame_type):
+        self.name = f"pmos_{frame_type}"
+        self.frame_type = frame_type
+
+        self.remove_layers()
+
+        self.big_nwell()
+        self.draw_pmos_frame_lt_fets()
+
+        self.draw_gate(position=-self.dx + self.dy)
+        if self.frame_type in {"source_rb"}:
+            self.draw_gate(position=self.dx + self.dy)
+
+            self.draw_big_box("metal1", 2*DPoint(self.via_poly_proximity_x + self.via_poly_proximity_y))
+
+        self.draw_vias_frame()
+        self.draw_via_stack()
+        self.draw_extension_via_stack_frame()
 
         pass
 
@@ -914,36 +1150,36 @@ def main_waffle():
 
     overlap = 0.4
 
-    source_in_port = PortPmosFrame(
-        gds_path="pmos_source_in",
-        dx=DVector(2.75, 0),
-        dy=DVector(0, 2.75),
-        center=DVector(0.25, -0.25) + DVector(2.75, 2.75)
-    )
-    drain_in_port = PortPmosFrame(
-        gds_path="pmos_drain_in",
-        dx=DVector(2.75, 0),
-        dy=DVector(0, 2.75),
-        center=DVector(0.25, -0.25)+DVector(2.75, 2.75)
-    )
+    default_params = {
+        "dx": DVector(2.75, 0),
+        "dy": DVector(0, 2.75),
+        "center": DVector(0, 0)#DVector(0.25, -0.25)+DVector(2.75, 2.75)
+    }
+
+    source_in = PortPmosFrame( gds_path="pmos_source_in", **default_params)
+    drain_in = PortPmosFrame( gds_path="pmos_drain_in", **default_params)
+    source_lt = PortPmosFrame(gds_path="pmos_source_frame_lt", **default_params)
+    drain_lt = PortPmosFrame(gds_path="pmos_drain_frame_lt", **default_params)
 
     # Comment to avoid porting  
-    source_in_port.draw_source_in_frame()
-    drain_in_port.draw_drain_in_frame()
+    source_in.draw_source_in_frame()
+    drain_in.draw_drain_in_frame()
+    source_lt.draw_source_frame_lt()
+    drain_lt.draw_drain_frame_lt()
     overlap = 5.5
     
 
     waffle_cells = {
-        "pmos_source_in": source_in_port.get_cell(),
-        "pmos_drain_in": drain_in_port.get_cell(),
-        "pmos_source_frame_lt": source_in_port.get_cell(),
-        "pmos_drain_frame_lt": source_in_port.get_cell(),
-        "pmos_source_frame_rb": source_in_port.get_cell(),
-        "pmos_drain_frame_rb": source_in_port.get_cell(),
-        "pmos_waffle_corners_lb": source_in_port.get_cell(),
-        "pmos_waffle_corners_lt": source_in_port.get_cell(),
-        "pmos_waffle_corners_rb": source_in_port.get_cell(),
-        "pmos_waffle_corners_rt": source_in_port.get_cell(),
+        "pmos_source_in": source_in.get_cell(),
+        "pmos_drain_in": drain_in.get_cell(),
+        "pmos_source_frame_lt": source_lt.get_cell(),
+        "pmos_drain_frame_lt": drain_lt.get_cell(),
+        "pmos_source_frame_rb": None, #source_in.get_cell(),
+        "pmos_drain_frame_rb": None, #source_in.get_cell(),
+        "pmos_waffle_corners_lb": None, #source_in.get_cell(),
+        "pmos_waffle_corners_lt": None, #source_in.get_cell(),
+        "pmos_waffle_corners_rb": None, #source_in.get_cell(),
+        "pmos_waffle_corners_rt": None, #source_in.get_cell(),
     }
 
     
@@ -951,6 +1187,7 @@ def main_waffle():
 
     waffle = FetWaffleLayout(waffle_cells=waffle_cells, overlap=overlap)
     waffle.draw_central_layout()
+    waffle.draw_left_top_layout()
     waffle.insert_onto(top, DPoint())
 
     KlayoutUtilities.set_visual_configuration()
@@ -1011,37 +1248,44 @@ def main_waffle():
 def main_specific():
     KlayoutUtilities.clear()
 
-    overlap = 0.4
+    default_params = {
+        "dx": DVector(2.75, 0),
+        "dy": DVector(0, 2.75),
+        "center": DVector(0.25, -0.25)+DVector(2.75, 2.75)
+    }
 
-    # gds_path="pmos_source_in",
-    # gds_path="pmos_drain_in",
-    gds_path = "pmos_source_frame_lt"
-    # gds_path = "pmos_drain_frame_lt"
-    # gds_path = "pmos_source_frame_rb"
-    # gds_path = "pmos_drain_frame_rb"
-    # gds_path = "pmos_waffle_corners_lb"
-    # gds_path = "pmos_waffle_corners_lt"
-    # gds_path = "pmos_waffle_corners_rb"
-    # gds_path = "pmos_waffle_corners_rt"
+    # port = PortPmosFrame(gds_path="pmos_source_in", **default_params)
+    # port.draw_source_in_frame()
 
-    port = PortPmosFrame(
-        gds_path=gds_path,
-        dx=DVector(2.75, 0),
-        dy=DVector(0, 2.75),
-        center=DVector(0.25, -0.25)+DVector(2.75, 2.75)
-    )
+    # port = PortPmosFrame(gds_path="pmos_drain_in", **default_params)
+    # port.draw_drain_in_frame()
 
-    # Comment to avoid porting  
-    #port.draw_source_in_frame()
-    #port.draw_drain_in_frame()
-    port.draw_source_frame_lt()
-    overlap = 5.5
-    
+    # port = PortPmosFrame(gds_path="pmos_source_frame_lt", **default_params)
+    # port.draw_source_frame_lt()
+
+    # port = PortPmosFrame(gds_path="pmos_drain_frame_lt", **default_params)
+    # port.draw_frame("drain_lt")
+
+    port = PortPmosFrame(gds_path="pmos_source_frame_rb", **default_params)
+    port.draw_frame("source_rb")
+
+    # port = PortPmosFrame(gds_path="pmos_drain_frame_rb", **default_params)
+    # port.draw_frame("drain_rb")
+
+    # port = PortPmosFrame(gds_path="pmos_waffle_corners_lb", **default_params)
+    # port.draw_waffle_corners_lb()
+
+    # port = PortPmosFrame(gds_path="pmos_waffle_corners_lt", **default_params)
+    # port.draw_waffle_corners_lt()
+
+    # port = PortPmosFrame(gds_path="pmos_waffle_corners_rb", **default_params)
+    # port.draw_waffle_corners_rb()
+
+    # port = PortPmosFrame(gds_path="pmos_waffle_corners_rt", **default_params)
+    # port.draw_waffle_corners_rt()
+
     top = KlayoutUtilities().viewed_cell
     top.insert(DCellInstArray(port.get_cell(), DTrans(0, 0)))
-
-    top
-
 
     KlayoutUtilities.set_visual_configuration()
 
@@ -1049,4 +1293,4 @@ def main_specific():
 if __name__ == "__main__":
 
     main_specific()
-    # main_waffle()
+    #main_waffle()
