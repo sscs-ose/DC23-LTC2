@@ -103,6 +103,9 @@ class KlayoutUtilities:
       """Removes all the cells in the hierarchy of the top cell"""
       k = KlayoutUtilities()
 
+      # GOTO topcell TOP before remove everything
+      k.cell_view.cell_name = "TOP"
+
       # To clean the top cell, we have to strategies:
       # Delete subcells
       k.layout.prune_subcells(k.viewed_cell.cell_index(), -1)
@@ -243,7 +246,6 @@ class KlayoutUtilities:
 
       lm.map(source_layer_info, target_layer)
 
-    print(f"{KlayoutUtilities._load_options = }")
     KlayoutUtilities._load_options.layer_map = lm
 
 
