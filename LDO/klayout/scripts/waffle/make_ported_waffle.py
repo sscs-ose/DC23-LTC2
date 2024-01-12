@@ -55,8 +55,6 @@ class FetWaffleLayout:
             self.corner_rb = waffle_cells["pmos_waffle_corners_rb"]
             self.corner_rt = waffle_cells["pmos_waffle_corners_rt"]
 
-
-
         # Each cell is a square.
         # The bounding box of each cell is bigger than the actual cell size.
         # That's why we have to overlap the shapes.
@@ -74,6 +72,8 @@ class FetWaffleLayout:
         self.draw_left_top_layout()
         self.draw_right_bottom_layout()
         self.draw_corners_layout()
+
+        self.draw_internal_guard_ring(thickness=3, separation=4.75)
 
 
     def get_cell(self):
@@ -221,6 +221,107 @@ class FetWaffleLayout:
         self.cell.insert(DCellInstArray(self.corner_lt, DTrans(- self.dx + self.dy*2*self.n)))
         self.cell.insert(DCellInstArray(self.corner_rb, DTrans(  self.dx*2*self.n - self.dy)))
         self.cell.insert(DCellInstArray(self.corner_rt, DTrans(  self.dx*2*self.n + self.dy*2*self.n)))
+
+
+    def draw_internal_guard_ring(self, thickness: float, separation: float):
+        """Internal guard ring is composed by COMP, NPLUS, CONTACTS, METAL1, VIA1, METAL2"""
+        # The center will be located in the exterior corner of the junction
+        # It's different from the usual approach, but will be more simple to draw
+
+        distance = (self.n + 2)*self.dx.x + 2*separation + thickness
+        via_params = via_filter_parameters({
+            "x_max": (self.n + 2)*self.dx.x + 2*separation + thickness,
+            "y_max": thickness,
+            "base_layer": "comp",
+            "metal_level": "M2",
+            "implant": "n+"
+        })
+
+        gr_name = f"guardring-{self.dx.x}-{thickness}-{separation}"
+        gr_cell = self.cell.layout().cell(gr_name)
+
+        if not gr_cell:
+            gr_cell = self.cell.layout().create_cell(gr_name)
+
+            top = DCplxTrans(1, 0, False, DVector(thickness/2, distance/2))
+            bottom = DCplxTrans(1, 0, False, DVector(-thickness/2, -distance/2))
+            left = DCplxTrans(1, 90, False, DVector(-distance/2, thickness/2))
+            right = DCplxTrans(1, 90, False, DVector(distance/2, -thickness/2))
+
+            via_cell = create_via_cell(gr_cell, params=via_params)
+
+            gr_cell.insert(DCellInstArray(via_cell, top))
+            gr_cell.insert(DCellInstArray(via_cell, bottom))
+            gr_cell.insert(DCellInstArray(via_cell, left))
+            gr_cell.insert(DCellInstArray(via_cell, right))
+
+            gr_cell.flatten(-1)
+
+        position = DTrans(
+            (self.n // 2 + 0.5) * self.dx.x,
+            (self.n // 2 + 0.5) * self.dy.y
+        )
+
+        self.cell.insert(DCellInstArray(gr_cell, DTrans(position)))
+
+
+    def generate_external_guard_ring(self, thickness: float, separation: float) -> Cell:
+        pass
+
+
+    def generate_interior_guard_ring_via(self, gr_cell: Cell, position):
+        gr_via_params = via_filter_parameters({
+            "x_max": 2.5,
+            "y_max": 4.0,
+            "base_layer": "M2",
+            "metal_level": "M5",
+        })
+        # gr_via_cell = create_via_cell(gr_cell, params=gr_via_params)
+
+        # DCellInstArray()
+
+        # gr_cell.insert(DCellInstArray(gr_via_cell, DTrans(position)))
+
+
+    def draw_corners(self):
+        if not self.frame_type.startswith("corner_"):
+            return
+
+        thickness = self.corner_thickness
+        separation = self.corner_separation
+
+        corner_cell = self.generate_corner(thickness, separation)
+
+        if self.frame_type.endswith("lb"):
+            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
+                - thickness - separation,
+                - thickness - separation
+            ))))
+
+        elif self.frame_type.endswith("rb"):
+            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
+                - thickness - separation,
+                - thickness - separation
+            ))))
+
+        elif self.frame_type.endswith("rt"):
+            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
+                - thickness - separation,
+                - thickness - separation
+            ))))
+
+        elif self.frame_type.endswith("lt"):
+            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
+                - thickness - separation,
+                - thickness - separation
+            ))))
+
+        else:
+            raise ValueError(f"Corner {self.frame_type} is not valid")
+
+
+    def draw_corner_vias(self):
+        pass
 
 
     @staticmethod
@@ -537,33 +638,30 @@ class PortPmosFrame:
             return
 
 
-    def draw_gate(self, position):
+    def draw_gates(self):
         gate_params = via_filter_parameters({
             "x_max": self.l,
             "y_max": self.l,
             "base_layer": "poly2",
             "metal_level": "M3",
         })
-        create_via_cell(self.cell, position, gate_params)
 
-
-    def draw_gates(self):
-        # Always top_left
-        self.draw_gate(position=-self.dx + self.dy)
-
+        top_left = -self.dx + self.dy
         top_right = self.dx + self.dy
         bottom_left = -(top_right)
-        bottom_right = -self.dy + self.dx
+        bottom_right = -(top_left)
 
+        # Always top left
+        create_via_cell(self.cell, top_left, gate_params)
 
         if self.frame_type in {"source_rb", "drain_rb", "corner_rt", "corner_rb"}:
-            self.draw_gate(position=top_right)
+            create_via_cell(self.cell, top_right, gate_params)
 
         if self.frame_type in {"corner_lb", "corner_rb"}:
-            self.draw_gate(position=bottom_left)
+            create_via_cell(self.cell, bottom_left, gate_params)
 
         if self.frame_type in {"corner_rb"}:
-            self.draw_gate(position=bottom_right)
+            create_via_cell(self.cell, bottom_right, gate_params)
 
 
     def generate_poly(self, type: PolyType) -> Cell:
@@ -620,19 +718,18 @@ class PortPmosFrame:
 
     def draw_covered_poly(self):
         top = False
-        bottom = False
+        bottom = False # Always
         left = False
         right = False
 
-        if self.frame_type in { "source_in", "drain_in", "source_rb" }:
+        if self.frame_type in {"source_in", "drain_in", "source_lt", "drain_lt", "source_rb", "drain_rb", "corner_lb", "corner_rb"}:
             top = True
+
+        if self.frame_type in {"source_in", "drain_in", "source_rb", "drain_rb", "corner_rt",  "corner_rb"}:
             left = True
 
-        elif self.frame_type in { "source_lt", "drain_lt"}:
-            top = True
-
-        elif self.frame_type in {"corner_lb"}:
-            top = True
+        if self.frame_type in {"corner_lb"}:
+            right = True
 
         if not (top or bottom or left or right):
             return
@@ -651,9 +748,17 @@ class PortPmosFrame:
         left = False
         right = False
 
-        if self.frame_type in {"corner_lb"}:
+        if self.frame_type in {"corner_lt", "corner_rt"}:
+            top = True
+
+        if self.frame_type in {"corner_lb", "corner_rb"}:
             bottom = True
+
+        if self.frame_type in {"corner_lt", "corner_lb", "drain_lt", "source_lt"}:
             left = True
+
+        if self.frame_type in {"corner_rt", "corner_rb", "drain_rb", "source_rb"}:
+            right = True
 
         if not (top or bottom or left or right):
             return
@@ -788,159 +893,9 @@ class PortPmosFrame:
             self.cell.insert(DCellInstArray(track_2_via_cell, DTrans(track_2_separation)))
 
 
-    def draw_extension_via_stack_frame(self):
-        if self.frame_type not in {"source_lt", "drain_lt", "source_rb"}:
-            return
-
-        if self.frame_type.endswith("lt"):
-            track_1_position = DPoint(-6.25000, 0.25000)
-            track_2_position = DPoint(-6.25000, 1.62000)
-
-        if self.frame_type.endswith("rb"):
-            track_1_position = DPoint(6.25000, +0.25000)
-            track_2_position = DPoint(6.25000, -1.62000)
-
-        track_1_params = via_filter_parameters({
-            "x_max": 3.0,
-            "y_max": 5.5,
-            "base_layer": "comp",
-            "metal_level": "M2",
-        })
-
-        track_2_params = via_filter_parameters({
-            "x_max": 1.2,
-            "y_max": 1.2,
-            "base_layer": "M2",
-            "metal_level": "Mtop",
-        })
-
-        if self.frame_type == "source_lt":
-            pass
-
-        elif self.frame_type == "drain_lt":
-            track_2_params = None
-
-        elif self.frame_type == "source_rb":
-            pass
-
-        else:
-            raise ValueError(f"{self.frame_type} not valid")
-
-        if track_1_params:
-            track_1_cell = create_via_cell(self.cell, params=track_1_params)
-            self.cell.insert(DCellInstArray(track_1_cell, DTrans(track_1_position)))
-
-            track_1_cell_width = track_1_cell.dbbox().width()
-            track_1_cell_height = track_1_cell.dbbox().height()
-
-            # Track 1 NWELL
-            ###############
-            # DF.4d_LV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.12µm
-            # NP.5b : Extension beyond COMP for the COMP (1) inside LVPWELL (2) outside Nwell and DNWELL. : 0.16µm
-            # NP.5di : Extension beyond COMP: For Outside DNWELL, inside Nwell: (i) For Nwell overlap of Nplus < 0.43um. : 0.16µm
-
-            # nwell_gap =  1 # Toy chato
-            # nwell_corner = DPoint(
-            #     track_1_cell_width / 2 + nwell_gap,
-            #     track_1_cell_height / 2 + nwell_gap
-            # )
-            # nwell_box = DBox(-nwell_corner, nwell_corner)
-            # track_1_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
-
-        if track_2_params:        
-            track_2_cell = create_via_cell(self.cell, params=track_2_params)
-            self.cell.insert(DCellInstArray(track_2_cell, DTrans(track_2_position)))
-
-
     def draw_big_box(self, layer: str, dimentions: DPoint):
         box = DBox(DPoint(), dimentions) * DTrans(-dimentions/2)
         self.cell.shapes(KlayoutUtilities.get_layer(layer)).insert(box)
-
-
-    def generate_corner(self, thickness: float, separation: float) -> Cell:
-        """A corner is composed by COMP, NPLUS, CONTACTS, METAL1, VIA1, METAL2"""
-        # The center will be located in the exterior corner of the junction
-        # It's different from the usual approach, but will be more simple to draw
-
-        #TODO: REMOVE MAGIC NUMBERS
-        magic_dy_offset = 3
-        magic_dx_offset = 2.5
-
-        corner_name = f"corner_{self.l}-{self.w}-{thickness}-{separation}"
-        corner_cell = self.cell.layout().create_cell(corner_name)
-
-        via_horizontal_params = via_filter_parameters({
-            "x_max": separation + thickness + magic_dx_offset,
-            "y_max": thickness,
-            "base_layer": "comp",
-            "metal_level": "M2"
-        })
-
-        via_vertical_params = via_filter_parameters({
-            "x_max": thickness,
-            "y_max": separation + magic_dy_offset,
-            "base_layer": "comp",
-            "metal_level": "M2"
-        })
-
-        via_horizontal_placement = DCplxTrans(1, 0, False, DVector(
-            via_horizontal_params["x_max"]/2,
-            via_horizontal_params["y_max"]/2
-        ))
-
-        via_vertical_placement = DCplxTrans(1, 0, False, DVector(
-            via_vertical_params["x_max"]/2,
-            via_vertical_params["y_max"]/2 + thickness
-        ))
-
-        via_horizontal = create_via_cell(corner_cell, params=via_horizontal_params)
-        via_vertical = create_via_cell(corner_cell, params=via_vertical_params)
-
-        corner_cell.insert(DCellInstArray(via_horizontal, via_horizontal_placement))
-        corner_cell.insert(DCellInstArray(via_vertical, via_vertical_placement))
-
-        return corner_cell
-
-
-    def draw_corners(self):
-        if not self.frame_type.startswith("corner_"):
-            return
-
-        thickness = self.corner_thickness
-        separation = self.corner_separation
-
-        corner_cell = self.generate_corner(thickness, separation)
-
-        if self.frame_type.endswith("lb"):
-            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
-                - thickness - separation,
-                - thickness - separation
-            ))))
-
-        elif self.frame_type.endswith("rb"):
-            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
-                - thickness - separation,
-                - thickness - separation
-            ))))
-
-        elif self.frame_type.endswith("rt"):
-            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
-                - thickness - separation,
-                - thickness - separation
-            ))))
-
-        elif self.frame_type.endswith("lt"):
-            self.cell.insert(DCellInstArray(corner_cell, DCplxTrans(1, 0, False, DVector(
-                - thickness - separation,
-                - thickness - separation
-            ))))
-
-        else:
-            raise ValueError(f"Corner {self.frame_type} is not valid")
-
-
-    def draw_corner_vias(self):
-        pass
 
 
     def draw_frame(self, frame_type):
@@ -956,7 +911,6 @@ class PortPmosFrame:
 
         self.draw_poly_contacts()
         self.draw_via_stack()
-        #self.draw_extension_via_stack_frame() #TODO: Remove, this is part of guard ring generation
 
         self.draw_big_box("nwell", 4*DPoint(self.dx.x, self.dy.y))
         self.draw_big_box("metal2", 2*DPoint(self.via_poly_proximity_x + self.via_poly_proximity_y))
@@ -992,18 +946,18 @@ def main_waffle():
     default_params["center"] = DVector(-2.50, 2.50)
     corner_lt = PortPmosFrame(gds_path="pmos_waffle_corners_lt", **default_params)
 
-    #Comment to avoid porting  
-    source_in.draw_frame("source_in")
-    drain_in.draw_frame("drain_in")
-    source_lt.draw_frame("source_lt")
-    drain_lt.draw_frame("drain_lt")
-    source_rb.draw_frame("source_rb")
-    drain_rb.draw_frame("drain_rb")
-    corner_lb.draw_frame("corner_lb")
-    corner_rb.draw_frame("corner_rb")
-    corner_rt.draw_frame("corner_rt")
-    corner_lt.draw_frame("corner_lt")
-    overlap = 5.5
+    # Comment to avoid porting
+    # source_in.draw_frame("source_in")
+    # drain_in.draw_frame("drain_in")
+    # source_lt.draw_frame("source_lt")
+    # drain_lt.draw_frame("drain_lt")
+    # source_rb.draw_frame("source_rb")
+    # drain_rb.draw_frame("drain_rb")
+    # corner_lb.draw_frame("corner_lb")
+    # corner_rb.draw_frame("corner_rb")
+    # corner_rt.draw_frame("corner_rt")
+    # corner_lt.draw_frame("corner_lt")
+    # overlap = 5.5
 
 
     waffle_cells = {
@@ -1022,12 +976,8 @@ def main_waffle():
     top = KlayoutUtilities().viewed_cell
 
     waffle = FetWaffleLayout(m=0, waffle_cells=waffle_cells, overlap=overlap)
-    waffle.draw_central_layout()
-    waffle.draw_left_top_layout()
-    waffle.draw_right_bottom_layout()
-    waffle.draw_corners_layout()
-    waffle_cell = waffle.get_cell()
-    top.insert(DCellInstArray(waffle_cell, DTrans(DPoint())))
+    waffle.draw()
+    top.insert(DCellInstArray(waffle.get_cell(), DTrans(DPoint())))
 
     #KlayoutUtilities().cell_view.cell_name = "via-comp-M2-4.2-0.4"
     #KlayoutUtilities().cell_view.cell_name = "pmos_source_in"
