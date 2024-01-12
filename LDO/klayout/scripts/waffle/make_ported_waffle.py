@@ -450,6 +450,11 @@ class PortPmosFrame:
         ############################
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
         KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal2"])
+        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["comp"])
+        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nwell"])
+        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["pplus"]) 
+        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["nplus"])
+        KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["dnwell"])
 
         if self.frame_type == "source_in":
             KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal1"])
@@ -533,23 +538,32 @@ class PortPmosFrame:
 
 
     def draw_gate(self, position):
-        params = via_filter_parameters({
+        gate_params = via_filter_parameters({
             "x_max": self.l,
             "y_max": self.l,
             "base_layer": "poly2",
             "metal_level": "M3",
         })
-        create_via_cell(self.cell, position, params)
+        create_via_cell(self.cell, position, gate_params)
 
 
     def draw_gates(self):
+        # Always top_left
         self.draw_gate(position=-self.dx + self.dy)
 
-        if self.frame_type in {"source_rb", "drain_rb"}:
-            self.draw_gate(position=self.dx + self.dy)
+        top_right = self.dx + self.dy
+        bottom_left = -(top_right)
+        bottom_right = -self.dy + self.dx
 
-        if self.frame_type in {"corner_lb"}:
-            self.draw_gate(position=-self.dx - self.dy)
+
+        if self.frame_type in {"source_rb", "drain_rb", "corner_rt", "corner_rb"}:
+            self.draw_gate(position=top_right)
+
+        if self.frame_type in {"corner_lb", "corner_rb"}:
+            self.draw_gate(position=bottom_left)
+
+        if self.frame_type in {"corner_rb"}:
+            self.draw_gate(position=bottom_right)
 
 
     def generate_poly(self, type: PolyType) -> Cell:
@@ -678,14 +692,26 @@ class PortPmosFrame:
             bottom = True
             right = True
 
-        elif self.frame_type == {"source_rb", "drain_rb"}:
+        elif self.frame_type in {"source_rb", "drain_rb"}:
             top = True
             bottom = True
             left = True
 
-        elif self.frame_type == "corner_lb":
+        elif self.frame_type in {"corner_lb"}:
             top = True
             right = True
+
+        elif self.frame_type in {"corner_lt"}:
+            bottom = True
+            right = True
+
+        elif self.frame_type in {"corner_rb"}:
+            top = True
+            left = True
+
+        elif self.frame_type in {"corner_rt"}:
+            bottom = True
+            left = True
 
         if not (top or bottom or left or right):
             return
@@ -739,7 +765,7 @@ class PortPmosFrame:
             "metal_level": "Mtop",
         })
 
-        if self.frame_type in {"drain_in", "drain_lt", "drain_rb"}:
+        if self.frame_type in {"drain_in", "drain_lt", "drain_rb", "corner_lt", "corner_rb"}:
             track_1_params["base_layer"] = "M2"
             del track_1_params["implant"]
 
@@ -932,16 +958,12 @@ class PortPmosFrame:
         self.draw_via_stack()
         #self.draw_extension_via_stack_frame() #TODO: Remove, this is part of guard ring generation
 
-
         self.draw_big_box("nwell", 4*DPoint(self.dx.x, self.dy.y))
         self.draw_big_box("metal2", 2*DPoint(self.via_poly_proximity_x + self.via_poly_proximity_y))
         if self.frame_type in {"source_in", "source_rb", "corner_lb", "source_lt"}:
             self.draw_big_box("metal1", 2*DPoint(self.via_poly_proximity_x + self.via_poly_proximity_y))
 
-        #self.draw_corners() # TODO: Draw grid ring
-
         pass
-
 
 
 def main_waffle():
