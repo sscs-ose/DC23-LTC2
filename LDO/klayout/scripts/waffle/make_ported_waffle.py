@@ -330,7 +330,7 @@ class FetWaffleLayout:
                 DCplxTrans(1, 0, False, bottom_left + observed_distance_dx),
                 2 * self.dx,
                 DPoint(0, 0),
-                self.n + 1,
+                self.n // 2 + 1,
                 0,
             )
         )
@@ -343,7 +343,7 @@ class FetWaffleLayout:
                 DPoint(0, 0),
                 2 * self.dy,
                 0,
-                self.n + 1,
+                self.n // 2 + 1,
             )
         )
 
@@ -354,7 +354,7 @@ class FetWaffleLayout:
                 DCplxTrans(1, 0, False, top_right - observed_distance_dx),
                 -2 * self.dx,
                 DPoint(0, 0),
-                self.n + 1,
+                self.n // 2 + 1,
                 0,
             )
         )
@@ -367,7 +367,7 @@ class FetWaffleLayout:
                 DPoint(0, 0),
                 -2 * self.dy,
                 0,
-                self.n + 1,
+                self.n // 2 + 1,
             )
         )
 
