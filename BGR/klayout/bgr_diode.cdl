@@ -6,7 +6,22 @@ M6 net2 net2 vdd vdd pfet_03v3 L=1.12u W=11.2u nf=1 m=30
 M7 net1 net1 net3 net3 nfet_03v3_dn L=1.12u W=11.2u nf=1 m=30
 M8 net1 net2 vdd vdd pfet_03v3 L=1.12u W=11.2u nf=1 m=30
 Q1 net5 net5 vss vss npn_10p00x10p00 m=1
-Q2 net6 net6 vss vss npn_10p00x10p00 m=16
+Q20 net6 net6 vss vss npn_10p00x10p00 m=1
+Q21 net6 net6 vss vss npn_10p00x10p00 m=1
+Q22 net6 net6 vss vss npn_10p00x10p00 m=1
+Q23 net6 net6 vss vss npn_10p00x10p00 m=1
+Q24 net6 net6 vss vss npn_10p00x10p00 m=1
+Q25 net6 net6 vss vss npn_10p00x10p00 m=1
+Q26 net6 net6 vss vss npn_10p00x10p00 m=1
+Q27 net6 net6 vss vss npn_10p00x10p00 m=1
+Q28 net6 net6 vss vss npn_10p00x10p00 m=1
+Q29 net6 net6 vss vss npn_10p00x10p00 m=1
+Q2a net6 net6 vss vss npn_10p00x10p00 m=1
+Q2b net6 net6 vss vss npn_10p00x10p00 m=1
+Q2c net6 net6 vss vss npn_10p00x10p00 m=1
+Q2d net6 net6 vss vss npn_10p00x10p00 m=1
+Q2e net6 net6 vss vss npn_10p00x10p00 m=1
+Q2f net6 net6 vss vss npn_10p00x10p00 m=1
 M1 vout net2 vdd vdd pfet_03v3 L=1.12u W=11.2u nf=1 m=30
 Q3 net7 net7 vss vss npn_10p00x10p00 m=1
 R1 net5 net3 vss ppolyf_u W=1.6u L=0.8u m=1
