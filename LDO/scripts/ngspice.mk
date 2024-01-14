@@ -1,0 +1,3 @@
+
+NGSPICE_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-ngspice-$(TOP).log
+
