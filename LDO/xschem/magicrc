@@ -18,7 +18,7 @@ proc load_layout { layout cellname } {
     }
 }
 
-proc generate_lvs_spice { cellname } {
+proc generate_lvs_spice { lvsdir cellname } {
     debug "generate_lvs_spice" ""
 
     flatten ${cellname}_flat
@@ -27,12 +27,12 @@ proc generate_lvs_spice { cellname } {
 
     extract
     ext2spice lvs
-    ext2spice -o "${cellname}.cir"
+    ext2spice -o "${lvsdir}/${cellname}.cir"
 
-    debug "generate_lvs_spice" [string cat [file normalize ./$cellname.cir] " was created"]
+    debug "generate_lvs_spice" [string cat [file normalize $lvsdir/$cellname.cir] " was created"]
 }
 
-proc generate_parasitic_spice { cellname } {
+proc generate_parasitic_spice { pexdir cellname } {
     debug "generate_parasitic_spice" ""
     # https://open-source-silicon.slack.com/archives/C016YSAP6TZ/p1675458850043459
     # If there's a "Bad Device...", thats because the circuit is not flatten.
@@ -52,8 +52,9 @@ proc generate_parasitic_spice { cellname } {
     ext2spice lvs
     ext2spice extresist on
     ext2spice cthresh 0
-    ext2spice -o "${cellname}.pex"
-    debug "generate_parasitic_spice" [string cat [file normalize ./$cellname.pex] " was created"]
+    ext2spice -o "${pexdir}/${cellname}.pex"
+    
+    debug "generate_parasitic_spice" [string cat [file normalize $pexdir/$cellname.pex] " was created"]
 
     # https://open-source-silicon.slack.com/archives/C016YSAP6TZ/p1675532194275949
     # Floating might be an implementation error... ?

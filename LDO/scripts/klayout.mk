@@ -1,25 +1,62 @@
-KLAYOUT=klayout -t
+# Files, directories and Aliases
+################################
 
 KLAYOUT_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-$(TOP).log
 KLAYOUT_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-lvs-$(TOP).log
 KLAYOUT_DRC_EFABLES_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-efabless-$(TOP).log
 KLAYOUT_DRC_PRECHECK_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-precheck-$(TOP).log
 
+TOP_GDS_DIR=$(dir $(TOP_GDS))
+TOP_GDS_CELL=$(basename $(notdir $(TOP_GDS)))
+
+KLAYOUT=klayout -t
+
+define HELP_ENTRIES +=
+	$(call INFO_MESSAGE,)
+	$(call INFO_MESSAGE, Klayout related rules:)
+	$(call INFO_MESSAGE,  klayout-validation: Evaluates relevant file existence.)
+	$(call INFO_MESSAGE,                      Is used by other rules.)
+	$(call INFO_MESSAGE,  klayout:            Alias for `klayout-view`)
+	$(call INFO_MESSAGE,  klayout-view:       Opens klayout in view mode)
+	$(call INFO_MESSAGE,  klayout-edit:       Opens klayout in edit mode)
+    $(call INFO_MESSAGE,  klayout-lvs-help:   Shows lvs help documentation)
+    $(call INFO_MESSAGE,  klayout-lvs-view:   Opens klayout in edit mode and with)
+	$(call INFO_MESSAGE,                      lvs reports.)
+    $(call INFO_MESSAGE,  klayout-lvs-only:   Runs LVS from command line)
+    $(call INFO_MESSAGE,  klayout-lvs:        Run klayout lvs and open the reports)
+    $(call INFO_MESSAGE,  klayout-drc-view:   Open DRC reports on graphical interface)
+    $(call INFO_MESSAGE,  klayout-drc-only:   Runs DRC from efabless and precheck)
+	$(call INFO_MESSAGE,                      from command line)
+    $(call INFO_MESSAGE,  klayout-drc:        Runs DRC and open reports on graphical)
+	$(call INFO_MESSAGE,                      interface)
+    $(call INFO_MESSAGE,  klayout-eval:       Runs DRC and LVS)
+endef
+
+
+# Rules
+#######
 
 .PHONY: klayout-validation
 klayout-validation:
 ifeq (,$(wildcard $(TOP_GDS)))
-	$(error $(COLOR_ERROR)GDS file $(TOP_GDS) doesn't exist$(COLOR_END))
-else
-	$(info $(COLOR_SUCCESS)GDS file $(TOP_GDS) exist$(COLOR_END))
+	$(call ERROR_MESSAGE, GDS file $(TOP_GDS) doesn't exist$)
 endif
+	
+	$(call INFO_MESSAGE, [klayout] GDS:               $(TOP_GDS))
 
 ifeq (,$(wildcard $(TOP_NETLIST_SCH)))
-	$(warning $(COLOR_WARNING)Netlist from schematic $(TOP_GDS) doesn't exist$(COLOR_END))
+	$(call WARNING_MESSAGE, Schematic netlist doesn't exist$)
 else
-	$(info $(COLOR_SUCCESS)Netlist from schematic $(TOP_GDS) exist$(COLOR_END))
+	$(call INFO_MESSAGE, Netlist from schematic  exist)
 endif
 
+	$(call INFO_MESSAGE, [klayout] directory:         $(TOP_GDS_DIR))
+	$(call INFO_MESSAGE, [klayout] schematic netlist: $(TOP_NETLIST_SCH))
+	$(call INFO_MESSAGE, [klayout] gds netlist:       $(TOP_NETLIST_GDS))
+
+
+# Visualization
+###############
 
 .PHONY: klayout
 klayout: klayout-view
@@ -35,8 +72,9 @@ klayout-edit: klayout-validation
 	$(KLAYOUT) -e $(TOP_GDS) |& tee $(KLAYOUT_LOG)
 
 
-# KLAYOUT LVS
+# LVS RULES
 #############
+
 # --help -h                           Print this help message.
 # --layout=<layout_path>              The input GDS file path.
 # --netlist=<netlist_path>            The input netlist file path.
@@ -59,17 +97,16 @@ klayout-edit: klayout-validation
 # --purge                             In extracted netlist Enable netlist purge all only.
 # --purge_nets                        In extracted netlist Enable netlist purge nets only.
 
+
 .PHONY: klayout-lvs-help
 klayout-lvs-help:
 	python $(KLAYOUT_HOME)/lvs/run_lvs.py --help
 
-# LVS RULES
-###########
 
 .PHONY: klayout-lvs-view
 klayout-lvs-view: klayout-validation
 	$(KLAYOUT) -e $(TOP_GDS) \
-		-mn $(dir $(TOP_GDS))/$(TOP).lvsdb
+		-mn $(TOP_GDS_DIR)/$(TOP).lvsdb
 
 
 .PHONY: klayout-lvs-only
@@ -78,16 +115,17 @@ klayout-lvs-only: klayout-validation
 		--variant=D \
 		--run_mode=flat \
 		--verbose \
-		--run_dir=$(dir $(TOP_GDS)) \
+		--run_dir=$(TOP_GDS_DIR) \
 		--layout=$(TOP_GDS) \
 		--netlist=$(TOP_NETLIST_SCH) \
 		--top_lvl_pins \
-		--combine || true |& $(KLAYOUT_LVS_LOG)
+		--combine || true |& tee $(KLAYOUT_LVS_LOG)
 
 
 .PHONY: klayout-lvs
 klayout-lvs: klayout-lvs-only
 	make TOP=$(TOP) klayout-lvs-view
+
 
 # DRC RULES
 ###########
@@ -95,30 +133,33 @@ klayout-lvs: klayout-lvs-only
 .PHONY: klayout-drc-view
 klayout-drc-view: klayout-validation
 	$(KLAYOUT) -e $(TOP_GDS) \
-		-m $(TOP)/$(TOP)_antenna.lyrdb \
-		-m $(TOP)/$(TOP)_density.lyrdb \
-		-m $(TOP)/$(TOP)_main.lyrdb \
-		-m $(TOP)/precheck_$(TOP).lyrdb
+		-m $(TOP_GDS_DIR)/$(TOP)_antenna.lyrdb \
+		-m $(TOP_GDS_DIR)/$(TOP)_density.lyrdb \
+		-m $(TOP_GDS_DIR)/$(TOP)_main.lyrdb \
+		-m $(TOP_GDS_DIR)/precheck_$(TOP).lyrdb
 
 
 .PHONY: klayout-drc-only
 klayout-drc-only: klayout-validation
-	$(RM) $(dir $(TOP_GDS))/*.lyrdb
+	$(RM) $(TOP_GDS_DIR)/*.lyrdb
 
 	python $(KLAYOUT_HOME)/drc/run_drc.py \
 		--path $(TOP_GDS) \
 		--variant=D \
-		--topcell=$(TOP) \
-		--run_dir=$(dir $(TOP_GDS)) \
+		--topcell=$(TOP_GDS_CELL) \
+		--run_dir=$(TOP_GDS_DIR) \
 		--run_mode=flat \
 		--antenna \
 		--density \
-		--verbose || true |& $(KLAYOUT_DRC_EFABLES_LOG)
+		--mp=$(NPROCS) \
+		--thr=$(NPROCS) \
+		--verbose || true |& tee $(KLAYOUT_DRC_EFABLES_LOG)
 
 	$(KLAYOUT) -b -r $(KLAYOUT_HOME)/drc/gf180mcuD_mr.drc \
 		-rd input=$(TOP_GDS) \
-		-rd topcell=$(TOP) \
-		-rd report=precheck_$(TOP).lyrdb \
+		-rd topcell=$(TOP_GDS_CELL) \
+		-rd report=$(TOP_GDS_DIR)/precheck_$(TOP).lyrdb \
+		-re thr=$(NPROCS) \
 		-rd conn_drc=true \
 		-rd split_deep=true \
 		-rd wedge=true \
@@ -129,7 +170,7 @@ klayout-drc-only: klayout-validation
 		-rd verbose=true \
 		-rd run_mode=flat \
 		-rd feol=true \
-		-rd beol=true || true |& $(KLAYOUT_DRC_PRECHECK_LOG)
+		-rd beol=true || true |& tee $(KLAYOUT_DRC_PRECHECK_LOG)
 
 
 .PHONY: klayout-drc

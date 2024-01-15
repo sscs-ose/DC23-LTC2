@@ -20,9 +20,17 @@ COLOR_CYAN:=$(shell tput setaf 6)
 COLOR_WHITE:=$(shell tput setaf 7)
 COLOR_END:=$(shell tput sgr0 )
 
-COLOR_ERROR:=$(COLOR_RED)
-COLOR_WARNING:=$(COLOR_YELLOW)
-COLOR_SUCCESS:=$(COLOR_GREEN)
+define ERROR_MESSAGE =
+	$(error $(COLOR_RED)$(1)$(COLOR_END))
+endef
+
+define WARNING_MESSAGE =
+	$(warning $(COLOR_YELLOW)$(1)$(COLOR_END))
+endef
+
+define INFO_MESSAGE =
+	$(info $(COLOR_CYAN)$(1)$(COLOR_END))
+endef
 
 test-colors:
 	@echo -e "$(COLOR_BLACK) hola_0 $(COLOR_END)"
