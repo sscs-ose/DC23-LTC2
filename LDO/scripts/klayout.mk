@@ -6,8 +6,11 @@ KLAYOUT_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-lvs-$(TOP).log
 KLAYOUT_DRC_EFABLES_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-efabless-$(TOP).log
 KLAYOUT_DRC_PRECHECK_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-precheck-$(TOP).log
 
-TOP_GDS_DIR=$(dir $(TOP_GDS))
-TOP_GDS_CELL=$(basename $(notdir $(TOP_GDS)))
+TOP_GDS_DIR:=$(dir $(TOP_GDS))
+TOP_GDS_CELL:=$(basename $(notdir $(TOP_GDS)))
+
+TOP_ALL_LYRDB:=$(filter %.lyrdb,$(ALL_FILES))
+TOP_ALL_LVSDB:=$(filter %.lvsdb,$(ALL_FILES))
 
 KLAYOUT=klayout -t
 
@@ -105,8 +108,7 @@ klayout-lvs-help:
 
 .PHONY: klayout-lvs-view
 klayout-lvs-view: klayout-validation
-	$(KLAYOUT) -e $(TOP_GDS) \
-		-mn $(TOP_GDS_DIR)/$(TOP).lvsdb
+	$(KLAYOUT) -e $(TOP_GDS) $(foreach file,$(TOP_ALL_LVSDB),-mn $(file))
 
 
 .PHONY: klayout-lvs-only
@@ -119,7 +121,7 @@ klayout-lvs-only: klayout-validation
 		--layout=$(TOP_GDS) \
 		--netlist=$(TOP_NETLIST_SCH) \
 		--top_lvl_pins \
-		--combine || true |& tee $(KLAYOUT_LVS_LOG)
+		--combine |& tee $(KLAYOUT_LVS_LOG) || true
 
 
 .PHONY: klayout-lvs
@@ -132,11 +134,7 @@ klayout-lvs: klayout-lvs-only
 
 .PHONY: klayout-drc-view
 klayout-drc-view: klayout-validation
-	$(KLAYOUT) -e $(TOP_GDS) \
-		-m $(TOP_GDS_DIR)/$(TOP)_antenna.lyrdb \
-		-m $(TOP_GDS_DIR)/$(TOP)_density.lyrdb \
-		-m $(TOP_GDS_DIR)/$(TOP)_main.lyrdb \
-		-m $(TOP_GDS_DIR)/precheck_$(TOP).lyrdb
+	$(KLAYOUT) -e $(TOP_GDS) $(foreach file,$(TOP_ALL_LYRDB),-m $(file))
 
 
 .PHONY: klayout-drc-only
@@ -151,15 +149,14 @@ klayout-drc-only: klayout-validation
 		--run_mode=flat \
 		--antenna \
 		--density \
-		--mp=$(NPROCS) \
 		--thr=$(NPROCS) \
-		--verbose || true |& tee $(KLAYOUT_DRC_EFABLES_LOG)
+		--verbose |& tee $(KLAYOUT_DRC_EFABLES_LOG) || true
 
 	$(KLAYOUT) -b -r $(KLAYOUT_HOME)/drc/gf180mcuD_mr.drc \
 		-rd input=$(TOP_GDS) \
 		-rd topcell=$(TOP_GDS_CELL) \
 		-rd report=$(TOP_GDS_DIR)/precheck_$(TOP).lyrdb \
-		-re thr=$(NPROCS) \
+		-rd thr=$(NPROCS) \
 		-rd conn_drc=true \
 		-rd split_deep=true \
 		-rd wedge=true \
@@ -170,7 +167,7 @@ klayout-drc-only: klayout-validation
 		-rd verbose=true \
 		-rd run_mode=flat \
 		-rd feol=true \
-		-rd beol=true || true |& tee $(KLAYOUT_DRC_PRECHECK_LOG)
+		-rd beol=true |& tee $(KLAYOUT_DRC_PRECHECK_LOG) || true
 
 
 .PHONY: klayout-drc
