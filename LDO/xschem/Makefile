@@ -90,15 +90,23 @@ TOP_SCH:=$(realpath $(filter %$(TOP).sch,$(SCH)))
 TOP_TB:=$(realpath $(filter %$(TOP)-test.sch,$(TB)))
 
 TOP_GDS:=$(realpath $(filter %$(TOP).gds,$(GDS)))
+TOP_GDS_CELL:=$(basename $(notdir $(TOP_GDS)))
 
-# TODO: This two variables are necessary?
-TOP_PEX:=$(realpath $(filter %$(TOP).pex,$(PEX)))
-TOP_PEX_SYM:=$(realpath $(filter %$(TOP)_flat.sym,$(SYM)))
+TOP_GDS_DIR:=$(abspath $(dir $(TOP_GDS)))
+TOP_SCH_DIR:=$(abspath $(dir $(TOP_SCH)))
 
+# Extracted from schematics (xschem)
 TOP_NETLIST_SCH:=$(realpath $(filter %$(TOP).spice,$(ALL_NETLIST)))
-TOP_NETLIST_GDS:=$(realpath $(filter %$(TOP).cir,$(ALL_NETLIST)))
-TOP_NETLIST_PEX:=$(realpath $(filter %$(TOP).pex,$(ALL_NETLIST)))
-TOP_NETLIST_PEX_SYM:=$(realpath $(filter %$(TOP)_flat.sym,$(SYM)))
+TOP_NETLIST_LVS_NOPREFIX:=$(TOP_SCH_DIR)/$(TOP)-noprefix.spice
+TOP_NETLIST_LVS_PREFIX:=$(TOP_SCH_DIR)/$(TOP)-prefix.spice
+
+# Extracted from layout
+# (klayout)
+TOP_EXTRACTED_KLAYOUT:=$(realpath $(filter %$(TOP).cir,$(wildcard $(TOP_GDS_DIR)/*)))
+# (magic)
+TOP_EXTRACTED_MAGIC:=$(realpath $(filter %$(TOP)-extracted.spice,$(wildcard $(TOP_GDS_DIR)/*)))
+TOP_EXTRACTED_PEX:=$(realpath $(filter %$(TOP)-pex.spice,$(wildcard $(TOP_GDS_DIR)/*)))
+
 endif
 
 # Relevant directories
@@ -155,5 +163,14 @@ print-vars : \
 	print-TOP_NETLIST_PEX
 
 
+.PHONY: help
 help:
 	$(call HELP_ENTRIES)
+
+
+.PHONY: klayout
+klayout: klayout-edit
+
+
+.PHONY: xschem
+xschem: xschem-sch

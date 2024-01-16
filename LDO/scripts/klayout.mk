@@ -6,11 +6,10 @@ KLAYOUT_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-lvs-$(TOP).log
 KLAYOUT_DRC_EFABLES_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-efabless-$(TOP).log
 KLAYOUT_DRC_PRECHECK_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-precheck-$(TOP).log
 
-TOP_GDS_DIR:=$(dir $(TOP_GDS))
-TOP_GDS_CELL:=$(basename $(notdir $(TOP_GDS)))
+GND_NAME:=gf180mcu_gnd
 
-TOP_ALL_LYRDB:=$(filter %.lyrdb,$(ALL_FILES))
-TOP_ALL_LVSDB:=$(filter %.lvsdb,$(ALL_FILES))
+TOP_ALL_LYRDB:=$(filter %.lyrdb,$(wildcard $(TOP_GDS_DIR)/*))
+TOP_ALL_LVSDB:=$(filter %.lvsdb,$(wildcard $(TOP_GDS_DIR)/*))
 
 KLAYOUT=klayout -t
 
@@ -22,16 +21,16 @@ define HELP_ENTRIES +=
 	$(call INFO_MESSAGE,  klayout:            Alias for `klayout-view`)
 	$(call INFO_MESSAGE,  klayout-view:       Opens klayout in view mode)
 	$(call INFO_MESSAGE,  klayout-edit:       Opens klayout in edit mode)
+    $(call INFO_MESSAGE,  klayout-lvs:        Run klayout lvs and open the reports)
     $(call INFO_MESSAGE,  klayout-lvs-help:   Shows lvs help documentation)
     $(call INFO_MESSAGE,  klayout-lvs-view:   Opens klayout in edit mode and with)
 	$(call INFO_MESSAGE,                      lvs reports.)
     $(call INFO_MESSAGE,  klayout-lvs-only:   Runs LVS from command line)
-    $(call INFO_MESSAGE,  klayout-lvs:        Run klayout lvs and open the reports)
+    $(call INFO_MESSAGE,  klayout-drc:        Runs DRC and open reports on graphical)
+	$(call INFO_MESSAGE,                      interface)
     $(call INFO_MESSAGE,  klayout-drc-view:   Open DRC reports on graphical interface)
     $(call INFO_MESSAGE,  klayout-drc-only:   Runs DRC from efabless and precheck)
 	$(call INFO_MESSAGE,                      from command line)
-    $(call INFO_MESSAGE,  klayout-drc:        Runs DRC and open reports on graphical)
-	$(call INFO_MESSAGE,                      interface)
     $(call INFO_MESSAGE,  klayout-eval:       Runs DRC and LVS)
 endef
 
@@ -42,28 +41,24 @@ endef
 .PHONY: klayout-validation
 klayout-validation:
 ifeq (,$(wildcard $(TOP_GDS)))
-	$(call ERROR_MESSAGE, GDS file $(TOP_GDS) doesn't exist$)
-endif
-	
+	$(call ERROR_MESSAGE, [klayout] GDS file $(TOP_GDS) doesn't exist$)
+endif	
+	$(call INFO_MESSAGE, [klayout] directory:         $(TOP_GDS_DIR))
 	$(call INFO_MESSAGE, [klayout] GDS:               $(TOP_GDS))
 
 ifeq (,$(wildcard $(TOP_NETLIST_SCH)))
-	$(call WARNING_MESSAGE, Schematic netlist doesn't exist$)
+	$(call WARNING_MESSAGE, [klayout] Schematic netlist doesn't exist$)
 else
-	$(call INFO_MESSAGE, Netlist from schematic  exist)
-endif
-
-	$(call INFO_MESSAGE, [klayout] directory:         $(TOP_GDS_DIR))
 	$(call INFO_MESSAGE, [klayout] schematic netlist: $(TOP_NETLIST_SCH))
+endif
 	$(call INFO_MESSAGE, [klayout] gds netlist:       $(TOP_NETLIST_GDS))
+	$(call INFO_MESSAGE, [klayout] schematic netlist: $(wildcard $(TOP_GDS_DIR)/$(TOP)-noprefix.spice))
+	$(call INFO_MESSAGE, [klayout] DRC reports:       $(TOP_ALL_LYRDB))
+	$(call INFO_MESSAGE, [klayout] LVS reports:       $(TOP_ALL_LVSDB))
 
 
 # Visualization
 ###############
-
-.PHONY: klayout
-klayout: klayout-view
-
 
 .PHONY: klayout-view
 klayout-view: klayout-validation
@@ -108,19 +103,29 @@ klayout-lvs-help:
 
 .PHONY: klayout-lvs-view
 klayout-lvs-view: klayout-validation
+ifeq (,$(TOP_ALL_LVSDB))
+	$(call ERROR_MESSAGE, [klayout] There's no LVS report for $(TOP))
+else
 	$(KLAYOUT) -e $(TOP_GDS) $(foreach file,$(TOP_ALL_LVSDB),-mn $(file))
+endif
 
 
 .PHONY: klayout-lvs-only
-klayout-lvs-only: klayout-validation
+klayout-lvs-only: klayout-validation xschem-netlist-lvs-noprefix-fixed
+	$(RM) $(TOP_GDS_DIR)/*.lyrdb
+
+	# Since the netlist could not exists on first run
+	# It's recommended use TOP.spice instead of TOP_NETLIST_SCH
 	python $(KLAYOUT_HOME)/lvs/run_lvs.py \
 		--variant=D \
 		--run_mode=flat \
 		--verbose \
+		--lvs_sub=$(GND_NAME) \
 		--run_dir=$(TOP_GDS_DIR) \
 		--layout=$(TOP_GDS) \
-		--netlist=$(TOP_NETLIST_SCH) \
+		--netlist=$(TOP_GDS_DIR)/$(TOP)-noprefix.spice \
 		--top_lvl_pins \
+		--schematic_simplify \
 		--combine |& tee $(KLAYOUT_LVS_LOG) || true
 
 
@@ -134,7 +139,11 @@ klayout-lvs: klayout-lvs-only
 
 .PHONY: klayout-drc-view
 klayout-drc-view: klayout-validation
+ifeq (,$(TOP_ALL_LYRDB))
+	$(call ERROR_MESSAGE, [klayout] There's no DRC report for $(TOP))
+else
 	$(KLAYOUT) -e $(TOP_GDS) $(foreach file,$(TOP_ALL_LYRDB),-m $(file))
+endif
 
 
 .PHONY: klayout-drc-only

@@ -21,15 +21,15 @@ proc load_layout { layout cellname } {
 proc generate_lvs_spice { lvsdir cellname } {
     debug "generate_lvs_spice" ""
 
-    flatten ${cellname}_flat
-    load ${cellname}_flat
+    flatten ${cellname}-extracted
+    load ${cellname}-extracted
     box values 0 0 0 0
 
     extract
     ext2spice lvs
-    ext2spice -o "${lvsdir}/${cellname}.cir"
+    ext2spice -o "${lvsdir}/${cellname}-extracted.spice"
 
-    debug "generate_lvs_spice" [string cat [file normalize $lvsdir/$cellname.cir] " was created"]
+    debug "generate_lvs_spice" [string cat [file normalize $lvsdir/$cellname-extracted.spice] " was created"]
 }
 
 proc generate_parasitic_spice { pexdir cellname } {
@@ -39,8 +39,8 @@ proc generate_parasitic_spice { pexdir cellname } {
 
     # https://open-source-silicon.slack.com/archives/C016YSAP6TZ/p1674967276129349
     # 
-    flatten ${cellname}_flat
-    load ${cellname}_flat
+    flatten ${cellname}-pex
+    load ${cellname}-pex
     box values 0 0 0 0
     #box 0 0 0 0
 
@@ -52,9 +52,9 @@ proc generate_parasitic_spice { pexdir cellname } {
     ext2spice lvs
     ext2spice extresist on
     ext2spice cthresh 0
-    ext2spice -o "${pexdir}/${cellname}.pex"
+    ext2spice -o "${pexdir}/${cellname}-pex.spice"
     
-    debug "generate_parasitic_spice" [string cat [file normalize $pexdir/$cellname.pex] " was created"]
+    debug "generate_parasitic_spice" [string cat [file normalize $pexdir/$cellname-pex.spice] " was created"]
 
     # https://open-source-silicon.slack.com/archives/C016YSAP6TZ/p1675532194275949
     # Floating might be an implementation error... ?
