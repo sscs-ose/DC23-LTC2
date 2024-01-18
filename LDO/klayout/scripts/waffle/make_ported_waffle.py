@@ -4,7 +4,7 @@ from cells.via_generator import draw_via_dev
 from pprint import pprint
 from pathlib import Path
 
-from klayout_utilities import KlayoutUtilities  # , FetWaffleLayout
+from klayout_utilities import KlayoutUtilities
 from pya import (
     DPoint,
     DCellInstArray,
@@ -16,6 +16,7 @@ from pya import (
     DPath,
     Shapes,
     DCplxTrans,
+    DText,
 )
 
 import math
@@ -33,12 +34,39 @@ from math import ceil, floor, sqrt
 from enum import Enum
 
 
+def is_perfect_square(n: int):
+    n_root = round(sqrt(n))
+
+    if n == n_root**2:
+        return True
+
+    return False
+
+
 class FetWaffleLayout:
     """This class should be able to create waffle cells and position them on the layout"""
 
     def __init__(self, m: int = 0, waffle_cells: dict[str, Cell] = None, overlap=5.5):
+        self.l = 0.5
+        self.w = 4.38
+
         _, self.m = FetWaffleLayout.approximate_m(m)
-        self.n = int((1 + int(sqrt(1 + 2 * m))) / 2)
+        print(
+            f"[FetWaffleLayout] Possible multiplicities: {FetWaffleLayout.approximate_m(m)}"
+        )
+
+        if self.m <= 24:
+            self.m = 24
+            self.n = 4
+        else:
+            self.n = (1 + round(sqrt(1 + 2 * self.m))) // 2
+
+        # This should never happen... but happens
+        if self.n % 2 != 0:
+            raise (ValueError(f"{self.n} is not a valid value for n when m={self.m}"))
+
+        self.n_internal = self.n - 2
+        """Number of source_in and frame_in frames. doesn't include corner frames"""
 
         print(f"[FetWaffleLayout] Using m={self.m} and n={self.n}")
 
@@ -75,24 +103,29 @@ class FetWaffleLayout:
 
         # We are working on a new cell
         self.layout: Layout = KlayoutUtilities().layout
-        self.cell: Cell = self.layout.create_cell(f"waffle-{self.m}-{overlap}")
+        self.cell: Cell = self.layout.create_cell(f"waffle_{self.m}")
 
-        self.center = DTrans((self.n - 1) / 2 * (self.dx + self.dy))
+        self.center = DTrans((self.n_internal - 1) / 2 * (self.dx + self.dy))
 
         # Guard ring parameters
         self.int_gr_thickness = 3
         self.int_gr_separation = 4.75 + 1 / 2 * self.int_gr_thickness
-        self.int_gr_length = (self.n + 1) * self.dx.x + 2 * self.int_gr_separation
+        self.int_gr_length = (
+            self.n_internal + 1
+        ) * self.dx.x + 2 * self.int_gr_separation
 
         self.ext_gr_thickness = 40
         self.ext_gr_separation = 12.75 + 1 / 2 * self.ext_gr_thickness
-        self.ext_gr_length = (self.n + 1) * self.dx.x + 2 * self.ext_gr_separation
+        self.ext_gr_length = (
+            self.n_internal + 1
+        ) * self.dx.x + 2 * self.ext_gr_separation
 
     def draw(self, add_guard_ring=True):
         self.draw_central_layout()
         self.draw_left_top_layout()
         self.draw_right_bottom_layout()
         self.draw_corners_layout()
+        self.draw_gate_mesh()
 
         if add_guard_ring:
             self.draw_internal_guard_ring()
@@ -105,35 +138,45 @@ class FetWaffleLayout:
         return self.cell
 
     def draw_central_layout(self):
+        center_base = (self.dx + self.dy) / 2
+        center_base -= (self.dx + self.dy) * (self.n_internal // 2)
+        """Centering in two steps: 1) move to bottom left corner. 2) move to center"""
+        # center_base = DVector()
+
         array_A1 = DCellInstArray(
-            self.source_in, DTrans(), self.dx * 2, self.dy * 2, self.n // 2, self.n // 2
+            self.source_in,
+            DTrans(center_base),
+            self.dx * 2,
+            self.dy * 2,
+            self.n_internal // 2,
+            self.n_internal // 2,
         )
 
         array_A2 = DCellInstArray(
             self.source_in,
-            DTrans(self.dx + self.dy),
+            DTrans(center_base + self.dx + self.dy),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
-            self.n // 2,
+            self.n_internal // 2,
+            self.n_internal // 2,
         )
 
         array_B1 = DCellInstArray(
             self.drain_in,
-            DTrans(self.dx),
+            DTrans(center_base + self.dx),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
-            self.n // 2,
+            self.n_internal // 2,
+            self.n_internal // 2,
         )
 
         array_B2 = DCellInstArray(
             self.drain_in,
-            DTrans(self.dy),
+            DTrans(center_base + self.dy),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
-            self.n // 2,
+            self.n_internal // 2,
+            self.n_internal // 2,
         )
 
         self.cell.insert(array_A1)
@@ -142,17 +185,25 @@ class FetWaffleLayout:
         self.cell.insert(array_B2)
 
     def draw_left_top_layout(self):
+        center_base = (self.dx + self.dy) / 2
+        center_base -= (self.dx + self.dy) * (self.n_internal // 2)
+
         array_A1 = DCellInstArray(
             self.source_lt,
-            DTrans(-self.dx + self.dy),
+            DTrans(center_base - self.dx + self.dy),
             self.dx * 2,
             self.dy * 2,
             0,
-            self.n // 2,
+            self.n_internal // 2,
         )
 
         array_B1 = DCellInstArray(
-            self.drain_lt, DTrans(-self.dx), self.dx * 2, self.dy * 2, 0, self.n // 2
+            self.drain_lt,
+            DTrans(center_base - self.dx),
+            self.dx * 2,
+            self.dy * 2,
+            0,
+            self.n_internal // 2,
         )
 
         self.cell.insert(array_A1)
@@ -160,19 +211,21 @@ class FetWaffleLayout:
 
         array_A2 = DCellInstArray(
             self.source_lt,
-            DCplxTrans.new(1, 270, True, self.dy * self.n),
+            DCplxTrans.new(1, 270, True, center_base + self.dy * self.n_internal),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
+            self.n_internal // 2,
             0,
         )
 
         array_B2 = DCellInstArray(
             self.drain_lt,
-            DCplxTrans.new(1, 270, True, self.dx + self.dy * self.n),
+            DCplxTrans.new(
+                1, 270, True, center_base + self.dx + self.dy * self.n_internal
+            ),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
+            self.n_internal // 2,
             0,
         )
 
@@ -180,22 +233,25 @@ class FetWaffleLayout:
         self.cell.insert(array_B2)
 
     def draw_right_bottom_layout(self):
+        center_base = (self.dx + self.dy) / 2
+        center_base -= (self.dx + self.dy) * (self.n_internal // 2)
+
         array_A1 = DCellInstArray(
             self.source_rb,
-            DTrans(self.dx * self.n),
+            DTrans(center_base + self.dx * self.n_internal),
             self.dx * 2,
             self.dy * 2,
             0,
-            self.n // 2,
+            self.n_internal // 2,
         )
 
         array_B1 = DCellInstArray(
             self.drain_rb,
-            DTrans(self.dx * self.n + self.dy),
+            DTrans(center_base + self.dx * self.n_internal + self.dy),
             self.dx * 2,
             self.dy * 2,
             0,
-            self.n // 2,
+            self.n_internal // 2,
         )
 
         self.cell.insert(array_A1)
@@ -203,19 +259,19 @@ class FetWaffleLayout:
 
         array_A2 = DCellInstArray(
             self.source_rb,
-            DCplxTrans.new(1, 270, True, self.dx - self.dy),
+            DCplxTrans.new(1, 270, True, center_base + self.dx - self.dy),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
+            self.n_internal // 2,
             0,
         )
 
         array_B2 = DCellInstArray(
             self.drain_rb,
-            DCplxTrans.new(1, 270, True, -self.dy),
+            DCplxTrans.new(1, 270, True, center_base - self.dy),
             self.dx * 2,
             self.dy * 2,
-            self.n // 2,
+            self.n_internal // 2,
             0,
         )
 
@@ -228,15 +284,31 @@ class FetWaffleLayout:
         # -----------
         #  lb  |  rb
 
-        self.cell.insert(DCellInstArray(self.corner_lb, DTrans(-self.dx - self.dy)))
+        center_base = (self.dx + self.dy) / 2
+        center_base -= (self.dx + self.dy) * (self.n_internal // 2)
+
         self.cell.insert(
-            DCellInstArray(self.corner_lt, DTrans(-self.dx + self.dy * self.n))
+            DCellInstArray(self.corner_lb, DTrans(center_base - self.dx - self.dy))
         )
         self.cell.insert(
-            DCellInstArray(self.corner_rb, DTrans(self.dx * self.n - self.dy))
+            DCellInstArray(
+                self.corner_lt,
+                DTrans(center_base - self.dx + self.dy * self.n_internal),
+            )
         )
         self.cell.insert(
-            DCellInstArray(self.corner_rt, DTrans(self.dx * self.n + self.dy * self.n))
+            DCellInstArray(
+                self.corner_rb,
+                DTrans(center_base + self.dx * self.n_internal - self.dy),
+            )
+        )
+        self.cell.insert(
+            DCellInstArray(
+                self.corner_rt,
+                DTrans(
+                    center_base + self.dx * self.n_internal + self.dy * self.n_internal
+                ),
+            )
         )
 
     def draw_internal_guard_ring(self):
@@ -290,10 +362,9 @@ class FetWaffleLayout:
             nwell_box = DBox(-nwell_corner, nwell_corner)
             gr_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
 
-        self.cell.insert(DCellInstArray(gr_cell, DTrans(self.center)))
+        self.cell.insert(DCellInstArray(gr_cell, DTrans()))
 
     def draw_internal_guard_ring_via(self):
-        separation = self.int_gr_separation
         thickness = self.int_gr_thickness
         length = self.int_gr_length
 
@@ -320,8 +391,10 @@ class FetWaffleLayout:
         observed_distance_dx = DVector(7.87, 0)
         observed_distance_dy = DVector(0, 7.87)
 
-        bottom_left = -self.dx - self.dy - DPoint(separation, separation)
-        top_right = bottom_left + DVector(length, length)  # + self.dx + self.dy
+        diagonal_vector = DVector(length, length)
+
+        bottom_left = -diagonal_vector / 2
+        top_right = bottom_left + diagonal_vector
 
         # Bottom
         self.cell.insert(
@@ -330,7 +403,7 @@ class FetWaffleLayout:
                 DCplxTrans(1, 0, False, bottom_left + observed_distance_dx),
                 2 * self.dx,
                 DPoint(0, 0),
-                self.n // 2 + 1,
+                self.n_internal // 2 + 1,
                 0,
             )
         )
@@ -343,7 +416,7 @@ class FetWaffleLayout:
                 DPoint(0, 0),
                 2 * self.dy,
                 0,
-                self.n // 2 + 1,
+                self.n_internal // 2 + 1,
             )
         )
 
@@ -354,7 +427,7 @@ class FetWaffleLayout:
                 DCplxTrans(1, 0, False, top_right - observed_distance_dx),
                 -2 * self.dx,
                 DPoint(0, 0),
-                self.n // 2 + 1,
+                self.n_internal // 2 + 1,
                 0,
             )
         )
@@ -367,7 +440,7 @@ class FetWaffleLayout:
                 DPoint(0, 0),
                 -2 * self.dy,
                 0,
-                self.n // 2 + 1,
+                self.n_internal // 2 + 1,
             )
         )
 
@@ -409,20 +482,21 @@ class FetWaffleLayout:
 
             # NWELL Layer
             #############
+            # ORIGINAL DESIGN DOESN'T HAVE NWELL ON EXTERNAL GUARDRING
             # DF.4d_LV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.12µm
-            nwell_gap = 1
-            nwell_corner = (
-                1
-                / 2
-                * DPoint(
-                    length + thickness + 2 * nwell_gap,
-                    length + thickness + 2 * nwell_gap,
-                )
-            )
-            nwell_box = DBox(-nwell_corner, nwell_corner)
-            gr_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
+            # nwell_gap = 1
+            # nwell_corner = (
+            #     1
+            #     / 2
+            #     * DPoint(
+            #         length + thickness + 2 * nwell_gap,
+            #         length + thickness + 2 * nwell_gap,
+            #     )
+            # )
+            # nwell_box = DBox(-nwell_corner, nwell_corner)
+            # gr_cell.shapes(KlayoutUtilities.get_layer("nwell")).insert(nwell_box)
 
-        self.cell.insert(DCellInstArray(gr_cell, DTrans(self.center)))
+        self.cell.insert(DCellInstArray(gr_cell, DTrans()))
 
     def draw_external_guard_ring_track_2(self):
         """Internal guard ring is composed by COMP, NPLUS, CONTACTS, METAL1, VIA1, METAL2"""
@@ -494,7 +568,13 @@ class FetWaffleLayout:
                 DCellInstArray(create_via_cell(gr_cell, params=shorter_vias), left)
             )
 
-        self.cell.insert(DCellInstArray(gr_cell, DTrans(self.center)))
+            text_pw = DText(
+                "PW",
+                DTrans(DVector(length + thickness / 2, length + thickness / 2) / 2),
+            )
+            gr_cell.shapes(KlayoutUtilities.get_layer("metal3_label")).insert(text_pw)
+
+        self.cell.insert(DCellInstArray(gr_cell, DTrans()))
 
     def generate_external_guard_ring_track_3_box(
         self, gr_name, length, thickness, shortened_emtpy_size
@@ -559,52 +639,129 @@ class FetWaffleLayout:
             gr_cell.insert(DCellInstArray(gr_side_cell, bottom))
             gr_cell.insert(DCellInstArray(gr_side_cell, right))
 
-        self.cell.insert(DCellInstArray(gr_cell, DTrans(self.center)))
+            # Adding labels
+            text_offset = DVector(thickness, -thickness)
+            text_s = DText("S", DTrans(bottom.disp + right.disp - text_offset))
+            text_d = DText("D", DTrans(top.disp + left.disp + text_offset))
+            # text = DText("S", DTrans())
+            gr_cell.shapes(KlayoutUtilities.get_layer("metaltop_label")).insert(text_s)
+            gr_cell.shapes(KlayoutUtilities.get_layer("metaltop_label")).insert(text_d)
+
+        self.cell.insert(DCellInstArray(gr_cell, DTrans()))
+
+    def draw_gate_mesh(self):
+        interconnect_thickness = self.l
+        ring_thickness = 2.25
+
+        separation: float = self.dx.x
+        """Each interconnect box has this distance of empty space."""
+
+        mesh_size: float = separation * self.n + ring_thickness - interconnect_thickness
+        """Both interconnection and ring boxes has the same length"""
+
+        mesh_name = f"gate_mesh-{self.dx.x}-{interconnect_thickness}-{ring_thickness}"
+        mesh = self.cell.layout().cell(mesh_name)
+
+        if not mesh:
+            mesh = self.cell.layout().create_cell(mesh_name)
+
+            interconnect_name = f"interconnect-{mesh_name}"
+            interconnect = self.cell.layout().create_cell(interconnect_name)
+            interconnect.shapes(KlayoutUtilities.get_layer("metal3")).insert(
+                create_centered_box(
+                    width=mesh_size + ring_thickness, height=interconnect_thickness
+                )
+            )
+
+            mesh.insert(
+                DCellInstArray(
+                    interconnect,
+                    DCplxTrans(1, 0, False, -self.dy * (self.n // 2 - 1)),
+                    DVector(separation, 0),
+                    DVector(0, separation),
+                    0,
+                    self.n - 1,
+                )
+            )
+
+            mesh.insert(
+                DCellInstArray(
+                    interconnect,
+                    DCplxTrans(1, 90, False, -self.dx * (self.n // 2 - 1)),
+                    DVector(separation, 0),
+                    DVector(0, separation),
+                    self.n - 1,
+                    0,
+                )
+            )
+
+            ring_name = f"ring-{mesh_name}"
+            ring = self.cell.layout().create_cell(ring_name)
+            ring.shapes(KlayoutUtilities.get_layer("metal3")).insert(
+                create_centered_box(
+                    width=mesh_size + ring_thickness, height=ring_thickness
+                )
+            )
+
+            mesh.insert(
+                DCellInstArray(
+                    ring,
+                    DCplxTrans(1, 0, False, -DVector(0, mesh_size / 2)),
+                    DVector(mesh_size, 0),
+                    DVector(0, mesh_size),
+                    0,
+                    2,
+                )
+            )
+
+            mesh.insert(
+                DCellInstArray(
+                    ring,
+                    DCplxTrans(1, 90, False, -DVector(mesh_size / 2, 0)),
+                    DVector(mesh_size, 0),
+                    DVector(0, mesh_size),
+                    2,
+                    0,
+                )
+            )
+
+            text_g = DText("G", DTrans())
+            mesh.shapes(KlayoutUtilities.get_layer("metal3_label")).insert(text_g)
+
+            mesh.flatten(-1)
+
+        self.cell.insert(DCellInstArray(mesh, DVector()))
 
     @staticmethod
     def approximate_m(m: int) -> tuple[int, int]:
         """Given a target multiplicity, returns most approximate upper and lower bounds valid for waffle topology"""
-        temp = 1 + 2 * m
-        sqrt_temp = int(sqrt(temp))
-
-        # Get real or approximate n
-        if temp == sqrt_temp**2:
-            # Multiplicity m can be obtained exactly
-            n = int((1 + int(sqrt(1 + 2 * m))) / 2)
-
-            if n % 2 == 0:
-                n_top = n
-                n_bottom = n
-
-            else:
-                # Value is even
-                n_top = n + 1
-                n_bottom = n - 1
-
-        else:
-            # Multiplicity m can't be obtained exactly
-            # n is approximated to upper bound
-            n = (1 + sqrt(1 + 2 * m)) / 2
-            n_top = ceil(n)
-            n_bottom = floor(n)
-
-            if n_top % 2 == 0:
-                # if n_top is even, n_bottom is odd
-                n_bottom -= 1
-            else:
-                n_top += 1
-
         get_m = lambda n: 2 * n * (n - 1)
 
-        return get_m(n_bottom), get_m(n_top)
+        if is_perfect_square(1 + 2 * m):
+            n_twice = 1 + round(sqrt(1 + 2 * m))
+        else:
+            n_twice = 1 + ceil(sqrt(1 + 2 * m))
+
+        n = ceil(n_twice / 2)
+
+        if n % 2 != 0:
+            n += 1
+
+        return get_m(n - 2), get_m(n)
 
     @staticmethod
     def recursive_m_exploration(until, m=0):
         if until == 0:
             return
-        _, m = FetWaffleLayout.approximate_m(m)
-        print(f"{m = }")
-        FetWaffleLayout.recursive_m_exploration(until=until - 1, m=m + 1)
+        m_low, m_top = FetWaffleLayout.approximate_m(m)
+        n = int((1 + int(sqrt(1 + 2 * m))) / 2)
+        print(f"{m_low = } {n = } {m_top = }")
+        FetWaffleLayout.recursive_m_exploration(until=until - 1, m=m_top + 1)
+
+
+def create_centered_box(width: float, height: float) -> DBox:
+    corner = DPoint(width / 2, height / 2)
+    return DBox(-corner, corner)
 
 
 def via_filter_parameters(params: dict):
@@ -636,15 +793,25 @@ def via_filter_parameters(params: dict):
     if params["base_layer"] == "comp" and "implant" not in params.keys():
         params["implant"] = "p+"
 
+    if not "labels" in params.keys():
+        params["labels"] = dict()
+
     return params
 
 
 def create_via_cell(cell: Cell, position: DPoint = None, params: dict = dict()):
     params = via_filter_parameters(params)
 
-    via_name = f'via-{params["base_layer"]}-{params["metal_level"]}-{params["x_max"]}-{params["y_max"]}'
+    via_name = f'via-{params["base_layer"]}-{params["metal_level"]}-{round(params["x_max"], 4)}-{round(params["y_max"], 4)}'
     if "implant" in params.keys():
         via_name = f"{via_name}-{params['implant']}"
+
+    labels_name = ""
+    for label, layer_list in params["labels"].items():
+        labels_name = f"{labels_name}-{label}~{ '~'.join(layer_list)}"
+
+    if len(labels_name) > 0:
+        via_name = f"{via_name}{labels_name}"
 
     via_cell = cell.layout().cell(via_name)
     if via_cell is None:
@@ -704,6 +871,11 @@ def create_via_cell(cell: Cell, position: DPoint = None, params: dict = dict()):
         KlayoutUtilities.recursive_transform_shapes(
             via_cell, DCplxTrans(1, 0, False, via_offset)
         )
+
+        for label, layer_list in params["labels"].items():
+            for layer in layer_list:
+                text = DText(label, DTrans())
+                via_cell.shapes(KlayoutUtilities.get_layer(layer)).insert(text)
 
     if position:
         cell.insert(DCellInstArray(via_cell, DTrans(position)))
@@ -1247,8 +1419,8 @@ class PortPmosFrame:
             "corner_lt",
             "corner_rb",
         }:
-            track_1_params["base_layer"] = "M2"
             del track_1_params["implant"]
+            track_1_params["base_layer"] = "M2"
 
         if not (track_1_params or track_2_params):
             return
@@ -1363,7 +1535,7 @@ def main_waffle(should_port=True, m=0):
     top.insert(DCellInstArray(waffle.get_cell(), DTrans(DPoint())))
 
     # KlayoutUtilities().cell_view.cell_name = "via-comp-M2-4.2-0.4"
-    # KlayoutUtilities().cell_view.cell_name = "pmos_source_in"
+    # KlayoutUtilities().cell_view.cell_name = "gate_mesh-5.5-0.5-2.25"
 
     KlayoutUtilities.set_visual_configuration()
 
@@ -1389,6 +1561,7 @@ def main_specific(frame: str):
         "corner_rb": "pmos_waffle_corners_rb",
         "corner_rt": "pmos_waffle_corners_rt",
         "12x12": "pmos_12x12.gds",
+        "26x26": "waffle-26x26.gds",
     }
 
     frame_params_update_map = {
@@ -1403,6 +1576,7 @@ def main_specific(frame: str):
         "corner_rb": lambda params: params.update({"center": DVector(3.00, -3.00)}),
         "corner_rt": lambda params: params.update({"center": DVector(3.00, 2.50)}),
         "12x12": lambda params: params,
+        "26x26": lambda params: params,
     }
 
     frame_params_update_map[frame](default_params)
@@ -1416,6 +1590,7 @@ def main_specific(frame: str):
 
 
 if __name__ == "__main__":
+    FetWaffleLayout.recursive_m_exploration(10)
     # frame = "source_in"
     # frame = "drain_in"
     # frame = "source_lt"
@@ -1426,8 +1601,10 @@ if __name__ == "__main__":
     # frame = "corner_lt"
     # frame = "corner_rb"
     # frame = "corner_rt"
-    frame = "12x12"
-
+    # frame = "12x12"
+    # frame = "26x26"
     # main_specific(frame)
-    main_waffle(should_port=True, m=264)
+
     # main_waffle(should_port=False)
+    main_waffle(should_port=True, m=8000 / 4.38)
+    # main_waffle(should_port=True, m=24)

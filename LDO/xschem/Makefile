@@ -31,6 +31,7 @@ ALL_FILES:= \
 	$(wildcard ./ota-bandgap/*) \
 	$(wildcard ./ota-ldo/*) \
 	$(wildcard ./resistor/*) \
+	$(wildcard ./waffle_1984/*) \
 	$(wildcard ./test/resistor_core/*) \
 	$(wildcard ./test/pmos1f/*) \
 	$(wildcard ./test/pmos/*) \
