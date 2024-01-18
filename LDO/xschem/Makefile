@@ -86,27 +86,27 @@ ifeq (,$(TOP))
 $(warning $(COLOR_YELLOW)TOP not defined, using default values$(COLOR_END))
 TOP_SCH=0_top.sch
 else
-TOP_SCH:=$(realpath $(filter %$(TOP).sch,$(SCH)))
+TOP_SCH:=$(realpath $(filter %/$(TOP).sch,$(SCH)))
 
-TOP_TB:=$(realpath $(filter %$(TOP)-test.sch,$(TB)))
+TOP_TB:=$(realpath $(filter %/$(TOP)-test.sch,$(TB)))
 
-TOP_GDS:=$(realpath $(filter %$(TOP).gds,$(GDS)))
+TOP_GDS:=$(realpath $(filter %/$(TOP).gds,$(GDS)))
 TOP_GDS_CELL:=$(basename $(notdir $(TOP_GDS)))
 
 TOP_GDS_DIR:=$(abspath $(dir $(TOP_GDS)))
 TOP_SCH_DIR:=$(abspath $(dir $(TOP_SCH)))
 
 # Extracted from schematics (xschem)
-TOP_NETLIST_SCH:=$(realpath $(filter %$(TOP).spice,$(ALL_NETLIST)))
+TOP_NETLIST_SCH:=$(realpath $(filter %/$(TOP).spice,$(ALL_NETLIST)))
 TOP_NETLIST_LVS_NOPREFIX:=$(TOP_SCH_DIR)/$(TOP)-noprefix.spice
 TOP_NETLIST_LVS_PREFIX:=$(TOP_SCH_DIR)/$(TOP)-prefix.spice
 
 # Extracted from layout
 # (klayout)
-TOP_EXTRACTED_KLAYOUT:=$(realpath $(filter %$(TOP).cir,$(wildcard $(TOP_GDS_DIR)/*)))
+TOP_EXTRACTED_KLAYOUT:=$(realpath $(filter %/$(TOP).cir,$(wildcard $(TOP_GDS_DIR)/*)))
 # (magic)
-TOP_EXTRACTED_MAGIC:=$(realpath $(filter %$(TOP)-extracted.spice,$(wildcard $(TOP_GDS_DIR)/*)))
-TOP_EXTRACTED_PEX:=$(realpath $(filter %$(TOP)-pex.spice,$(wildcard $(TOP_GDS_DIR)/*)))
+TOP_EXTRACTED_MAGIC:=$(realpath $(filter %/$(TOP)-extracted.spice,$(wildcard $(TOP_GDS_DIR)/*)))
+TOP_EXTRACTED_PEX:=$(realpath $(filter %/$(TOP)-pex.spice,$(wildcard $(TOP_GDS_DIR)/*)))
 
 endif
 

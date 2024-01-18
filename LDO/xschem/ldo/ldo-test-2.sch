@@ -247,7 +247,7 @@ plot (180/pi)*vp(out)
 *plot load_current v(out)-1.8
 *.endc
 "}
-C {/workspaces/DC23-LTC2/LDO/xschem/ota-ldo/ota-ldo.sym} 270 -520 0 0 {name=X1}
+C {ota-ldo.sym} 270 -520 0 0 {name=X1}
 C {devices/isource.sym} -20 -360 2 0 {name=I1 value=100u
 }
 C {devices/gnd.sym} -20 -310 0 0 {name=l10 lab=GND}

@@ -1,0 +1,246 @@
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ldo-top/ldo-top-test.sch
+
+.include /home/designer/.volare/gf180mcuD/libs.tech/ngspice/design.ngspice
+
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice res_typical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice bjt_typical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice moscap_typical
+
+
+**.subckt ldo-top-test out
+*.opin out
+V3 vin GND 4
+x1 vin out GND ldo-top
+**** begin user architecture code
+
+.param R=66
+
+R10 out 0 {R}
+*IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
+CL out 0 10p
+
+.options savecurrents
+.nodeset v(out)=0
+.nodeset v(x1.x1.pos)=0
+
+*TRANSIENT
+*.control
+*save all
+*tran 1ns 10us
+*plot v(out) v(ref) v(pos) v(vin)
+*plot v(op_out)
+*plot v(out)
+*plot i(v3)
+*plot i(v3)*v(vin)
+*.endc
+
+*Stability_Analysis
+*.control
+*alter IL 0
+*alter V3 AC =0
+*alter V3 AC=1
+*ac dec 10 1 1G
+*plot vdb(x1.x1.op_out)
+*plot (180/pi)*vp(out)
+*let ph= (180/pi)*vp(out)
+*meas ac pm FIND ph WHEN vdb(out)=0
+*.endc
+
+*SUPPLY SWEEP
+.control
+save all
+save v(x1.out) v(x1.x1.ref) v(x1.x1.pos) v(x1.x1.vin) v(x1.x1.op_out) i(x1.x1.v4)
+dc V3 4 0 -0.01
+plot v(out) v(x1.ref) v(vin) v(x1.x1.op_out)
+*plot i(v.x1.x1.v4)
+.endc
+
+*PSRR_Analysis
+.control
+save all
+alter V3 AC =1
+ac dec 100 1 1G
+plot vdb(out)
+plot vdb(x1.x1.op_out)
+plot (180/pi)*vp(out)
+*let gm0=
+*let Zout=(1.5)/(gm0*v(op_out))
+*let Zout2=v(out)/gm0
+*plot vdb(Zout2)
+*wrdata /foss/designs/LDO_Design/data/data_PSRR.dat vdb(out)
+.endc
+
+
+**Load_Transient
+*.control
+*alter IL 50u
+*alter R10 3600k
+*tran 0.1u 100u
+*meas TRAN V_ldo_100u FIND v(out) AT=5u
+*meas TRAN V_ldo_10m FIND v(out) AT=100u
+*let load_reg= V_ldo_100u-V_ldo_10m
+*let load_current =(-1*i(V3)-131.8e-6)
+*print load_reg
+*plot load_current v(out)-1.8
+*.endc
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  ldo-top.sym # of pins=3
+** sym_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ldo-top/ldo-top.sym
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ldo-top/ldo-top.sch
+.subckt ldo-top vin out vss
+*.opin out
+*.iopin vin
+*.iopin vss
+x1 vin ref net1 out net2 ldo
+x2 vin ref net1 net3 net2 bandgap
+.ends
+
+
+* expanding   symbol:  ldo.sym # of pins=5
+** sym_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ldo/ldo.sym
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ldo/ldo.sch
+.subckt ldo vdd ref cur out vss
+*.iopin ref
+*.iopin out
+*.iopin cur
+*.iopin vss
+*.iopin vdd
+X1 vdd op_out ref pos cur vss ota-ldo
+XM1 out op_out vdd vdd pfet_03v3 L=0.5u W=100u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=30
+XR1 net1 out vss ppolyf_u_2k r_width=1e-6 r_length=164e-6 m=1
+XR2 vss pos vss ppolyf_u_2k r_width=1e-6 r_length=100e-6 m=1
+v4 net1 pos 0
+.ends
+
+
+* expanding   symbol:  bandgap.sym # of pins=5
+** sym_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/bandgap/bandgap.sym
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/bandgap/bandgap.sch
+.subckt bandgap VDD out iref stop VSS
+*.iopin VDD
+*.iopin VSS
+*.iopin out
+*.iopin iref
+*.iopin stop
+XM1 stop ota_out VDD VDD pfet_03v3 L=2u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=8
+XM2 out ota_out VDD VDD pfet_03v3 L=2u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=8
+X1 VDD ota_out net2 net1 net3 VSS ota-bandgap
+XQ1 VSS VSS vbe pnp_05p00x05p00 m=8
+XQ2 VSS VSS net2 pnp_05p00x05p00 m=1
+XR8 net2 stop VDD ppolyf_u_1k r_width=1e-6 r_length=10e-6 m=1
+XR1 net1 out VDD ppolyf_u_1k r_width=1e-6 r_length=10e-6 m=1
+XR2 vbe net1 VDD ppolyf_u_1k r_width=1e-6 r_length=10e-6 m=9
+XM3 net3 ota_out VDD VDD pfet_03v3 L=1u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM4 iref ota_out VDD VDD pfet_03v3 L=1u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM6 net4 net4 VDD VDD pfet_03v3 L=0.5u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM5 net5 net4 VDD VDD pfet_03v3 L=0.5u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM7 VSS VDD net4 VDD pfet_03v3 L=0.5u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM8 ota_out net5 VSS VSS nfet_03v3 L=0.5u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM9 net5 stop VSS VSS nfet_03v3 L=0.5u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XC1 net4 VSS cap_mim_2f0fF c_width=1e-6 c_length=1e-6 m=1
+.ends
+
+
+* expanding   symbol:  ota-ldo.sym # of pins=6
+** sym_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ota-ldo/ota-ldo.sym
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ota-ldo/ota-ldo.sch
+.subckt ota-ldo avdd out neg pos vb agnd
+*.iopin vb
+*.iopin avdd
+*.iopin agnd
+*.ipin neg
+*.ipin pos
+*.opin out
+XC2 net2 out cap_mim_1f5fF c_width=50e-6 c_length=20e-6 m=1
+XM1 net1 neg net3 agnd nfet_03v3 L=0.28u W=82.24u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM3 net1 net1 avdd avdd pfet_03v3 L=1u W=51u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=2
+XM2 net2 pos net3 agnd nfet_03v3 L=0.28u W=82.24u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM4 net2 net1 avdd avdd pfet_03v3 L=1u W=51u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=2
+XM7 net3 vb agnd agnd nfet_03v3 L=0.7u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM8 vb vb agnd agnd nfet_03v3 L=0.7u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM5 out net2 avdd avdd pfet_03v3 L=0.28u W=50u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=24
+XM6 out vb agnd agnd nfet_03v3 L=0.7u W=77u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=2
+.ends
+
+
+* expanding   symbol:  ota-bandgap.sym # of pins=6
+** sym_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ota-bandgap/ota-bandgap.sym
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/ota-bandgap/ota-bandgap.sch
+.subckt ota-bandgap avdd out neg pos vb agnd
+*.iopin vb
+*.iopin avdd
+*.iopin agnd
+*.ipin neg
+*.ipin pos
+*.opin out
+XC2 net2 out cap_mim_1f5fF c_width=50e-6 c_length=20e-6 m=1
+XM1 net1 neg net3 agnd nfet_03v3 L=0.3u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM3 net1 net1 avdd avdd pfet_03v3 L=0.8u W=9u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM2 net2 pos net3 agnd nfet_03v3 L=0.3u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM4 net2 net1 avdd avdd pfet_03v3 L=0.8u W=9u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM7 net3 vb agnd agnd nfet_03v3 L=1u W=16u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM8 vb vb agnd agnd nfet_03v3 L=0.7u W=1.66u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM5 out net2 avdd avdd pfet_03v3 L=0.4u W=60u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM6 out vb agnd agnd nfet_03v3 L=0.5u W=60u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+.GLOBAL GND
+.end

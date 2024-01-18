@@ -9,18 +9,21 @@ V {}
 S {}
 E {}
 L 4 -50 -40 -50 40 {}
-L 4 20 -40 60 -0 {}
+L 4 20 -40 60 0 {}
 L 4 20 40 60 0 {}
 L 4 -50 -40 20 -40 {}
 L 4 -50 40 20 40 {}
 L 4 40 20 80 20 {}
+L 7 -70 0 -50 0 {}
 L 7 0 -60 0 -40 {}
 L 7 60 0 80 0 {}
 L 7 0 40 0 60 {}
-B 5 -2.5 -62.5 2.5 -57.5 {name=VDD sig_type=std_logic dir=inout }
-B 5 77.5 -2.5 82.5 2.5 {name=out sig_type=std_logic dir=inout }
-B 5 -2.5 57.5 2.5 62.5 {name=VSS sig_type=std_logic dir=inout }
-B 5 77.5 17.5 82.5 22.5 {name=iref sig_type=std_logic dir=inout }
+B 5 -2.5 -62.5 2.5 -57.5 {name=VDD sig_type=std_logic dir=inout}
+B 5 77.5 -2.5 82.5 2.5 {name=out sig_type=std_logic dir=inout}
+B 5 77.5 17.5 82.5 22.5 {name=iref sig_type=std_logic dir=inout}
+B 5 -72.5 -2.5 -67.5 2.5 {name=stop sig_type=std_logic dir=inout}
+B 5 -2.5 57.5 2.5 62.5 {name=VSS sig_type=std_logic dir=inout}
+T {stop} -25 -4 0 1 0.2 0.2 {}
 T {@symname} 40.5 -46 0 0 0.3 0.3 {}
 T {@name} 15 -62 0 0 0.2 0.2 {}
 T {VDD} -4 -35 3 1 0.2 0.2 {}

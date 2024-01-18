@@ -209,6 +209,10 @@ N 550 -550 600 -550 {
 lab=stop}
 N -370 -530 -320 -530 {
 lab=ota_out}
+N -350 -50 600 -50 {
+lab=stop}
+N -350 -330 -350 -50 {}
+N 600 -550 600 -50 {}
 C {symbols/pfet_03v3.sym} 530 -590 0 0 {name=M1
 L=2u
 W=3u
@@ -400,7 +404,5 @@ L=1e-6
 model=cap_mim_2f0fF
 spiceprefix=X
 m=1}
-C {devices/iopin.sym} 600 -550 0 0 {name=p8 sig_type=std_logic lab=stop
-}
 C {devices/iopin.sym} -350 -330 0 1 {name=p9 sig_type=std_logic lab=stop
 }
