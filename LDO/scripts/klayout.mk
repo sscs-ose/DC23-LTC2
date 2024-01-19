@@ -14,24 +14,25 @@ TOP_ALL_LVSDB:=$(filter %.lvsdb,$(wildcard $(TOP_GDS_DIR)/*))
 KLAYOUT=klayout -t
 
 define HELP_ENTRIES +=
-	$(call INFO_MESSAGE,)
-	$(call INFO_MESSAGE, Klayout related rules:)
-	$(call INFO_MESSAGE,  klayout-validation: Evaluates relevant file existence.)
-	$(call INFO_MESSAGE,                      Is used by other rules.)
-	$(call INFO_MESSAGE,  klayout:            Alias for `klayout-view`)
-	$(call INFO_MESSAGE,  klayout-view:       Opens klayout in view mode)
-	$(call INFO_MESSAGE,  klayout-edit:       Opens klayout in edit mode)
-    $(call INFO_MESSAGE,  klayout-lvs:        Run klayout lvs and open the reports)
-    $(call INFO_MESSAGE,  klayout-lvs-help:   Shows lvs help documentation)
-    $(call INFO_MESSAGE,  klayout-lvs-view:   Opens klayout in edit mode and with)
-	$(call INFO_MESSAGE,                      lvs reports.)
-    $(call INFO_MESSAGE,  klayout-lvs-only:   Runs LVS from command line)
-    $(call INFO_MESSAGE,  klayout-drc:        Runs DRC and open reports on graphical)
-	$(call INFO_MESSAGE,                      interface)
-    $(call INFO_MESSAGE,  klayout-drc-view:   Open DRC reports on graphical interface)
-    $(call INFO_MESSAGE,  klayout-drc-only:   Runs DRC from efabless and precheck)
-	$(call INFO_MESSAGE,                      from command line)
-    $(call INFO_MESSAGE,  klayout-eval:       Runs DRC and LVS)
+
+Klayout related rules:
+  klayout-validation: Evaluates relevant file existence. It's used by other rules.
+  klayout-view:       Opens klayout in view mode
+  klayout-edit:       Opens klayout in edit mode
+  klayout-lvs:        Run klayout lvs and open the reports
+  klayout-lvs-help:   Shows lvs help documentation
+  klayout-lvs-view:   Opens klayout in edit mode and with lvs reports.
+  klayout-lvs-only:   Runs LVS from command line
+  klayout-drc:        Runs DRC and open reports on graphical interface
+  klayout-drc-view:   Open DRC reports on graphical interface
+  klayout-drc-only:   Runs DRC from efabless and precheck from command line
+  klayout-eval:       Runs DRC and LVS
+
+  IMPORTANT NOTE!!!
+  For LVS commands, it's required to define the variable GND_NAME to the 
+  name that the bulk has on the layout.
+    $$ make TOP=resistor GND_NAME=B klayout-lvs
+
 endef
 
 

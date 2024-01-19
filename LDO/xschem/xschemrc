@@ -15,3 +15,20 @@ foreach ldo_directory [ glob -nocomplain -type d * ] {
 }
 
 set XSCHEM_START_WINDOW {0_top.sch}
+
+
+proc create_empty_sch { filename } {
+    puts "Hola $filename"
+    xschem clear force
+    xschem saveas $filename schematic
+    exit
+}
+
+proc get_variables { } {
+    puts "current_dirname:  [ xschem get current_dirname ]" 
+    puts "current_name:     [ xschem get current_name ]" 
+    puts "current_win_path: [ xschem get current_win_path ]" 
+    puts "netlist_name:     [ xschem get netlist_name ]" 
+    puts "netlist_type:     [ xschem get netlist_type ]" 
+    puts "version:          [ xschem get version ]" 
+}

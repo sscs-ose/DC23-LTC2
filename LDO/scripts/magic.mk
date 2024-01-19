@@ -5,10 +5,18 @@ MAGIC_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-magic-$(TOP).log
 MAGIC_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-magic-lvs-$(TOP).log
 MAGIC_PEX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-magic-pex-$(TOP).log
 
-#MAGIC=LAYOUT=$(notdir $(TOP_GDS)) TOP=$(TOP) magic -rcfile $(MAGIC_RCFILE) -noconsole
 MAGIC=PEX_DIR=$(TOP_GDS_DIR) LVS_DIR=$(TOP_GDS_DIR) LAYOUT=$(TOP_GDS) TOP=$(TOP) magic -rcfile $(MAGIC_RCFILE) -noconsole
 MAGIC_BATCH=$(MAGIC) -nowrapper -nowindow -D -dnull
 
+define HELP_ENTRIES +=
+
+Magic related rules:
+  magic-validation:  Evaluates relevant file existence. It's used by other rules.
+  magic-edit:        Open $(TOP).gds on magic
+  magic-lvs:         Extracts the netlist without parasitics
+  magic-pex:         Extracts the netlist with resistive and capacitive parasitics
+
+endef
 
 # Rules
 #######
@@ -29,13 +37,6 @@ endif
 	$(call INFO_MESSAGE, [magic] extracted netlist: $(wildcard $(TOP_GDS_DIR)/$(TOP)-extracted.spice))
 	$(call INFO_MESSAGE, [magic] extracted pex:     $(wildcard $(TOP_GDS_DIR)/$(TOP)-pex.spice))
 	$(call INFO_MESSAGE, [magic] rcfile:            $(MAGIC_RCFILE))
-
-# TODO: Magic DRC
-# TODO: Do pex extraction include resistances?
-
-
-.PHONY: magic
-magic: magic-edit
 
 
 .PHONY: magic-edit

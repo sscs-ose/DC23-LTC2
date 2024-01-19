@@ -83,6 +83,7 @@ CLEANABLE:= \
 ## 3. Files related with the TOP
 
 ifeq (,$(TOP))
+# NEVER define TOP in this section. Empty TOP is useful as an indicator
 $(warning $(COLOR_YELLOW)TOP not defined, using default values$(COLOR_END))
 TOP_SCH=0_top.sch
 else
@@ -130,16 +131,28 @@ NETGEN_RCFILE=$(realpath $(PDK_ROOT)/$(PDK)/libs.tech/netgen/setup.tcl)
 #######
 
 define HELP_ENTRIES =
-	$(call INFO_MESSAGE, Help message for Makefile)
-	$(call INFO_MESSAGE, to execute any command, the syntax is)
-	$(call INFO_MESSAGE,)
-	$(call INFO_MESSAGE,    $$ make TOP=<component> <command>)
-	$(call INFO_MESSAGE,)
-	$(call INFO_MESSAGE, for example:)
-	$(call INFO_MESSAGE,)
-	$(call INFO_MESSAGE,    $$ make TOP=resistor klayout-drc)
-	$(call INFO_MESSAGE,    $$ make TOP=ldo-top xschem)
+Help message for Makefile
+  to execute any command, the syntax is
+
+    $$ make TOP=<component> <command>
+
+  for example:
+
+    $$ make TOP=resistor klayout-drc
+    $$ make TOP=ldo-top xschem
+	$$ make TOP=ldo-top print-TOP_GDS_DIR
+
+  clean:          Removes intermediate files.
+  print-%:        For every variable, prints it's value
+  print-vars:     Shows some variable values
+  help:           Shows this help
+  xschem:         Alias for xschem-sch
+  klayout:        Alias for klayout-edit
+  magic:          Alias for magic-edit
+  create-module:  Generates empty files that conforms a basic module
+
 endef
+
 
 include ../scripts/xschem.mk
 include ../scripts/klayout.mk
@@ -148,9 +161,20 @@ include ../scripts/netgen.mk
 include ../scripts/ngspice.mk
 
 
+.PHONY: help
+help:
+	$(call INFO_MESSAGE, $(HELP_ENTRIES))
+
+
+
 .PHONY: clean
 clean:
 	$(RM) $(CLEANABLE)
+
+
+# https://www.cmcrossroads.com/article/printing-value-makefile-variable
+# https://stackoverflow.com/questions/16467718/how-to-print-out-a-variable-in-makefile
+print-% : ; $(info $*: $(flavor $*) variable - $($*)) @true
 
 
 .PHONY: print-vars
@@ -164,14 +188,44 @@ print-vars : \
 	print-TOP_NETLIST_PEX
 
 
-.PHONY: help
-help:
-	$(call HELP_ENTRIES)
+.PHONY: xschem
+xschem: xschem-sch
 
 
 .PHONY: klayout
 klayout: klayout-edit
 
 
-.PHONY: xschem
-xschem: xschem-sch
+.PHONY: magic
+magic: magic-edit
+
+
+.PHONY: create-module
+create-module:
+ifeq (,$(TOP))
+	$(call ERROR_MESSAGE, TOP not defined, couldn't create any design)
+endif
+	mkdir -p $(TOP)
+ifneq (,$(wildcard $(TOP)/$(TOP).sch))
+	$(call WARNING_MESSAGE, schematic already exists)
+else
+	xschem --rcfile $(XSCHEM_RCFILE) \
+	--no_x \
+	--quit \
+	--command "xschem clear; xschem saveas $(TOP)/$(TOP).sch"
+endif
+
+ifneq (,$(wildcard $(TOP)/$(TOP)-tb.sch))
+	$(call WARNING_MESSAGE, schematic testbench already exists)
+else
+	xschem --rcfile $(XSCHEM_RCFILE) \
+	--no_x \
+	--quit \
+	--command "xschem clear; xschem saveas $(TOP)/$(TOP)-tb.sch"
+endif
+
+ifneq (,$(wildcard $(TOP)/$(TOP).gds))
+	$(call WARNING_MESSAGE, layout already exists)
+else
+	klayout -t -e -zz -r ../scripts/empty-gds.py -rd filepath=$(TOP)/$(TOP).gds
+endif

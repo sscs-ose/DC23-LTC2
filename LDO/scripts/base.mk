@@ -6,7 +6,6 @@ SHELL:=bash
 
 NPROCS=$(shell grep -c ^processor /proc/cpuinfo)
 
-
 GREP=grep --color=auto
 RM=rm -rf
 
@@ -41,7 +40,3 @@ test-colors:
 	@echo -e "$(COLOR_MAGENTA) hola_5 $(COLOR_END)"
 	@echo -e "$(COLOR_CYAN) hola_6 $(COLOR_END)"
 	@echo -e "$(COLOR_WHITE) hola_7 $(COLOR_END)"
-
-# https://www.cmcrossroads.com/article/printing-value-makefile-variable
-# https://stackoverflow.com/questions/16467718/how-to-print-out-a-variable-in-makefile
-print-% : ; $(info $*: $(flavor $*) variable - $($*)) @true

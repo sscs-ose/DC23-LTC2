@@ -20,20 +20,19 @@ XSCHEM_BATCH=$(XSCHEM) \
 	--quit
 
 define HELP_ENTRIES +=
-	$(call INFO_MESSAGE,)
-	$(call INFO_MESSAGE, Magic related rules:)
-    $(call INFO_MESSAGE,  xschem-validation:            Evaluate file existence.)
-	$(call INFO_MESSAGE,                                Is used by other rules.)
-    $(call INFO_MESSAGE,  xschem-sch:                   Open schematic asociated with TOP )
-    $(call INFO_MESSAGE,  xschem-tb:                    Open testbench asociated with TOP )
-    $(call INFO_MESSAGE,  xschem-netlist:               Generates a plain netlist executable by )
-	$(call INFO_MESSAGE,                                ngspice)
-    $(call INFO_MESSAGE,  xschem-netlist-lvs-prefix:    Generates an lvs netlist usable by magic)
-    $(call INFO_MESSAGE,  xschem-netlist-lvs-noprefix:  Generates an lvs netlist usable by klayout)
-	$(call INFO_MESSAGE,                                Applies the "fix-parameters" rule)
-    $(call INFO_MESSAGE,  xschem-netlist-lvs-noprefix-fixed: Klayout LVS requires some patches over)
-	$(call INFO_MESSAGE,                                the netlist generated with xschem)
-	$(call INFO_MESSAGE,                                This functions is applied by noprefix rule)
+
+Xschem related rules:
+  xschem-validation:            Evaluate file existence. Is used by other rules.
+  xschem-sch:                   Open schematic asociated with TOP 
+  xschem-tb:                    Open testbench asociated with TOP 
+  xschem-netlist:               Generates a plain netlist executable by ngspice
+  xschem-netlist-lvs-prefix:    Generates an lvs netlist usable by magic
+  xschem-netlist-lvs-noprefix:  Generates an lvs netlist usable by klayout
+                                Applies the "fix-parameters" rule
+  xschem-netlist-lvs-noprefix-fixed: Klayout LVS requires some patches over
+                                the netlist generated with xschem
+                                This functions is applied by noprefix rule
+
 endef
 
 # Rules

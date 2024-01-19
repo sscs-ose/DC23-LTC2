@@ -5,6 +5,13 @@ NGSPICE_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-ngspice-$(TOP).log
 
 NGSPICE=SPICE_USERINIT_DIR=$(PWD) ngspice -a --define=num_threads=$(NPROCS)
 
+define HELP_ENTRIES +=
+
+Ngspice related Rules:
+  ngspice-sim:  Extracts netlist and performs simulation. This rules works when simulation results on a .raw file
+
+endef
+
 
 # Rules
 #######

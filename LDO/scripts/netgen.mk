@@ -5,6 +5,17 @@ NETGEN_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-netgen-$(TOP).log
 
 NETGEN=netgen -batch lvs
 
+define HELP_ENTRIES += 
+
+Netgen related rules:
+  IMPORTAN NOTE !!!
+  Following rules are not verified
+  netgen-validation:  Evaluates relevant file existence. It's used by other rules.
+  netgen-lvs-magic:   Perform LVS with schematic netlist and extracted circuit netlist
+  netgen-lvs-klayout: Perform LVS with schematic netlist and extracted circuit netlist
+
+endef
+
 
 # Rules
 #######
@@ -23,7 +34,7 @@ endif
 	$(call INFO_MESSAGE, [netgen] rc file:                   $(NETGEN_RCFILE))
 
 
-.PHONY: netgen-lvs
+.PHONY: netgen-lvs-magic
 netgen-lvs-magic: netgen-validation magic-lvs xschem-netlist-lvs-prefix
 	cd $(TOP_GDS_DIR) && $(NETGEN) \
 		"$(TOP_NETLIST_LVS_PREFIX) $(TOP)" \
@@ -32,7 +43,7 @@ netgen-lvs-magic: netgen-validation magic-lvs xschem-netlist-lvs-prefix
 
 	cd $(TOP_GDS_DIR) && grep "Netlist" comp.out
 
-.PHONY: netgen-lvs
+.PHONY: netgen-lvs-klayout
 netgen-lvs-klayout: netgen-validation xschem-netlist-lvs-noprefix
 ifeq (,$(TOP_EXTRACTED_KLAYOUT))
 	$(call ERROR_MESSAGE, There's no klayout extracted netlist. run `klayout-lvs`)

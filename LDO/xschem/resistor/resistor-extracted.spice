@@ -1,0 +1,23 @@
+* NGSPICE file created from resistor-extracted.ext - technology: gf180mcuD
+
+.subckt resistor-extracted B OUT1 OUT2 VDD VSS
+X0 OUT2 a_4000_1800# B ppolyf_u r_width=1u r_length=20u
+X1 a_n132_5400# a_4000_4800# B ppolyf_u r_width=1u r_length=20u
+X2 a_n132_7800# a_4000_9000# B ppolyf_u r_width=1u r_length=20u
+X3 a_n132_1200# a_4000_2400# B ppolyf_u r_width=1u r_length=20u
+X4 a_n132_6000# a_4000_4200# B ppolyf_u r_width=1u r_length=20u
+X5 VDD a_4000_9000# B ppolyf_u r_width=1u r_length=20u
+X6 a_n132_3000# a_4000_2400# B ppolyf_u r_width=1u r_length=20u
+X7 B B B ppolyf_u r_width=1u r_length=20u
+X8 a_n132_6000# a_4000_6600# B ppolyf_u r_width=1u r_length=20u
+X9 OUT1 a_4000_600# B ppolyf_u r_width=1u r_length=20u
+X10 a_n132_3600# a_4000_1800# B ppolyf_u r_width=1u r_length=20u
+X11 a_n132_5400# a_4000_7200# B ppolyf_u r_width=1u r_length=20u
+X12 a_n132_3600# a_4000_4200# B ppolyf_u r_width=1u r_length=20u
+X13 a_n132_7800# a_4000_7200# B ppolyf_u r_width=1u r_length=20u
+X14 a_n132_1200# a_4000_600# B ppolyf_u r_width=1u r_length=20u
+X15 a_n132_3000# a_4000_4800# B ppolyf_u r_width=1u r_length=20u
+X16 VSS a_4000_6600# B ppolyf_u r_width=1u r_length=20u
+X17 B B B ppolyf_u r_width=1u r_length=20u
+.ends
+
