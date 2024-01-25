@@ -25,7 +25,7 @@ N 470 -680 600 -680 {
 lab=vin}
 N 470 -680 470 -550 {
 lab=vin}
-C {devices/isource.sym} 290 -330 2 0 {name=I1 value=100u
+C {devices/isource.sym} 290 -330 2 0 {name=I1 value=0.1u
 }
 C {devices/gnd.sym} 290 -280 0 0 {name=l10 lab=GND}
 C {devices/gnd.sym} 470 -410 0 0 {name=l1 lab=GND}
@@ -51,11 +51,10 @@ only_toplevel=true
 format="tcleval( @value )"
 spice_ignore=false
 value="
-.param R=300
+.param R=33000
 R10 out 0 \{R\}
 *IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
-IL out 0 PULSE (0 30m 2n 2n 2n 50u 100u)
-CL out 0 10p
+CL out 0 100p
 .options savecurrents
 
 .nodeset v(out)=0
@@ -64,7 +63,7 @@ CL out 0 10p
 *TRANSIENT
 .control
 save all
-tran 1ns 10us
+tran 1ns 100us
 plot v(out) v(ref) v(pos) v(vin)
 plot v(op_out)
 plot v(out)

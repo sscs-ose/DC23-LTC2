@@ -155,4 +155,5 @@ cython_debug/
 **/*.nodes
 **/*.sim
 **/*.drc
+**/*.raw
 **/drc_run_*/

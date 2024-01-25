@@ -32,6 +32,7 @@ ALL_FILES:= \
 	$(wildcard ./ota-ldo/*) \
 	$(wildcard ./resistor/*) \
 	$(wildcard ./waffle_1984/*) \
+	$(wildcard ./ldo_layout/*) \
 	$(wildcard ./test/resistor_core/*) \
 	$(wildcard ./test/pmos1f/*) \
 	$(wildcard ./test/pmos/*) \
@@ -39,7 +40,8 @@ ALL_FILES:= \
 	$(wildcard ./test/cap_mim_2f/*) \
 	$(wildcard ./test/pmos-automated/*) \
 	$(wildcard ./test/waffle-12x12/*) \
-	$(wildcard ./test/waffle-26x26/*)
+	$(wildcard ./test/waffle-26x26/*) \
+	$(wildcard ./PLL_TOP_MUX_7/*)
 
 
 ## 2. Filter by type #
@@ -215,13 +217,13 @@ else
 	--command "xschem clear; xschem saveas $(TOP)/$(TOP).sch"
 endif
 
-ifneq (,$(wildcard $(TOP)/$(TOP)-tb.sch))
+ifneq (,$(wildcard $(TOP)/$(TOP)-test.sch))
 	$(call WARNING_MESSAGE, schematic testbench already exists)
 else
 	xschem --rcfile $(XSCHEM_RCFILE) \
 	--no_x \
 	--quit \
-	--command "xschem clear; xschem saveas $(TOP)/$(TOP)-tb.sch"
+	--command "xschem clear; xschem saveas $(TOP)/$(TOP)-test.sch"
 endif
 
 ifneq (,$(wildcard $(TOP)/$(TOP).gds))
