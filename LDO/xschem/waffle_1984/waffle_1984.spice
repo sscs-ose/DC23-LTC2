@@ -1,10 +1,40 @@
-** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/test/waffle_1984/waffle_1984.sch
-**.subckt waffle_1984 S G D
-*.iopin S
-*.iopin G
-*.iopin D
-XM1 D G S S pfet_03v3 L=0.5u W=4.38u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
-+ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
-+ sa=0 sb=0 sd=0 m=1860
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/waffle_1984/waffle_1984-test.sch
+
+.include /home/designer/.volare/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice res_typical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice bjt_typical
+.lib /home/designer/.volare/gf180mcuD/libs.tech/ngspice/sm141064.ngspice moscap_typical
+
+**.subckt waffle_1984-test
+VG G GND PULSE(0 3 10n 100p 100p 10n 20n)
+VD D1 GND 0
+.save i(vd)
+VS S GND 3
+VD1 D2 GND 0
+.save i(vd1)
+VD2 D3 GND 0
+.save i(vd2)
+**** begin user architecture code
+
+.include /home/designer/.volare/gf180mcuD/libs.tech/ngspice/design.ngspice
+.include waffle_1984-noprefix.spice
+
+XDUT0 S G D1   waffle_1984
+XDUT1 D2 G S S pfet_03v3 L=0.5u W=4.38u M=1984
+
+
+
+.control
+save all
+dc VG 0 3.3 0.001
+plot V(G) V(D1) V(D2)
+.endc
+
+
+**** end user architecture code
 **.ends
+.GLOBAL GND
 .end

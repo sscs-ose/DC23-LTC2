@@ -1,7 +1,7 @@
-* Extracted by KLayout with GF180MCU LVS runset on : 19/01/2024 03:54
+* Extracted by KLayout with GF180MCU LVS runset on : 25/01/2024 14:44
 
-.SUBCKT resistor B OUT1 OUT2 VSS VDD
+.SUBCKT resistor B OUT1 OUT2 IN2 IN1
 R$1 B B B 3500 ppolyf_u L=20U W=2U
-R$12 OUT2 VSS B 42000 ppolyf_u L=120U W=1U
-R$16 OUT1 VDD B 70000 ppolyf_u L=200U W=1U
+R$12 OUT2 IN2 B 42000 ppolyf_u L=120U W=1U
+R$16 OUT1 IN1 B 70000 ppolyf_u L=200U W=1U
 .ENDS resistor

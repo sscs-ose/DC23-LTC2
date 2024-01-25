@@ -593,7 +593,6 @@ class FetWaffleLayout:
         gr_box = DBox(-gr_corner, gr_corner)
         gr_side_cell.shapes(KlayoutUtilities.get_layer("metal4")).insert(gr_box)
         gr_side_cell.shapes(KlayoutUtilities.get_layer("metal5")).insert(gr_box)
-        gr_side_cell.shapes(KlayoutUtilities.get_layer("metaltop")).insert(gr_box)
 
         return gr_side_cell
 
@@ -644,8 +643,8 @@ class FetWaffleLayout:
             text_s = DText("S", DTrans(bottom.disp + right.disp - text_offset))
             text_d = DText("D", DTrans(top.disp + left.disp + text_offset))
             # text = DText("S", DTrans())
-            gr_cell.shapes(KlayoutUtilities.get_layer("metaltop_label")).insert(text_s)
-            gr_cell.shapes(KlayoutUtilities.get_layer("metaltop_label")).insert(text_d)
+            gr_cell.shapes(KlayoutUtilities.get_layer("metal5_label")).insert(text_s)
+            gr_cell.shapes(KlayoutUtilities.get_layer("metal5_label")).insert(text_d)
 
         self.cell.insert(DCellInstArray(gr_cell, DTrans()))
 
@@ -968,10 +967,8 @@ class PortPmosFrame:
         # LAYERS THAT SHOULD NOT BE REMOVED (always commented)
         ######################################################
 
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal3"])
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal4"])
         # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metal5"])
-        # KlayoutUtilities.recursive_remove_layer(self.cell, cells.layers_def.layer["metaltop"])
 
         # See if this is problematic
         ############################
@@ -980,6 +977,12 @@ class PortPmosFrame:
         )
         KlayoutUtilities.recursive_remove_layer(
             self.cell, cells.layers_def.layer["metal2"]
+        )
+        KlayoutUtilities.recursive_remove_layer(
+            self.cell, cells.layers_def.layer["metal3"]
+        )
+        KlayoutUtilities.recursive_remove_layer(
+            self.cell, cells.layers_def.layer["metaltop"]
         )
         KlayoutUtilities.recursive_remove_layer(
             self.cell, cells.layers_def.layer["comp"]
@@ -1408,7 +1411,7 @@ class PortPmosFrame:
                 "x_max": 1.5,
                 "y_max": 1.5,
                 "base_layer": "M3",
-                "metal_level": "Mtop",
+                "metal_level": "M5",
             }
         )
 
