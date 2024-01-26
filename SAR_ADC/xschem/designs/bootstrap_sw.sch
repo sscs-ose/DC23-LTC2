@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -177,7 +177,7 @@ N 60 -720 100 -720 {
 lab=vss}
 C {symbols/nfet_03v3.sym} 710 -100 3 1 {name=M1
 L=0.28u
-W=1u
+W=12u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -402,3 +402,6 @@ C {devices/lab_wire.sym} 200 -450 2 0 {name=p28 sig_type=std_logic lab=vss}
 C {devices/lab_wire.sym} 880 -370 3 0 {name=p29 sig_type=std_logic lab=vss}
 C {devices/lab_wire.sym} 260 -720 2 0 {name=p30 sig_type=std_logic lab=vss}
 C {devices/lab_wire.sym} 60 -720 0 0 {name=p31 sig_type=std_logic lab=vss}
+C {devices/iopin.sym} 310 -750 0 0 {name=p12 lab=clk
+}
+C {devices/iopin.sym} 310 -720 0 0 {name=p32 lab=negclk}

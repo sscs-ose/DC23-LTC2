@@ -195,32 +195,44 @@ N 820 -200 890 -200 {
 lab=GND}
 N 820 -200 820 -180 {
 lab=GND}
-N 820 -180 860 -180 {
-lab=GND}
 N 790 -220 920 -220 {
-lab=#net4}
-N 730 -180 730 -140 {
-lab=vf}
-N 680 -180 730 -180 {
-lab=vf}
-N 920 -210 920 -180 {
-lab=#net4}
-N 920 -220 920 -210 {
-lab=#net4}
+lab=GND}
 N 600 -280 620 -280 {
 lab=vin}
-N 790 -140 890 -140 {
-lab=vf}
-N 730 -140 760 -140 {
-lab=vf}
 N 620 -280 650 -280 {
 lab=vin}
-N 760 -140 790 -140 {
-lab=vf}
-N 590 -210 690 -210 {
-lab=vf}
-N 690 -210 690 -180 {
-lab=vf}
+N 920 -220 950 -220 {
+lab=GND}
+N 950 -220 1100 -220 {
+lab=GND}
+N 1100 -220 1100 -150 {
+lab=GND}
+N 1040 -150 1100 -150 {
+lab=GND}
+N 920 -180 920 -150 {
+lab=GND}
+N 890 -180 920 -180 {
+lab=GND}
+N 1250 -20 1300 -20 {
+lab=GND}
+N 1300 -100 1300 -80 {
+lab=#net4}
+N 1080 -90 1080 -80 {
+lab=clkx}
+N 1300 -200 1300 -100 {
+lab=#net4}
+N 1050 -200 1300 -200 {
+lab=#net4}
+N 1050 -200 1050 -170 {
+lab=#net4}
+N 1040 -170 1050 -170 {
+lab=#net4}
+N 1000 -90 1250 -90 {
+lab=clkx}
+N 1250 -90 1250 -80 {
+lab=clkx}
+N 850 -220 850 -200 {
+lab=GND}
 C {symbols/nfet_03v3.sym} 720 -300 3 1 {name=M1
 L=0.28u
 W=12u
@@ -444,13 +456,14 @@ C {devices/code_shown.sym} 920 -980 0 0 {name=SPICE only_toplevel=false value="
 
 
 save all
-tran 50p 5u 3u
-
+tran 20p 5u 3u
+plot voutm 
 plot vin vout
 *plot vgate 
 *plot vf negclk \{vf-negclk\}
 *plot vf 
-plot vf vgate
+plot clk clkx
+plot clk vgate
 plot vout vin vgate vf
 *plot vgate vin
 *plot clk negclk vy
@@ -478,7 +491,7 @@ spice_ignore=false}
 C {devices/vsource.sym} 190 -80 0 0 {name=V1 value="PULSE(3.3 0 0 100p 100p 93.75n 187.5n)"}
 C {devices/lab_pin.sym} 190 -120 0 0 {name=p20 sig_type=std_logic lab=clk}
 C {devices/gnd.sym} 190 -40 0 0 {name=l8 lab=GND}
-C {devices/vsource.sym} 410 -80 0 0 {name=V2 value="AC 1 sin(1.8 1.4 0.4Meg)"}
+C {devices/vsource.sym} 410 -80 0 0 {name=V2 value=1}
 C {devices/gnd.sym} 410 -40 0 0 {name=l9 lab=GND}
 C {devices/vsource.sym} 120 -80 0 0 {name=V3 value=3.3}
 C {devices/lab_pin.sym} 120 -120 0 0 {name=p21 sig_type=std_logic lab=vdd}
@@ -499,20 +512,12 @@ m=1
 value=32p
 footprint=1206
 device="ceramic capacitor"}
-C {devices/vsource.sym} 750 -110 0 0 {name=V5 value="PULSE(7 0 90n 100p 100p 5n 187.5n)"}
-C {symbols/nfet_03v3.sym} 890 -160 1 1 {name=M7
-L=0.28u
-W=12u
-nf=1
-m=1
-ad="'int((nf+1)/2) * W/nf * 0.18u'"
-pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
-as="'int((nf+2)/2) * W/nf * 0.18u'"
-ps="'2*int((nf+2)/2) * (W/nf + 0.18u)'"
-nrd="'0.18u / W'" nrs="'0.18u / W'"
-sa=0 sb=0 sd=0
-model=nfet_03v3
-spiceprefix=X
-}
-C {devices/lab_pin.sym} 590 -210 0 0 {name=p25 sig_type=std_logic lab=vf}
-C {devices/gnd.sym} 750 -80 0 0 {name=l15 lab=GND}
+C {bootstrap_sw.sym} 980 -190 0 0 {name=x1}
+C {devices/vsource.sym} 1250 -50 0 0 {name=V6 value="PULSE(0 3.3 90n 10p 10p 3.8n 187.5n)"}
+C {devices/vsource.sym} 1300 -50 0 0 {name=V5 value="PULSE(3.3 0 90n 10p 10p 3.8n 187.5n)"}
+C {devices/gnd.sym} 1300 -20 0 0 {name=l16 lab=GND
+value="PULSE(0 3.3 95n 100p 100p 5n 187.5n)"}
+C {devices/lab_pin.sym} 960 -90 0 0 {name=p25 sig_type=std_logic lab=vdd}
+C {devices/gnd.sym} 980 -90 0 0 {name=l17 lab=GND}
+C {devices/lab_pin.sym} 1080 -80 0 0 {name=p26 sig_type=std_logic lab=clkx
+value="PULSE(0 3.3 95n 100p 100p 5n 187.5n)"}

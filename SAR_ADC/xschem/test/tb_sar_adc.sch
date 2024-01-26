@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -11,6 +11,12 @@ N -240 -330 -215 -330 {
 lab=vinp}
 N -300 -270 -240 -270 {
 lab=gnd}
+N -140 -190 -130 -190 {
+lab=compn}
+N -130 -190 -130 -80 {
+lab=compn}
+N -130 -80 -100 -80 {
+lab=compn}
 C {sar_adc.sym} -120 -290 0 0 {name=x1}
 C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
@@ -28,12 +34,13 @@ vr  rst 0 PULSE(0 5 \{0.5*period\}  1ps 1ps \{1*period\} \{12*period\} 1)
 .control
 save all
 run
-plot \{V(d0)+V(d1)*2+V(d2)*4+V(d3)*8+V(d4)*8+V(d5)*16+V(d6)*32+V(d7)*64+V(d8)*128+V(d9)*256+V(d10)*512+V(d11)*1024\}
+plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} eoc
+plot compn compp compout clk
 plot V(clk)
 plot V(rst)
 .endc
 "}
-C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=2.6}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=1.8}
 C {devices/ipin.sym} -145 -410 1 0 {name=p1 lab=rst}
 C {devices/ipin.sym} -120 -410 1 0 {name=p2 lab=clk}
 C {devices/opin.sym} 15 -350 0 0 {name=p3 lab=d0}
@@ -54,13 +61,12 @@ C {devices/opin.sym} 15 -250 0 0 {name=p13 lab=d10}
 C {devices/opin.sym} 15 -240 0 0 {name=p14 lab=d11}
 C {devices/lab_pin.sym} -30 -410 1 0 {name=l4 lab=gnd}
 C {devices/lab_pin.sym} -240 -330 1 0 {name=l5 lab=vinp}
-C {devices/lab_pin.sym} -240 -270 3 0 {name=l6 lab=vinn}
 C {devices/code_shown.sym} -915 -520 0 0 {name=Libraries/Includes
 format="tcleval(  @value  )"
 only_toplevel=false
 value="
 .include $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
-.include [pwd]/../spice/sar_logic.spice
+.include [pwd]/designs/sar_logic.spice
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
@@ -70,3 +76,5 @@ C {devices/opin.sym} -140 -190 1 0 {name=p15 lab=compn}
 C {devices/opin.sym} -105 -190 1 0 {name=p16 lab=compp}
 C {devices/opin.sym} -60 -190 1 0 {name=p17 lab=compout}
 C {devices/opin.sym} -30 -190 1 0 {name=p18 lab=eoc}
+C {devices/vsource.sym} -100 -50 0 1 {name=VIN2 value=1.6}
+C {devices/lab_pin.sym} -100 -20 3 0 {name=l6 lab=gnd}

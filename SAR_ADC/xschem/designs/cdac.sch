@@ -32,27 +32,27 @@ lab=in}
 N 700 -100 710 -100 {
 lab=d[5]}
 N 910 -160 910 -140 {
-lab=out}
+lab=xd}
 N 880 -100 890 -100 {
 lab=d[6]}
 N 1040 -160 1040 -140 {
-lab=out}
+lab=xd}
 N 1010 -100 1020 -100 {
 lab=d[7]}
 N 1170 -160 1170 -140 {
-lab=out}
+lab=xd}
 N 1140 -100 1150 -100 {
 lab=d[8]}
 N 1300 -160 1300 -140 {
-lab=out}
+lab=xd}
 N 1270 -100 1280 -100 {
 lab=d[9]}
 N 1430 -160 1430 -140 {
-lab=out}
+lab=xd}
 N 1400 -100 1410 -100 {
 lab=d[10]}
 N 1560 -160 1560 -140 {
-lab=out}
+lab=xd}
 N 1530 -100 1540 -100 {
 lab=d[11]}
 N 80 -70 80 -40 {
@@ -107,26 +107,36 @@ N -70 -70 -70 -20 {
 lab=gnd}
 N -70 -30 1580 -30 {
 lab=gnd}
-N 870 -160 1580 -160 {
-lab=out}
 N 730 -210 730 -160 {
 lab=in}
 N 730 -210 790 -210 {
 lab=in}
 N 850 -210 910 -210 {
-lab=out}
+lab=xd}
 N 910 -210 910 -160 {
-lab=out}
+lab=xd}
 N -90 -160 -70 -160 {
 lab=in}
 N 80 -50 1560 -50 {
 lab=vdd}
 N 100 -70 100 -30 {
 lab=gnd}
-N -70 -160 730 -160 {
+N -90 -160 730 -160 {
 lab=in}
-N 730 -160 810 -160 {
+N -120 -160 -90 -160 {
 lab=in}
+N 1040 -160 1560 -160 {
+lab=xd}
+N 910 -160 1050 -160 {
+lab=xd}
+N -110 -200 -110 -160 {
+lab=in}
+N 1290 -220 1290 -160 {
+lab=xd}
+N 1290 -230 1290 -210 {
+lab=xd}
+N 1290 -230 1330 -230 {
+lab=xd}
 C {cdac_line.sym} 80 -90 0 0 {name=x1
 CW=\{sqrt(2)*cu\}
 CL=\{sqrt(2)*cu\}}
@@ -145,10 +155,10 @@ CL=\{sqrt(16)*cu\}}
 C {cdac_line.sym} 730 -90 0 0 {name=x6
 CW=\{sqrt(32)*cu\}
 CL=\{sqrt(32)*cu\}}
-C {symbols/cap_mim_2p0fF.sym} 840 -160 1 0 {name=CA
+C {symbols/cap_mim_2f0fF.sym} 820 -210 1 0 {name=CA
 W=\{cu\}
 L=\{cu\}
-model=cap_mim_1f5fF
+model=cap_mim_2f0fF
 m=1}
 C {cdac_line.sym} 910 -90 0 0 {name=x7
 CW=\{sqrt(1)*cu\}
@@ -168,11 +178,6 @@ CL=\{sqrt(16)*cu\}}
 C {cdac_line.sym} 1560 -90 0 0 {name=x12
 CW=\{sqrt(32)*cu\}
 CL=\{sqrt(32)*cu\}}
-C {devices/res.sym} 820 -210 1 0 {name=R1
-value=100T
-footprint=1206
-device=resistor
-m=1}
 C {devices/ipin.sym} 50 -100 1 0 {name=p1 lab=d[0]}
 C {devices/ipin.sym} 180 -100 1 0 {name=p2 lab=d[1]}
 C {devices/ipin.sym} 310 -100 1 0 {name=p3 lab=d[2]}
@@ -185,13 +190,13 @@ C {devices/ipin.sym} 1140 -100 1 0 {name=p9 lab=d[8]}
 C {devices/ipin.sym} 1270 -100 1 0 {name=p10 lab=d[9]}
 C {devices/ipin.sym} 1400 -100 1 0 {name=p11 lab=d[10]}
 C {devices/ipin.sym} 1530 -100 1 0 {name=p12 lab=d[11]}
-C {devices/ipin.sym} 80 -20 3 0 {name=p13 lab=vdd}
-C {devices/ipin.sym} -70 -20 3 0 {name=p14 lab=gnd}
-C {devices/iopin.sym} 1580 -160 0 0 {name=p15 lab=out}
-C {devices/iopin.sym} -90 -160 2 0 {name=p16 lab=in}
-C {symbols/cap_mim_2p0fF.sym} -70 -100 0 0 {name=C1
+C {devices/iopin.sym} 80 -20 3 1 {name=p13 lab=vdd}
+C {devices/iopin.sym} -70 -30 1 0 {name=p14 lab=gnd}
+C {symbols/cap_mim_2f0fF.sym} -70 -100 0 0 {name=C1
 W=\{cu\}
 L=\{cu\}
-model=cap_mim_1f5fF
+model=cap_mim_2f0fF
 spiceprefix=X
 m=1}
+C {devices/iopin.sym} -110 -200 0 0 {name=p15 lab=in}
+C {devices/iopin.sym} 1330 -230 0 0 {name=p16 lab=xd}

@@ -1,24 +1,18 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
 V {}
 S {}
 E {}
-N -40 160 -10 160 {
-lab=#net1}
 N -20 140 -10 140 {
 lab=vdd}
-N -40 180 -10 180 {
-lab=gnd}
 N -40 180 -40 240 {
 lab=gnd}
-N -20 140 -20 260 {
-lab=vdd}
 N -100 260 -20 260 {
 lab=vdd}
 N -40 -160 -10 -160 {
-lab=#net2}
+lab=#net1}
 N -20 -140 -10 -140 {
 lab=vdd}
 N -40 -180 -10 -180 {
@@ -27,8 +21,6 @@ N 480 -0 500 0 {
 lab=compout}
 N 130 -20 300 -20 {
 lab=compp}
-N 130 20 300 20 {
-lab=compn}
 N 280 -160 280 0 {
 lab=clk}
 N 280 -160 560 -160 {
@@ -66,8 +58,6 @@ lab=eoc}
 N -20 -340 -20 -140 {
 lab=vdd}
 N -40 -260 -40 -180 {
-lab=gnd}
-N -80 220 -80 340 {
 lab=gnd}
 N -180 -340 -180 260 {
 lab=vdd}
@@ -113,6 +103,60 @@ N 390 35 390 50 {
 lab=eoc}
 N 430 -0 480 0 {
 lab=compout}
+N -100 340 -80 340 {
+lab=gnd}
+N -100 -100 -100 -70 {
+lab=gnd}
+N -200 -70 -100 -70 {
+lab=gnd}
+N -200 -50 -80 -50 {
+lab=gnd}
+N -80 -100 -80 -50 {
+lab=gnd}
+N -80 220 -60 260 {
+lab=vdd}
+N -100 220 -100 240 {
+lab=gnd}
+N -200 340 -100 340 {
+lab=gnd}
+N -200 240 -200 340 {
+lab=gnd}
+N -350 140 -160 140 {
+lab=#net2}
+N -350 -180 -350 140 {
+lab=#net2}
+N -350 -180 -160 -180 {
+lab=#net2}
+N -420 90 -360 90 {
+lab=#net2}
+N -360 90 -350 90 {
+lab=#net2}
+N -590 -100 -120 -100 {
+lab=eoc}
+N -590 -100 -590 220 {
+lab=eoc}
+N -590 220 -120 220 {
+lab=eoc}
+N -590 90 -580 90 {
+lab=eoc}
+N -520 -290 -520 50 {
+lab=vdd}
+N -520 -290 -180 -290 {
+lab=vdd}
+N -520 130 -520 180 {
+lab=gnd}
+N -520 180 -200 180 {
+lab=gnd}
+N -40 180 -10 180 {
+lab=gnd}
+N -20 40 -20 140 {
+lab=vdd}
+N -180 60 -20 60 {
+lab=vdd}
+N 130 20 310 20 {
+lab=compn}
+N -40 160 -10 160 {
+lab=#net3}
 C {cdac.sym} 130 160 1 1 {name=x1 cu=5u}
 C {cdac.sym} 130 -160 1 0 {name=x2 cu=5u}
 C {devices/ipin.sym} -220 160 0 0 {name=p1 lab=vinn}
@@ -159,9 +203,10 @@ C {devices/opin.sym} 680 50 0 0 {name=p33 sig_type=std_logic lab=d[8]}
 C {devices/opin.sym} 680 70 0 0 {name=p34 sig_type=std_logic lab=d[9]}
 C {devices/opin.sym} 680 90 0 0 {name=p35 sig_type=std_logic lab=d[10]}
 C {devices/opin.sym} 680 110 0 0 {name=p36 sig_type=std_logic lab=d[11]}
-C {switch.sym} -100 -120 2 1 {name=S1 model=swm1 initalstate=ON}
-C {switch.sym} -100 120 0 0 {name=S2 model=swm1 initalstate=ON}
 C {devices/opin.sym} 300 -50 3 0 {name=p4 sig_type=std_logic lab=compp}
 C {devices/opin.sym} 300 50 1 0 {name=p8 sig_type=std_logic lab=compn}
 C {devices/opin.sym} 470 -50 3 0 {name=p9 sig_type=std_logic lab=compout}
 C {devices/opin.sym} 680 180 0 0 {name=p10 sig_type=std_logic lab=eoc}
+C {bootstrap_sw.sym} -100 -200 0 1 {name=x3}
+C {inv.sym} -520 90 0 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}
+C {bootstrap_sw.sym} -100 120 0 1 {name=x7}
