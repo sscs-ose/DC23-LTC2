@@ -1,4 +1,4 @@
-PDK=gf180mcuC
+PDK=gf180mcuD
 
 TOP=
 XSCHEM=xschem --rcfile ./xschemrc

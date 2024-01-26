@@ -1,11 +1,11 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
 V {}
 S {}
 E {}
-C {devices/code_shown.sym} -510 -450 0 0 {name=NGSPICE only_toplevel=false value="
+C {devices/code_shown.sym} -670 -470 0 0 {name=NGSPICE only_toplevel=false value="
 .param cu=5u
 .param period=100u
 .param stoptime=\{15*period\}

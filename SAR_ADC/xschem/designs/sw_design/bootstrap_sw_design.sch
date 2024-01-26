@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -49,8 +49,6 @@ N 570 -420 620 -420 {
 lab=vgate}
 N 620 -380 620 -360 {
 lab=GND}
-N 720 -590 720 -320 {
-lab=vgate}
 N 620 -420 720 -420 {
 lab=vgate}
 N 650 -380 650 -280 {
@@ -59,8 +57,6 @@ N 650 -280 690 -280 {
 lab=vin}
 N 600 -280 650 -280 {
 lab=vin}
-N 720 -280 720 -260 {
-lab=GND}
 N 750 -280 830 -280 {
 lab=vout}
 N 790 -280 790 -240 {
@@ -115,17 +111,17 @@ N 1040 -670 1040 -630 {
 lab=clk}
 N 340 -560 340 -530 {
 lab=vdd}
-N 120 -50 120 -40 {
+N 590 -770 590 -760 {
 lab=GND}
-N 190 -50 190 -40 {
+N 660 -770 660 -760 {
 lab=GND}
-N 410 -50 410 -40 {
+N 880 -770 880 -760 {
 lab=GND}
-N 120 -120 120 -110 {
+N 590 -840 590 -830 {
 lab=vdd}
-N 190 -120 190 -110 {
+N 660 -840 660 -830 {
 lab=clk}
-N 410 -120 410 -110 {
+N 880 -840 880 -830 {
 lab=vin}
 N 340 -460 530 -460 {
 lab=#net1}
@@ -163,6 +159,16 @@ N 970 -670 970 -590 {
 lab=vclose}
 N 650 -590 720 -590 {
 lab=vgate}
+N 720 -590 720 -380 {
+lab=vgate}
+N 720 -380 720 -320 {
+lab=vgate}
+N 1100 -460 1100 -450 {
+lab=GND}
+N 1100 -460 1110 -590 {
+lab=GND}
+N 1100 -460 1100 -380 {
+lab=GND}
 C {symbols/nfet_03v3.sym} 720 -300 1 0 {name=M1
 L=0.28u
 W=\{wmos1\}
@@ -261,17 +267,17 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {devices/vsource.sym} 190 -80 0 0 {name=V1 value="PULSE(3 0 0 100p 100p 7.81n 187.5n)"}
-C {devices/lab_pin.sym} 190 -120 0 0 {name=p2 sig_type=std_logic lab=clk}
-C {devices/gnd.sym} 190 -40 0 0 {name=l2 lab=GND}
+C {devices/vsource.sym} 660 -800 0 0 {name=V1 value="PULSE(3 0 0 100p 100p 7.81n 187.5n)"}
+C {devices/lab_pin.sym} 660 -840 0 0 {name=p2 sig_type=std_logic lab=clk}
+C {devices/gnd.sym} 660 -760 0 0 {name=l2 lab=GND}
 C {devices/lab_pin.sym} 70 -430 0 0 {name=p6 sig_type=std_logic lab=clk}
-C {devices/vsource.sym} 410 -80 0 0 {name=V2 value="AC 1 sin(1.8 1.4 2Meg)"}
+C {devices/vsource.sym} 880 -800 0 0 {name=V2 value="AC 1 sin(1.8 1.4 2Meg)"}
 C {devices/lab_pin.sym} 600 -280 0 0 {name=p8 sig_type=std_logic lab=vin}
-C {devices/gnd.sym} 410 -40 0 0 {name=l9 lab=GND}
+C {devices/gnd.sym} 880 -760 0 0 {name=l9 lab=GND}
 C {devices/lab_pin.sym} 830 -280 2 0 {name=p9 sig_type=std_logic lab=vout}
-C {devices/vsource.sym} 120 -80 0 0 {name=V3 value=3.3}
-C {devices/lab_pin.sym} 120 -120 0 0 {name=p10 sig_type=std_logic lab=vdd}
-C {devices/gnd.sym} 120 -40 0 0 {name=l11 lab=GND}
+C {devices/vsource.sym} 590 -800 0 0 {name=V3 value=3.3}
+C {devices/lab_pin.sym} 590 -840 0 0 {name=p10 sig_type=std_logic lab=vdd}
+C {devices/gnd.sym} 590 -760 0 0 {name=l11 lab=GND}
 C {devices/lab_pin.sym} 190 -560 0 0 {name=p13 sig_type=std_logic lab=vcp}
 C {devices/lab_pin.sym} 190 -430 0 0 {name=p14 sig_type=std_logic lab=vcm}
 C {devices/lab_pin.sym} 40 -590 0 0 {name=p15 sig_type=std_logic lab=vdd}
@@ -329,11 +335,10 @@ spiceprefix=X
 }
 C {devices/gnd.sym} 70 -380 1 0 {name=l12 lab=GND}
 C {devices/gnd.sym} 790 -160 0 0 {name=l14 lab=GND}
-C {devices/gnd.sym} 1110 -590 3 0 {name=l15 lab=GND}
 C {devices/lab_pin.sym} 890 -670 0 0 {name=p1 sig_type=std_logic lab=vdd}
 C {devices/lab_pin.sym} 340 -560 0 0 {name=p3 sig_type=std_logic lab=vdd}
 C {devices/lab_pin.sym} 1040 -670 0 0 {name=p4 sig_type=std_logic lab=clk}
-C {devices/lab_pin.sym} 410 -120 0 0 {name=p5 sig_type=std_logic lab=vin}
+C {devices/lab_pin.sym} 880 -840 0 0 {name=p5 sig_type=std_logic lab=vin}
 C {devices/code.sym} 0 -800 0 0 {name=TT_MODELS 
 only_toplevel=true 
 format="tcleval(  @value  )"
@@ -351,7 +356,7 @@ C {devices/code_shown.sym} 1170 -780 0 0 {name=SPICE only_toplevel=false value="
 .param CB=1p
 .param wmos35=3u
 .param wmos26=0.28u
-.param wmos1=15u
+.param wmos1=25u
 .control
 
 
@@ -381,9 +386,10 @@ tran 50p 5u 3u
 *set appendwrite
 *end
 
-plot vclose
-plot vin vout
-plot vgate vin
+*plot vclose
+plot vin vout clk
+
+*plot vgate vin
 
 ***** For AC analysis *****
 
@@ -421,10 +427,17 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {devices/gnd.sym} 720 -260 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} 620 -360 0 0 {name=l4 lab=GND}
 C {devices/gnd.sym} 890 -570 0 0 {name=l5 lab=GND}
 C {devices/gnd.sym} 1040 -570 0 0 {name=l6 lab=GND}
 C {devices/gnd.sym} 510 -420 1 0 {name=l7 lab=GND}
 C {devices/lab_pin.sym} 970 -670 0 0 {name=p17 sig_type=std_logic lab=vclose}
 C {devices/lab_pin.sym} 720 -480 2 0 {name=p18 sig_type=std_logic lab=vgate}
+C {devices/gnd.sym} 1100 -380 0 0 {name=l8 lab=GND}
+C {devices/capa.sym} 780 -410 0 0 {name=C2
+m=1
+value=10f
+footprint=1206
+device="ceramic capacitor"}
+C {devices/lab_pin.sym} 780 -440 0 0 {name=p19 sig_type=std_logic lab=vdd}
+C {devices/gnd.sym} 720 -280 0 0 {name=l3 lab=GND}
