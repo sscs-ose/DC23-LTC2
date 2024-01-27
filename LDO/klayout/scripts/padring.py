@@ -60,7 +60,7 @@ import os
 
 
 class Padring:
-    def __init__(self, top_cell: Cell):
+    def __init__(self, top_cell: Cell, cell_sources: list):
         # Dimensions
 
         self.dx = DVector(500, 0)
@@ -77,33 +77,16 @@ class Padring:
 
         # Loading cell
 
-        # TODO: Is necessary putting this on arguments?
-        gds_path = (
-            Path(os.environ["PDK_ROOT"])
-            / "gf180mcuD/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds"
-        )
+        for cell_source in cell_sources:
+            cell_source = Path(cell_source)
+            if not cell_source.exists():
+                raise ValueError(f"Source {cell_source} don't exists")
 
-        if not gds_path.exists():
-            raise ValueError("Source GDS don't exists")
+            cell.layout().read(cell_source)
 
-        cell.layout().read(gds_path)
-
-        self.mapping = {
-            "asig": self.cell.layout().cell("gf180mcu_fd_io__asig_5p0"),
-            "bi_24t": self.cell.layout().cell("gf180mcu_fd_io__bi_24t"),
-            "bi_t": self.cell.layout().cell("gf180mcu_fd_io__bi_t"),
-            "brk2": self.cell.layout().cell("gf180mcu_fd_io__brk2"),
-            "brk5": self.cell.layout().cell("gf180mcu_fd_io__brk5"),
-            "cor": self.cell.layout().cell("gf180mcu_fd_io__cor"),
-            "dvdd": self.cell.layout().cell("gf180mcu_fd_io__dvdd"),
-            "dvss": self.cell.layout().cell("gf180mcu_fd_io__dvss"),
-            "fill1": self.cell.layout().cell("gf180mcu_fd_io__fill1"),
-            "fill10": self.cell.layout().cell("gf180mcu_fd_io__fill10"),
-            "fill5": self.cell.layout().cell("gf180mcu_fd_io__fill5"),
-            "fillnc": self.cell.layout().cell("gf180mcu_fd_io__fillnc"),
-            "in_c": self.cell.layout().cell("gf180mcu_fd_io__in_c"),
-            "in_s": self.cell.layout().cell("gf180mcu_fd_io__in_s"),
-        }
+        # This could be filled with an argument.
+        # Maybe from an external file.
+        self.mapping = dict()
 
         # Almost Always, the corner is an exception.
         # All cells have the same height. (Except corner)
@@ -150,6 +133,29 @@ class Padring:
             base += DVector(pad.dbbox().right, 0)
 
         self.mapping[name] = section
+
+    def register_alias(self, name, cellname):
+        if self.cell.layout().cell(name):
+            print(f"Alias {name} exists as cell")
+            return
+
+        if name in self.mapping.keys():
+            print(f"Alias {name} already registered")
+
+        cell = self.cell.layout().cell(cellname)
+        if not cell:
+            print(f"Cell {cellname} doesn't exists")
+            return
+
+        self.mapping[name] = cell
+
+    def delete_cell(self, cellname):
+        cell = self.cell.layout().cell(cellname)
+        if not cell:
+            raise ValueError(f"cell {cellname} don't exists")
+
+        cell.prune_subcells(-1)
+        self.cell.layout().delete_cell(cell.cell_index())
 
     def generate_side(self, bottom_list):
         padring_side_name = f"padring_side_{'_'.join(i for i in bottom_list)}"
@@ -213,13 +219,46 @@ Tengo que:
 
 top = KlayoutUtilities().viewed_cell
 
-padring_gen = Padring(top)
+# We can have multiple gds sources to pads.
+cell_sources = {
+    f"{os.environ['PDK_ROOT']}/gf180mcuD/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds"
+}
+
+padring_gen = Padring(top, cell_sources)
+
+
+# It's convenient to delete all cells that are not going to be used
+
+padring_gen.delete_cell("gf180mcu_fd_io__bi_24t")
+padring_gen.delete_cell("gf180mcu_fd_io__brk2")
+padring_gen.delete_cell("gf180mcu_fd_io__fill1")
+padring_gen.delete_cell("gf180mcu_fd_io__fillnc")
+padring_gen.delete_cell("gf180mcu_fd_io__in_s")
+padring_gen.delete_cell("(UNNAMED)")
+
+# When defining sections, better use short aliases instead of full cellname
+
+padring_gen.register_alias("asig", "gf180mcu_fd_io__asig_5p0")
+padring_gen.register_alias("bi_t", "gf180mcu_fd_io__bi_t")
+padring_gen.register_alias("brk5", "gf180mcu_fd_io__brk5")
+padring_gen.register_alias("cor", "gf180mcu_fd_io__cor")
+padring_gen.register_alias("dvdd", "gf180mcu_fd_io__dvdd")
+padring_gen.register_alias("dvss", "gf180mcu_fd_io__dvss")
+padring_gen.register_alias("fill10", "gf180mcu_fd_io__fill10")
+padring_gen.register_alias("fill5", "gf180mcu_fd_io__fill5")
+padring_gen.register_alias("in_c", "gf180mcu_fd_io__in_c")
+# padring_gen.register_alias("bi_24t", "gf180mcu_fd_io__bi_24t")
+# padring_gen.register_alias("brk2", "gf180mcu_fd_io__brk2")
+# padring_gen.register_alias("fill1", "gf180mcu_fd_io__fill1")
+# padring_gen.register_alias("fillnc", "gf180mcu_fd_io__fillnc")
+# padring_gen.register_alias("in_s", "gf180mcu_fd_io__in_s")
+
+# Sections allows another abstraction layer on the design
+
 padring_gen.register_section("default_spacing", ["fill10", "fill10", "fill5"])
 padring_gen.register_section("default_brk", ["fill10", "fill10", "brk5"])
 padring_gen.register_section("fill75", 15 * ["fill5"])
 padring_gen.register_section("default_spacing_fill75", ["default_spacing", "fill75"])
-padring_gen.register_section("big_spacing", 12 * ["fill75", "default_spacing"])
-
 padring_gen.register_section("default_spacing_asig", ["default_spacing", "asig"])
 padring_gen.register_section("default_spacing_dvss", ["default_spacing", "dvss"])
 padring_gen.register_section("default_spacing_dvdd", ["default_spacing", "dvdd"])
@@ -333,5 +372,7 @@ left_pads = [
 
 # padring_gen.draw(bottom_pads, right_pads, bottom_pads, bottom_pads)
 padring_gen.draw(bottom_pads, right_pads, top_pads, left_pads)
+
+top.insert(DCellInstArray(padring_gen.cell, DTrans()))
 
 KlayoutUtilities.set_visual_configuration()
