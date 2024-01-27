@@ -66,7 +66,7 @@ class Padring:
         self.dx = DVector(500, 0)
         self.dy = DVector(0, 500)
 
-        self.gap = 0.16
+        self.gap = DVector(0.16, 0)
 
         # Padring cell stuff
 
@@ -93,30 +93,17 @@ class Padring:
         # All cells has a little "gap" to the left when see bbox (Except Corner)
         # All cells have base (0, 0) on bottom left corner plus the gap.
 
-    def get_cell(self, cellname: str) -> Cell:
-        if cellname not in self.mapping.keys():
-            raise ValueError(f"{cellname} is not a cell")
+    def get_cell(self, cellalias: str = None) -> Cell:
+        if cellalias is None:
+            return self.cell
 
-        return self.mapping[cellname]
+        if cellalias not in self.mapping.keys():
+            raise ValueError(f"{cellalias} is not a cell")
+
+        return self.mapping[cellalias]
 
     def get_padring(self):
         return self.cell
-
-    def draw_corners(self):
-        corner = self.get_cell("cor")
-
-        self.cell.insert(
-            DCellInstArray(corner, DCplxTrans(1, 0, False, -self.dx - self.dy))
-        )
-        self.cell.insert(
-            DCellInstArray(corner, DCplxTrans(1, 90, False, self.dx - self.dy))
-        )
-        self.cell.insert(
-            DCellInstArray(corner, DCplxTrans(1, 180, False, self.dx + self.dy))
-        )
-        self.cell.insert(
-            DCellInstArray(corner, DCplxTrans(1, 270, False, -self.dx + self.dy))
-        )
 
     def register_section(self, name, sections):
         if self.cell.layout().cell(name) or name in self.mapping.keys():
@@ -130,7 +117,7 @@ class Padring:
             pad = self.get_cell(padname)
 
             section.insert(DCellInstArray(pad, DTrans(base)))
-            base += DVector(pad.dbbox().right, 0)
+            base += DVector(pad.dbbox().right, 0) - self.gap
 
         self.mapping[name] = section
 
@@ -172,14 +159,14 @@ class Padring:
         corner = self.get_cell("cor")
 
         padring_side.insert(DCellInstArray(corner, DTrans(base)))
-        base += DVector(corner.dbbox().right, 0)
+        base += DVector(corner.dbbox().right, 0) - self.gap
 
         # Add pads, fillers and breaks
         for padname in bottom_list:
             pad = self.get_cell(padname)
 
             padring_side.insert(DCellInstArray(pad, DTrans(base)))
-            base += DVector(pad.dbbox().right, 0)
+            base += DVector(pad.dbbox().right, 0) - self.gap
 
         return padring_side
 
@@ -203,7 +190,7 @@ class Padring:
             DCellInstArray(side_cell, DCplxTrans(1, rotation, False, self.padring_base))
         )
         self.padring_base += (
-            side_box.p2 + DVector(side_box.height(), -side_box.height())
+            side_box.p2 + DVector(side_box.height(), -side_box.height()) - 2 * self.gap
         ) * DCplxTrans(1, rotation, False, DVector())
 
 
@@ -345,6 +332,7 @@ top_pads = [
     "default_spacing_dvss",
     "default_spacing_bi_t",
 ]
+
 left_pads = [
     "default_spacing_bi_t",
     "default_spacing_bi_t",
@@ -363,16 +351,23 @@ left_pads = [
     "default_spacing_bi_t",
     "default_spacing_bi_t",
     "default_spacing_bi_t",
-    "default_spacing_dvss",
+    "default_brk",
+    "dvss",
     "default_spacing_dvdd",
     "default_spacing_asig",
     "default_spacing_asig",
     "default_spacing_dvss",
+    "default_spacing",
 ]
 
 # padring_gen.draw(bottom_pads, right_pads, bottom_pads, bottom_pads)
 padring_gen.draw(bottom_pads, right_pads, top_pads, left_pads)
 
-top.insert(DCellInstArray(padring_gen.cell, DTrans()))
+interest_cell = None
+
+# interest_cell = "fill10"
+# interest_cell = "default_spacing"
+
+top.insert(DCellInstArray(padring_gen.get_cell(interest_cell), DTrans()))
 
 KlayoutUtilities.set_visual_configuration()
