@@ -5,18 +5,12 @@ K {}
 V {}
 S {}
 E {}
-N -20 140 -10 140 {
-lab=vdd}
 N -40 180 -40 240 {
 lab=gnd}
 N -100 260 -20 260 {
 lab=vdd}
-N -40 -160 -10 -160 {
-lab=#net1}
 N -20 -140 -10 -140 {
 lab=vdd}
-N -40 -180 -10 -180 {
-lab=gnd}
 N 480 -0 500 0 {
 lab=compout}
 N 130 -20 300 -20 {
@@ -31,8 +25,6 @@ N 580 -340 580 -150 {
 lab=rst}
 N 620 150 620 320 {
 lab=eoc}
-N 440 -320 440 180 {
-lab=eoc}
 N -180 260 -100 260 {
 lab=vdd}
 N -220 -0 320 0 {
@@ -43,22 +35,14 @@ N -220 -160 -160 -160 {
 lab=vinp}
 N 620 -180 620 -150 {
 lab=vdd}
-N 440 180 620 180 {
-lab=eoc}
 N 560 150 560 340 {
 lab=gnd}
 N 400 340 560 340 {
 lab=gnd}
-N -120 220 -120 320 {
-lab=eoc}
 N -80 340 400 340 {
 lab=gnd}
 N -120 320 620 320 {
 lab=eoc}
-N -20 -340 -20 -140 {
-lab=vdd}
-N -40 -260 -40 -180 {
-lab=gnd}
 N -180 -340 -180 260 {
 lab=vdd}
 N -200 -260 -200 240 {
@@ -67,22 +51,14 @@ N -80 240 -40 240 {
 lab=gnd}
 N -200 240 -80 240 {
 lab=gnd}
-N -120 -320 -120 -220 {
-lab=eoc}
-N -120 -320 440 -320 {
-lab=eoc}
 N -200 -260 -40 -260 {
 lab=gnd}
 N -220 -260 -200 -260 {
-lab=gnd}
-N -80 -260 -80 -220 {
 lab=gnd}
 N 300 -20 320 -20 {
 lab=compp}
 N 300 20 320 20 {
 lab=compn}
-N 390 50 390 320 {
-lab=eoc}
 N 390 -340 390 -50 {
 lab=vdd}
 N -220 -340 390 -340 {
@@ -100,7 +76,7 @@ lab=eoc}
 N 390 -50 390 -35 {
 lab=vdd}
 N 390 35 390 50 {
-lab=eoc}
+lab=gnd}
 N 430 -0 480 0 {
 lab=compout}
 N -100 340 -80 340 {
@@ -109,10 +85,8 @@ N -100 -100 -100 -70 {
 lab=gnd}
 N -200 -70 -100 -70 {
 lab=gnd}
-N -200 -50 -80 -50 {
-lab=gnd}
 N -80 -100 -80 -50 {
-lab=gnd}
+lab=vdd}
 N -80 220 -60 260 {
 lab=vdd}
 N -100 220 -100 240 {
@@ -122,21 +96,15 @@ lab=gnd}
 N -200 240 -200 340 {
 lab=gnd}
 N -350 140 -160 140 {
-lab=#net2}
+lab=eoc}
 N -350 -180 -350 140 {
-lab=#net2}
+lab=eoc}
 N -350 -180 -160 -180 {
-lab=#net2}
-N -420 90 -360 90 {
-lab=#net2}
-N -360 90 -350 90 {
-lab=#net2}
+lab=eoc}
 N -590 -100 -120 -100 {
-lab=eoc}
-N -590 -100 -590 220 {
-lab=eoc}
+lab=#net1}
 N -590 220 -120 220 {
-lab=eoc}
+lab=#net1}
 N -590 90 -580 90 {
 lab=eoc}
 N -520 -290 -520 50 {
@@ -155,8 +123,50 @@ N -180 60 -20 60 {
 lab=vdd}
 N 130 20 310 20 {
 lab=compn}
-N -40 160 -10 160 {
-lab=#net3}
+N -20 -340 -20 -140 {
+lab=vdd}
+N -20 140 -10 140 {
+lab=vdd}
+N -40 -180 -10 -180 {
+lab=gnd}
+N -40 -260 -40 -180 {
+lab=gnd}
+N -40 -20 130 -20 {
+lab=compp}
+N -40 -160 -40 -20 {
+lab=compp}
+N -50 20 130 20 {
+lab=compn}
+N -50 20 -50 150 {
+lab=compn}
+N -50 150 -40 150 {
+lab=compn}
+N -40 150 -40 160 {
+lab=compn}
+N -420 -100 -420 90 {
+lab=#net1}
+N -180 -50 -80 -50 {
+lab=vdd}
+N -690 -100 -580 -100 {
+lab=#net1}
+N -690 -100 -690 220 {
+lab=#net1}
+N -690 220 -580 220 {
+lab=#net1}
+N -350 140 -350 200 {
+lab=eoc}
+N -600 200 -350 200 {
+lab=eoc}
+N -600 90 -600 200 {
+lab=eoc}
+N -600 90 -590 90 {
+lab=eoc}
+N -550 320 -120 320 {
+lab=eoc}
+N 390 40 390 340 {
+lab=gnd}
+N -550 200 -550 320 {
+lab=eoc}
 C {cdac.sym} 130 160 1 1 {name=x1 cu=5u}
 C {cdac.sym} 130 -160 1 0 {name=x2 cu=5u}
 C {devices/ipin.sym} -220 160 0 0 {name=p1 lab=vinn}
@@ -206,7 +216,7 @@ C {devices/opin.sym} 680 110 0 0 {name=p36 sig_type=std_logic lab=d[11]}
 C {devices/opin.sym} 300 -50 3 0 {name=p4 sig_type=std_logic lab=compp}
 C {devices/opin.sym} 300 50 1 0 {name=p8 sig_type=std_logic lab=compn}
 C {devices/opin.sym} 470 -50 3 0 {name=p9 sig_type=std_logic lab=compout}
-C {devices/opin.sym} 680 180 0 0 {name=p10 sig_type=std_logic lab=eoc}
+C {devices/opin.sym} 680 180 2 1 {name=p10 sig_type=std_logic lab=eoc}
 C {bootstrap_sw.sym} -100 -200 0 1 {name=x3}
 C {inv.sym} -520 90 0 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}
 C {bootstrap_sw.sym} -100 120 0 1 {name=x7}

@@ -129,14 +129,18 @@ N 1040 -160 1560 -160 {
 lab=xd}
 N 910 -160 1050 -160 {
 lab=xd}
-N -110 -200 -110 -160 {
-lab=in}
 N 1290 -220 1290 -160 {
 lab=xd}
 N 1290 -230 1290 -210 {
 lab=xd}
 N 1290 -230 1330 -230 {
 lab=xd}
+N 750 -270 880 -270 {
+lab=xd}
+N 880 -270 880 -210 {
+lab=xd}
+N -110 -200 -110 -160 {
+lab=in}
 C {cdac_line.sym} 80 -90 0 0 {name=x1
 CW=\{sqrt(2)*cu\}
 CL=\{sqrt(2)*cu\}}
@@ -200,3 +204,8 @@ spiceprefix=X
 m=1}
 C {devices/iopin.sym} -110 -200 0 0 {name=p15 lab=in}
 C {devices/iopin.sym} 1330 -230 0 0 {name=p16 lab=xd}
+C {devices/res.sym} 750 -240 0 0 {name=R1
+value=1T
+footprint=1206
+device=resistor
+m=1}
