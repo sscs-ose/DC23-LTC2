@@ -6,7 +6,7 @@ V {}
 S {}
 E {}
 N -40 180 -40 240 {
-lab=gnd}
+lab=cgnd}
 N -100 260 -20 260 {
 lab=vdd}
 N -20 -140 -10 -140 {
@@ -46,12 +46,6 @@ lab=eoc}
 N -180 -340 -180 260 {
 lab=vdd}
 N -200 -260 -200 240 {
-lab=gnd}
-N -80 240 -40 240 {
-lab=gnd}
-N -200 240 -80 240 {
-lab=gnd}
-N -200 -260 -40 -260 {
 lab=gnd}
 N -220 -260 -200 -260 {
 lab=gnd}
@@ -116,7 +110,7 @@ lab=gnd}
 N -520 180 -200 180 {
 lab=gnd}
 N -40 180 -10 180 {
-lab=gnd}
+lab=cgnd}
 N -20 40 -20 140 {
 lab=vdd}
 N -180 60 -20 60 {
@@ -128,9 +122,7 @@ lab=vdd}
 N -20 140 -10 140 {
 lab=vdd}
 N -40 -180 -10 -180 {
-lab=gnd}
-N -40 -260 -40 -180 {
-lab=gnd}
+lab=cgnd}
 N -40 -20 130 -20 {
 lab=compp}
 N -40 -160 -40 -20 {
@@ -167,6 +159,52 @@ N 390 40 390 340 {
 lab=gnd}
 N -550 200 -550 320 {
 lab=eoc}
+N -200 240 -100 240 {
+lab=gnd}
+N -40 -260 -40 -180 {
+lab=cgnd}
+N -450 530 -130 530 {
+lab=eoc}
+N -310 440 -190 440 {
+lab=#net1}
+N -190 440 -170 450 {
+lab=#net1}
+N -50 470 -50 610 {
+lab=cgnd}
+N -110 530 -110 670 {
+lab=gnd}
+N -90 530 -90 670 {
+lab=vdd}
+N -210 590 -170 590 {
+lab=eoc}
+N -210 530 -210 590 {
+lab=eoc}
+N -290 670 -130 670 {
+lab=#net1}
+N -290 440 -290 670 {
+lab=#net1}
+N -110 470 -110 530 {
+lab=gnd}
+N -110 340 -110 470 {
+lab=gnd}
+N -240 650 -110 650 {
+lab=gnd}
+N -250 650 -240 650 {
+lab=gnd}
+N -90 260 -90 530 {
+lab=vdd}
+N -250 470 -170 470 {
+lab=#net2}
+N -170 610 -110 610 {
+lab=gnd}
+N -310 220 -310 440 {
+lab=#net1}
+N -460 200 -460 530 {
+lab=eoc}
+N -460 530 -450 530 {
+lab=eoc}
+N -250 470 -250 590 {
+lab=#net2}
 C {cdac.sym} 130 160 1 1 {name=x1 cu=5u}
 C {cdac.sym} 130 -160 1 0 {name=x2 cu=5u}
 C {devices/ipin.sym} -220 160 0 0 {name=p1 lab=vinn}
@@ -220,3 +258,9 @@ C {devices/opin.sym} 680 180 2 1 {name=p10 sig_type=std_logic lab=eoc}
 C {bootstrap_sw.sym} -100 -200 0 1 {name=x3}
 C {inv.sym} -520 90 0 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}
 C {bootstrap_sw.sym} -100 120 0 1 {name=x7}
+C {devices/lab_pin.sym} -40 -260 0 0 {name=p11 sig_type=std_logic lab=cgnd}
+C {devices/lab_pin.sym} -40 240 0 1 {name=p12 sig_type=std_logic lab=cgnd}
+C {bootstrap_sw.sym} -110 430 0 1 {name=x8}
+C {devices/lab_pin.sym} -50 470 0 1 {name=p13 sig_type=std_logic lab=cgnd}
+C {bootstrap_sw.sym} -110 570 0 1 {name=x9}
+C {devices/vsource.sym} -250 620 0 0 {name=V1 value=1.8 savecurrent=false}

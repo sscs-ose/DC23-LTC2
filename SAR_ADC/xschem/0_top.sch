@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 
 * Copyright 2022 GlobalFoundries PDK Authors
 *
@@ -87,3 +87,4 @@ C {comp_sin_1u_10meg_tb.sym} 990 -730 0 0 {name=x4}
 C {comp_step_tb.sym} 990 -680 0 0 {name=x5}
 C {comp_random_tb.sym} 990 -780 0 0 {name=x6}
 C {comp_0input_tb.sym} 990 -830 0 0 {name=xf1}
+C {tb_cdac_2.sym} 1670 -690 0 0 {name=x7}

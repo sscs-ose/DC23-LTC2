@@ -16,7 +16,7 @@ C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
 value="
 .param period=20n
-.param stoptime=\{120*period\}
+.param stoptime=\{32*period\}
 
 .model swm1 sw vt=1 vh=0.2 ron=0.1 roff=100k
 
@@ -32,7 +32,7 @@ plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d
 plot compn compp compout clk eoc 1.8
 .endc
 "}
-C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=100m}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=1}
 C {devices/ipin.sym} -145 -410 1 0 {name=p1 lab=rst}
 C {devices/ipin.sym} -120 -410 1 0 {name=p2 lab=clk}
 C {devices/opin.sym} 15 -350 0 0 {name=p3 lab=d0}
