@@ -28,9 +28,9 @@ lab=sample}
 N 450 -230 510 -230 {
 lab=sample}
 N 290 -130 290 10 {
-lab=#net3}
+lab=out}
 N 290 -130 330 -130 {
-lab=#net3}
+lab=out}
 N 170 150 340 150 {
 lab=#net1}
 N 340 -70 340 150 {
@@ -63,3 +63,32 @@ C {devices/lab_pin.sym} 30 60 0 0 {name=p12 sig_type=std_logic lab=d3}
 C {devices/lab_pin.sym} 30 80 0 0 {name=p13 sig_type=std_logic lab=d2}
 C {devices/lab_pin.sym} 30 100 0 0 {name=p14 sig_type=std_logic lab=d1}
 C {devices/lab_pin.sym} 30 120 0 0 {name=p15 sig_type=std_logic lab=d0}
+C {devices/code_shown.sym} -1145 -125 0 0 {name=NGSPICE
+only_toplevel=false
+value="
+.param period=20n
+.param stoptime=\{32*period\}
+
+.tran \{0.01*stoptime\} \{stoptime\} uic
+
+vsmp sample 0 PULSE(0 3.3 0 10p 10p \{period/2\} \{period\} 1)
+vd0 d0 0 PULSE(0 3.3 5n 10p 10p \{period/2\} \{period\})
+.control
+
+save all
+run
+plot out 
+plot sample d0
+.endc
+"}
+C {devices/code_shown.sym} -1155 -270 0 0 {name=Libraries/Includes
+format="tcleval(  @value  )"
+only_toplevel=false
+value="
+.include $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+"
+spice_ignore=false}
+C {devices/lab_pin.sym} 290 -80 0 1 {name=p16 sig_type=std_logic lab=out}

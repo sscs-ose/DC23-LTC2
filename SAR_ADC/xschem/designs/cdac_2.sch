@@ -6,21 +6,21 @@ V {}
 S {}
 E {}
 N 80 -160 80 -140 {
-lab=in}
-N -70 -160 -70 -130 {
-lab=in}
-N 50 -100 60 -100 {
 lab=#net1}
+N -70 -160 -70 -130 {
+lab=#net1}
+N 50 -100 60 -100 {
+lab=#net2}
 N 210 -160 210 -140 {
-lab=in}
+lab=#net1}
 N 340 -160 340 -140 {
-lab=in}
+lab=#net1}
 N 470 -160 470 -140 {
-lab=in}
+lab=#net1}
 N 600 -160 600 -140 {
-lab=in}
+lab=#net1}
 N 730 -160 730 -140 {
-lab=in}
+lab=#net1}
 N 910 -160 910 -140 {
 lab=xd}
 N 1040 -160 1040 -140 {
@@ -86,23 +86,23 @@ lab=gnd}
 N -70 -30 1580 -30 {
 lab=gnd}
 N 730 -210 730 -160 {
-lab=in}
+lab=#net1}
 N 730 -210 790 -210 {
-lab=in}
+lab=#net1}
 N 850 -210 910 -210 {
 lab=xd}
 N 910 -210 910 -160 {
 lab=xd}
 N -90 -160 -70 -160 {
-lab=in}
+lab=#net1}
 N 80 -50 1560 -50 {
 lab=vin}
 N 100 -70 100 -30 {
 lab=gnd}
 N -90 -160 730 -160 {
-lab=in}
+lab=#net1}
 N -120 -160 -90 -160 {
-lab=in}
+lab=#net1}
 N 1040 -160 1560 -160 {
 lab=xd}
 N 910 -160 1050 -160 {
@@ -113,8 +113,6 @@ N 1290 -230 1290 -210 {
 lab=xd}
 N 1290 -230 1330 -230 {
 lab=xd}
-N -110 -200 -110 -160 {
-lab=in}
 N 50 -70 50 70 {
 lab=vin}
 N 180 -70 180 20 {
@@ -152,33 +150,33 @@ lab=vin}
 N 180 20 180 30 {
 lab=vin}
 N 20 -270 20 -100 {
-lab=in}
+lab=sample}
 N 20 -270 620 -270 {
-lab=in}
+lab=sample}
 N 150 -270 150 -100 {
-lab=in}
+lab=sample}
 N 280 -270 280 -100 {
-lab=in}
+lab=sample}
 N 410 -270 410 -100 {
-lab=in}
+lab=sample}
 N 540 -270 540 -100 {
-lab=in}
+lab=sample}
 N 670 -270 670 -100 {
-lab=in}
+lab=sample}
 N 1500 -260 1500 -100 {
-lab=in}
+lab=sample}
 N 1500 -280 1500 -260 {
-lab=in}
+lab=sample}
 N 620 -270 1500 -270 {
-lab=in}
+lab=sample}
 N 1240 -270 1240 -100 {
-lab=in}
+lab=sample}
 N 980 -270 980 -100 {
-lab=in}
+lab=sample}
 N 1110 -270 1110 -100 {
-lab=in}
+lab=sample}
 N 1370 -270 1370 -100 {
-lab=in}
+lab=sample}
 N 130 -70 130 80 {
 lab=gnd}
 N 1610 -80 1610 90 {
@@ -268,7 +266,6 @@ L=\{cu\}
 model=cap_mim_2f0fF
 spiceprefix=X
 m=1}
-C {devices/iopin.sym} -110 -200 0 0 {name=p15 lab=in}
 C {devices/iopin.sym} 1330 -230 0 0 {name=p16 lab=xd}
 C {devices/iopin.sym} 50 70 1 0 {name=p17 lab=vref}
 C {devices/iopin.sym} 140 90 1 0 {name=p18 lab=vdd}
