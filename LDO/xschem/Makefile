@@ -41,6 +41,7 @@ ALL_FILES:= \
 	$(wildcard ./test/pmos-automated/*) \
 	$(wildcard ./test/waffle-12x12/*) \
 	$(wildcard ./test/waffle-26x26/*) \
+	$(wildcard ./test/inv_sample/*) \
 	$(wildcard ./PLL_TOP_MUX_7/*)
 
 
@@ -53,14 +54,14 @@ ALL_LAYOUT:=$(filter %.gds,$(ALL_FILES))
 ALL_NETLIST:= \
 	$(filter %.spice,$(ALL_FILES)) \
 	$(filter %.cdl,$(ALL_FILES)) \
-	$(filter %.cir,$(ALL_FILES))
+	$(filter %/reports.cir,$(ALL_FILES))
 
 
 ## 3. Filter by subtype ##
 
 # Schematics
 SCH:=$(filter-out %-test.sch,$(ALL_SCH))
-SYM:=$(filter %.sym,$(ALL_FILES))
+ALL_SYM:=$(filter %.sym,$(ALL_FILES))
 
 # Testbenches
 TB:=$(filter %-test.sch,$(ALL_SCH))
@@ -90,8 +91,8 @@ $(warning $(COLOR_YELLOW)TOP not defined, using default values$(COLOR_END))
 TOP_SCH=0_top.sch
 else
 TOP_SCH:=$(realpath $(filter %/$(TOP).sch,$(SCH)))
-
 TOP_TB:=$(realpath $(filter %/$(TOP)-test.sch,$(TB)))
+TOP_SYM:=$(realpath $(filter %/$(TOP).sym,$(ALL_SYM)))
 
 TOP_GDS:=$(realpath $(filter %/$(TOP).gds,$(GDS)))
 TOP_GDS_CELL:=$(basename $(notdir $(TOP_GDS)))
@@ -101,15 +102,15 @@ TOP_SCH_DIR:=$(abspath $(dir $(TOP_SCH)))
 
 # Extracted from schematics (xschem)
 TOP_NETLIST_SCH:=$(realpath $(filter %/$(TOP).spice,$(ALL_NETLIST)))
-TOP_NETLIST_LVS_NOPREFIX:=$(TOP_SCH_DIR)/$(TOP)-noprefix.spice
-TOP_NETLIST_LVS_PREFIX:=$(TOP_SCH_DIR)/$(TOP)-prefix.spice
+TOP_NETLIST_LVS_NOPREFIX:=$(TOP_SCH_DIR)/$(TOP)_noprefix.spice
+TOP_NETLIST_LVS_PREFIX:=$(TOP_SCH_DIR)/$(TOP)_prefix.spice
 
 # Extracted from layout
 # (klayout)
 TOP_EXTRACTED_KLAYOUT:=$(realpath $(filter %/$(TOP).cir,$(wildcard $(TOP_GDS_DIR)/*)))
 # (magic)
-TOP_EXTRACTED_MAGIC:=$(realpath $(filter %/$(TOP)-extracted.spice,$(wildcard $(TOP_GDS_DIR)/*)))
-TOP_EXTRACTED_PEX:=$(realpath $(filter %/$(TOP)-pex.spice,$(wildcard $(TOP_GDS_DIR)/*)))
+TOP_EXTRACTED_MAGIC:=$(realpath $(filter %/$(TOP)_extracted.spice,$(wildcard $(TOP_GDS_DIR)/*)))
+TOP_EXTRACTED_PEX:=$(realpath $(filter %/$(TOP)_pex.spice,$(wildcard $(TOP_GDS_DIR)/*)))
 
 endif
 
@@ -124,8 +125,6 @@ endif
 XSCHEM_RCFILE=$(realpath ./xschemrc)
 
 MAGIC_RCFILE=$(realpath ./magicrc)
-MAGIC_LVS_SCRIPT=$(realpath ../scripts/magic_lvs.tcl)
-MAGIC_PEX_SCRIPT=$(realpath ../scripts/magic_pex.tcl)
 
 NETGEN_RCFILE=$(realpath $(PDK_ROOT)/$(PDK)/libs.tech/netgen/setup.tcl)
 
@@ -168,7 +167,6 @@ help:
 	$(call INFO_MESSAGE, $(HELP_ENTRIES))
 
 
-
 .PHONY: clean
 clean:
 	$(RM) $(CLEANABLE)
@@ -184,7 +182,9 @@ print-vars : \
 	print-TOP \
 	print-TOP_SCH \
 	print-TOP_TB \
+	print-TOP_SYM \
 	print-TOP_GDS \
+	print-TOP_GDS_CELL \
  	print-TOP_NETLIST_SCH \
 	print-TOP_NETLIST_GDS \
 	print-TOP_NETLIST_PEX
@@ -231,3 +231,13 @@ ifneq (,$(wildcard $(TOP)/$(TOP).gds))
 else
 	klayout -t -e -zz -r ../scripts/empty-gds.py -rd filepath=$(TOP)/$(TOP).gds
 endif
+
+
+.PHONY: extensive-test
+extensive-test:
+	make TOP=$(TOP) klayout-drc-only     |& tee $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
+	make TOP=$(TOP) GND_NAME=$(GND_NAME) klayout-lvs-only \
+	                                     |& tee $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
+	make TOP=$(TOP) netgen-lvs-klayout   |& tee $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
+	make TOP=$(TOP) netgen-lvs-magic     |& tee $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
+	make TOP=$(TOP) magic-pex-extraction |& tee $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log

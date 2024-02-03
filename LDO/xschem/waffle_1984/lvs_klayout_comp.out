@@ -1,0 +1,22 @@
+
+Subcircuit summary:
+Circuit 1: waffle_1984                     |Circuit 2: waffle_1984                     
+-------------------------------------------|-------------------------------------------
+pfet_03v3 (1984->1)                        |pfet_03v3 (1)                              
+Number of devices: 1                       |Number of devices: 1                       
+Number of nets: 3                          |Number of nets: 3                          
+---------------------------------------------------------------------------------------
+Netlists match uniquely.
+
+Subcircuit pins:
+Circuit 1: waffle_1984                     |Circuit 2: waffle_1984                     
+-------------------------------------------|-------------------------------------------
+S                                          |S                                          
+G                                          |G                                          
+D                                          |D                                          
+---------------------------------------------------------------------------------------
+Cell pin lists are equivalent.
+Device classes waffle_1984 and waffle_1984 are equivalent.
+
+Final result: Circuits match uniquely.
+.

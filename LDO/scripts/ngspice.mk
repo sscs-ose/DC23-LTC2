@@ -1,7 +1,7 @@
 # Files, directories and Aliases
 ################################
 
-NGSPICE_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-ngspice-$(TOP).log
+NGSPICE_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_ngspice_$(TOP).log
 
 NGSPICE=SPICE_USERINIT_DIR=$(PWD) ngspice -a --define=num_threads=$(NPROCS)
 

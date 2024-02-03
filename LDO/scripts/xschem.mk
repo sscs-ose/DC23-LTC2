@@ -1,10 +1,10 @@
 # Files, directories and Aliases
 ################################
 
-XSCHEM_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-xschem-$(TOP).log
-XSCHEM_NETLIST_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-xschem-netlist-$(TOP).log
-XSCHEM_NETLIST_PREFIX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-xschem-netlist-prefix-$(TOP).log
-XSCHEM_NETLIST_NOPREFIX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-xschem-netlist-noprefix-$(TOP).log
+XSCHEM_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_xschem_$(TOP).log
+XSCHEM_NETLIST_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_xschem_netlist_$(TOP).log
+XSCHEM_NETLIST_PREFIX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_xschem_netlist_prefix_$(TOP).log
+XSCHEM_NETLIST_NOPREFIX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_xschem_netlist_noprefix_$(TOP).log
 
 TOP_SCH_DIR:=$(abspath $(dir $(TOP_SCH)))
 
@@ -25,6 +25,7 @@ Xschem related rules:
   xschem-validation:            Evaluate file existence. Is used by other rules.
   xschem-sch:                   Open schematic asociated with TOP 
   xschem-tb:                    Open testbench asociated with TOP 
+  xschem-sym:                   Open schematic symbol
   xschem-netlist:               Generates a plain netlist executable by ngspice
   xschem-netlist-lvs-prefix:    Generates an lvs netlist usable by magic
   xschem-netlist-lvs-noprefix:  Generates an lvs netlist usable by klayout
@@ -32,6 +33,16 @@ Xschem related rules:
   xschem-netlist-lvs-noprefix-fixed: Klayout LVS requires some patches over
                                 the netlist generated with xschem
                                 This functions is applied by noprefix rule
+
+  Required variables:
+    TOP_SCH:                  Schematic
+    TOP_TB:                   Testbench
+    TOP_SYM:                  Symbol
+    TOP_SCH_DIR:              Directory for schematic related information
+    TOP_NETLIST_SCH:          Netlist extracted with xschem. Used by spice simulator
+    TOP_NETLIST_LVS_PREFIX:   Schematic extraction with prefix. Required in lvs with magic extraction
+    TOP_NETLIST_LVS_NOPREFIX: Schematic extraction without prefix. Required by klayout
+    XSCHEM_RCFILE:            Configuration file for xschem
 
 endef
 
@@ -71,6 +82,11 @@ endif
 .PHONY: xschem-tb
 xschem-tb: xschem-validation
 	$(XSCHEM) $(TOP_TB) |& tee $(XSCHEM_LOG)
+
+
+.PHONY: xschem-sym
+xschem-sym: xschem-validation
+	$(XSCHEM) $(TOP_SYM) |& tee $(XSCHEM_LOG)
 
 
 .PHONY: xschem-netlist

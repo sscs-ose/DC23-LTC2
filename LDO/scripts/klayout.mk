@@ -1,15 +1,23 @@
 # Files, directories and Aliases
 ################################
 
-KLAYOUT_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-$(TOP).log
-KLAYOUT_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-lvs-$(TOP).log
-KLAYOUT_DRC_EFABLES_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-efabless-$(TOP).log
-KLAYOUT_DRC_PRECHECK_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-klayout-drc-precheck-$(TOP).log
+KLAYOUT_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_klayout_$(TOP).log
+KLAYOUT_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_klayout_lvs_$(TOP).log
+KLAYOUT_DRC_EFABLES_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_klayout_drc_efabless_$(TOP).log
+KLAYOUT_DRC_PRECHECK_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_klayout_drc_precheck_$(TOP).log
 
-GND_NAME:=gf180mcu_gnd
+# If this variable is not set correctly. LVS will never succeed
+# This variable is case sensitive, VSS != vss
+GND_NAME:=VSS
 
-TOP_ALL_LYRDB:=$(filter %.lyrdb,$(wildcard $(TOP_GDS_DIR)/*))
-TOP_ALL_LVSDB:=$(filter %.lvsdb,$(wildcard $(TOP_GDS_DIR)/*))
+GDS_REPORT_DIR:=$(TOP_GDS_DIR)/reports
+ifeq (,$(GDS_REPORT_DIR))
+mkdir -p $(GDS_REPORT_DIR)
+endif
+
+TOP_ALL_LYRDB:=$(filter %.lyrdb,$(wildcard $(GDS_REPORT_DIR)/*))
+TOP_ALL_LVSDB:=$(filter %.lvsdb,$(wildcard $(GDS_REPORT_DIR)/*))
+
 
 KLAYOUT=klayout -t
 
@@ -113,7 +121,7 @@ endif
 
 .PHONY: klayout-lvs-only
 klayout-lvs-only: klayout-validation xschem-netlist-lvs-noprefix-fixed
-	$(RM) $(TOP_GDS_DIR)/*.lyrdb
+	$(RM) $(GDS_REPORT_DIR)/*.lvsdb
 
 	# Since the netlist could not exists on first run
 	# It's recommended use TOP.spice instead of TOP_NETLIST_SCH
@@ -122,12 +130,15 @@ klayout-lvs-only: klayout-validation xschem-netlist-lvs-noprefix-fixed
 		--run_mode=flat \
 		--verbose \
 		--lvs_sub=$(GND_NAME) \
-		--run_dir=$(TOP_GDS_DIR) \
+		--run_dir=$(GDS_REPORT_DIR) \
 		--layout=$(TOP_GDS) \
-		--netlist=$(TOP_GDS_DIR)/$(TOP)-noprefix.spice \
+		--netlist=$(TOP_GDS_DIR)/$(TOP)_noprefix.spice \
 		--top_lvl_pins \
 		--schematic_simplify \
 		--combine |& tee $(KLAYOUT_LVS_LOG) || true
+
+	mv $(GDS_REPORT_DIR)/*.cir $(TOP_GDS_DIR)
+
 
 
 .PHONY: klayout-lvs
@@ -149,13 +160,13 @@ endif
 
 .PHONY: klayout-drc-only
 klayout-drc-only: klayout-validation
-	$(RM) $(TOP_GDS_DIR)/*.lyrdb
+	$(RM) $(GDS_REPORT_DIR)/*.lyrdb
 
 	python $(KLAYOUT_HOME)/drc/run_drc.py \
 		--path $(TOP_GDS) \
 		--variant=D \
 		--topcell=$(TOP_GDS_CELL) \
-		--run_dir=$(TOP_GDS_DIR) \
+		--run_dir=$(GDS_REPORT_DIR) \
 		--run_mode=flat \
 		--antenna \
 		--density \
@@ -165,7 +176,7 @@ klayout-drc-only: klayout-validation
 	$(KLAYOUT) -b -r $(KLAYOUT_HOME)/drc/gf180mcuD_mr.drc \
 		-rd input=$(TOP_GDS) \
 		-rd topcell=$(TOP_GDS_CELL) \
-		-rd report=$(TOP_GDS_DIR)/precheck_$(TOP).lyrdb \
+		-rd report=$(GDS_REPORT_DIR)/precheck_$(TOP).lyrdb \
 		-rd thr=$(NPROCS) \
 		-rd conn_drc=true \
 		-rd split_deep=true \

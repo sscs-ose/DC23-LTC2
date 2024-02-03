@@ -157,3 +157,6 @@ cython_debug/
 **/*.drc
 **/*.raw
 **/drc_run_*/
+
+# Eventually, make a script that shows if this spices are really different.
+#**/*.spice

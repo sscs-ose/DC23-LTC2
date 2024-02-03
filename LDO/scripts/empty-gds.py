@@ -8,6 +8,7 @@ def main():
     file = Path(filepath)
 
     layout = pya.Layout()
+    layout.dbu = 0.005
     layout.create_cell("TOP")
 
     if file.suffix != ".gds":

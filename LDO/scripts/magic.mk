@@ -1,20 +1,79 @@
+.ONESHELL:
+
 # Files, directories and Aliases
 ################################
 
-MAGIC_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-magic-$(TOP).log
-MAGIC_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-magic-lvs-$(TOP).log
-MAGIC_PEX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-magic-pex-$(TOP).log
+MAGIC_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_magic_$(TOP).log
+MAGIC_LVS_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_magic_lvs_$(TOP).log
+MAGIC_PEX_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_magic_pex_$(TOP).log
 
-MAGIC=PEX_DIR=$(TOP_GDS_DIR) LVS_DIR=$(TOP_GDS_DIR) LAYOUT=$(TOP_GDS) TOP=$(TOP) magic -rcfile $(MAGIC_RCFILE) -noconsole
-MAGIC_BATCH=$(MAGIC) -nowrapper -nowindow -D -dnull
+MAGIC=magic -rcfile $(MAGIC_RCFILE) -noconsole
+MAGIC_BATCH=$(MAGIC) -nowindow -dnull
+
+define MAGIC_ROUTINE_LOAD =
+gds rescale false
+
+gds flatten yes
+
+gds flatglob pmos*
+gds flatglob via*
+gds flatglob compass*
+gds flatglob rectangle*
+
+gds read $(TOP_GDS)
+#getcell $(TOP_GDS_CELL)
+load $(TOP_GDS_CELL)
+box 0 0 0 0
+
+puts "layout loaded :)"
+endef
+
+define MAGIC_ROUTINE_LVS =
+drc off
+$(MAGIC_ROUTINE_LOAD)
+
+extract
+ext2spice lvs
+ext2spice -o "$(TOP_GDS_DIR)/$(TOP_GDS_CELL)_extracted.spice"
+
+puts "Created netlist file $(TOP_GDS_DIR)/$(TOP_GDS_CELL)_extracted.spice"
+quit -noprompt
+endef
+
+define MAGIC_ROUTINE_PEX =
+drc off
+$(MAGIC_ROUTINE_LOAD)
+
+flatten $(TOP_GDS_CELL)_pex
+load $(TOP_GDS_CELL)_pex
+box values 0 0 0 0
+
+extract all
+ext2sim labels on
+ext2sim
+extresist tolerance 10
+extresist all
+ext2spice lvs
+ext2spice extresist on
+ext2spice cthresh 0
+ext2spice -o "$(TOP_GDS_DIR)/$(TOP_GDS_CELL)_pex.spice"
+
+puts "Created pex file $(TOP_GDS_DIR)/$(TOP_GDS_CELL)_pex.spice"
+
+quit -noprompt
+endef
 
 define HELP_ENTRIES +=
 
 Magic related rules:
-  magic-validation:  Evaluates relevant file existence. It's used by other rules.
-  magic-edit:        Open $(TOP).gds on magic
-  magic-lvs:         Extracts the netlist without parasitics
-  magic-pex:         Extracts the netlist with resistive and capacitive parasitics
+  magic-validation:      Evaluates relevant file existence. It's used by other rules.
+  magic-edit:            Open $(TOP).gds on magic
+  magic-lvs-extraction:  Extracts the netlist without parasitics
+  magic-pex-extraction:  Extracts the netlist with resistive and capacitive parasitics
+
+  IMPORTANT!!!
+  Sometimes, magic needs manually adding some `flatglob` patterns on `MAGIC_ROUTINE_LOAD`
+  This is done to flatten some devices that magic is not capable of recognize in different hierarchies.
 
 endef
 
@@ -23,33 +82,33 @@ endef
 
 .PHONY: magic-validation
 magic-validation:
-ifeq (,$(wildcard $(MAGIC_LVS_SCRIPT)))
-	$(call ERROR_MESSAGE, [magic] There's no magic lvs script)
-endif
-ifeq (,$(wildcard $(MAGIC_PEX_SCRIPT)))
-	$(call ERROR_MESSAGE, [magic] There's no magic pex script)
-endif
 ifeq (,$(wildcard $(TOP_GDS)))
 	$(call ERROR_MESSAGE, [magic] GDS file $(TOP_GDS) doesn't exist$)
 endif
 	$(call INFO_MESSAGE, [magic] directory:         $(TOP_GDS_DIR))
 	$(call INFO_MESSAGE, [magic] GDS:               $(TOP_GDS))
-	$(call INFO_MESSAGE, [magic] extracted netlist: $(wildcard $(TOP_GDS_DIR)/$(TOP)-extracted.spice))
-	$(call INFO_MESSAGE, [magic] extracted pex:     $(wildcard $(TOP_GDS_DIR)/$(TOP)-pex.spice))
+	$(call INFO_MESSAGE, [magic] extracted netlist: $(wildcard $(TOP_GDS_DIR)/$(TOP)_extracted.spice))
+	$(call INFO_MESSAGE, [magic] extracted pex:     $(wildcard $(TOP_GDS_DIR)/$(TOP)_pex.spice))
 	$(call INFO_MESSAGE, [magic] rcfile:            $(MAGIC_RCFILE))
 
 
 .PHONY: magic-edit
 magic-edit: magic-validation
-	$(MAGIC) $(TOP_GDS) |& tee $(MAGIC_LOG)
+	cd $(TOP_GDS_DIR) && $(MAGIC) <<EOF |& tee $(MAGIC_LOG)
+	$(MAGIC_ROUTINE_LOAD)
+	EOF
 
 
 # Working on the TOP_DIR for simplicity, maybe we can change a internal variable to write all there.
-.PHONY: magic-lvs
-magic-lvs: magic-validation
-	cd $(TOP_GDS_DIR) && $(MAGIC_BATCH) $(MAGIC_LVS_SCRIPT) |& tee $(MAGIC_LVS_LOG)
+.PHONY: magic-lvs-extraction
+magic-lvs-extraction: magic-validation
+	cd $(TOP_GDS_DIR) && $(MAGIC_BATCH) <<EOF |& tee $(MAGIC_LVS_LOG)
+	$(MAGIC_ROUTINE_LVS)
+	EOF
+	
 
-
-.PHONY: magic-pex
-magic-pex: magic-validation
-	cd $(TOP_GDS_DIR) && $(MAGIC_BATCH) $(MAGIC_PEX_SCRIPT) |& tee $(MAGIC_PEX_LOG)
+.PHONY: magic-pex-extraction
+magic-pex-extraction: magic-validation
+	cd $(TOP_GDS_DIR) && $(MAGIC_BATCH) <<EOF |& tee $(MAGIC_PEX_LOG)
+	$(MAGIC_ROUTINE_PEX)
+	EOF

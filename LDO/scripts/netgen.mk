@@ -1,18 +1,36 @@
 # Files, directories and Aliases
 ################################
 
-NETGEN_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)-netgen-$(TOP).log
+NETGEN_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_netgen_$(TOP).log
 
 NETGEN=netgen -batch lvs
+
+NETGEN_LVS_WITH_MAGIC=$(NETGEN) \
+		"$(TOP_NETLIST_LVS_PREFIX) $(TOP_GDS_CELL)" \
+		"$(TOP_EXTRACTED_MAGIC) $(TOP_GDS_CELL)" \
+		$(NETGEN_RCFILE)
+
+NETGEN_LVS_WITH_KLAYOUT=$(NETGEN) \
+		"$(TOP_NETLIST_LVS_NOPREFIX) $(TOP_GDS_CELL)" \
+		"$(TOP_EXTRACTED_KLAYOUT) $(TOP_GDS_CELL)" \
+		$(NETGEN_RCFILE)
 
 define HELP_ENTRIES += 
 
 Netgen related rules:
-  IMPORTAN NOTE !!!
-  Following rules are not verified
   netgen-validation:  Evaluates relevant file existence. It's used by other rules.
   netgen-lvs-magic:   Perform LVS with schematic netlist and extracted circuit netlist
   netgen-lvs-klayout: Perform LVS with schematic netlist and extracted circuit netlist
+
+  Required variables:
+	TOP_GDS:                  Layout file
+	TOP_GDS_CELL:             Cellname in layout file
+	TOP_GDS_DIR:              Directory for layout related information
+	TOP_EXTRACTED_KLAYOUT:    Netlist extracted with klayout
+	TOP_EXTRACTED_MAGIC:      Netlist extracted with magic
+	TOP_NETLIST_LVS_PREFIX:   Schematic extraction with prefix. Required in lvs with magic extraction
+	TOP_NETLIST_LVS_NOPREFIX: Schematic extraction without prefix. Required by klayout
+	NETGEN_RCFILE:            Configuration file for netgen
 
 endef
 
@@ -35,13 +53,10 @@ endif
 
 
 .PHONY: netgen-lvs-magic
-netgen-lvs-magic: netgen-validation magic-lvs xschem-netlist-lvs-prefix
-	cd $(TOP_GDS_DIR) && $(NETGEN) \
-		"$(TOP_NETLIST_LVS_PREFIX) $(TOP)" \
-		"$(TOP_EXTRACTED_MAGIC) $(TOP)-extracted" \
-		$(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
-
-	cd $(TOP_GDS_DIR) && grep "Netlist" comp.out
+netgen-lvs-magic: netgen-validation magic-lvs-extraction xschem-netlist-lvs-prefix
+	cd $(TOP_GDS_DIR) && $(NETGEN_LVS_WITH_MAGIC) |& tee $(NETGEN_LOG) || true
+	mv $(TOP_GDS_DIR)/comp.out $(TOP_GDS_DIR)/lvs_magic_comp.out
+	grep "Netlist" $(TOP_GDS_DIR)/lvs_magic_comp.out
 
 .PHONY: netgen-lvs-klayout
 netgen-lvs-klayout: netgen-validation xschem-netlist-lvs-noprefix
@@ -52,10 +67,7 @@ endif
 	sed -i '/C.*cap_mim_2f0_m4m5_noshield/s/L/c_length/' $(TOP_EXTRACTED_KLAYOUT)
 	sed -i '/R.*ppoly/s/W/r_width/' $(TOP_EXTRACTED_KLAYOUT)
 	sed -i '/R.*ppoly/s/L/r_length/' $(TOP_EXTRACTED_KLAYOUT)
-	
-	cd $(TOP_GDS_DIR) && $(NETGEN) \
-		"$(TOP_NETLIST_LVS_NOPREFIX) $(TOP)" \
-		"$(TOP_EXTRACTED_KLAYOUT) $(TOP)" \
-		$(NETGEN_RCFILE) |& tee $(NETGEN_LOG) || true
 
-	cd $(TOP_GDS_DIR) && grep "Netlist" comp.out
+	cd $(TOP_GDS_DIR) && $(NETGEN_LVS_WITH_KLAYOUT) |& tee $(NETGEN_LOG) || true
+	mv $(TOP_GDS_DIR)/comp.out $(TOP_GDS_DIR)/lvs_klayout_comp.out
+	grep "Netlist" $(TOP_GDS_DIR)/lvs_klayout_comp.out

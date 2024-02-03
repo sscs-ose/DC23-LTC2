@@ -1,0 +1,1510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<report-database>
+ <description>GF180 DENSITY DRC Run Report at</description>
+ <original-file/>
+ <generator>drc: script='/home/designer/.volare/gf180mcuD/libs.tech/klayout/drc/rule_decks/density.drc'</generator>
+ <top-cell>resistor</top-cell>
+ <tags>
+ </tags>
+ <categories>
+  <category>
+   <name>M1.4</name>
+   <description>M1.4 : Metal1 coverage over the entire die shall be &gt;30%
+                (Refer to section 13.0 for Dummy Metal fill guidelines.
+                 Customer needs to ensure enough dummy metal to satisfy Metal1 coverage) : 30%</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>M2.4</name>
+   <description>M2.4 : Metal2 coverage over the entire die shall be &gt;30%
+                (Refer to section 13.0 for Dummy Metal fill guidelines.
+                 Customer needs to ensure enough dummy metal to satisfy Metal2 coverage) : 30%</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>M3.4</name>
+   <description>M3.4 : metal3 coverage over the entire die shall be &gt;30%
+                    (Refer to section 13.0 for Dummy Metal fill guidelines.
+                    Customer needs to ensure enough dummy metal to satisfy metal3 coverage) : 30%</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>M4.4</name>
+   <description>M4.4 : metal4 coverage over the entire die shall be &gt;30%
+                    (Refer to section 13.0 for Dummy Metal fill guidelines.
+                    Customer needs to ensure enough dummy metal to satisfy metal4 coverage) : 30%</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>M5.4</name>
+   <description>M5.4 : metal5 coverage over the entire die shall be &gt;30%
+                    (Refer to section 13.0 for Dummy Metal fill guidelines.
+                    Customer needs to ensure enough dummy metal to satisfy metal5 coverage) : 30%</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>MT.3</name>
+   <description>MT.3 : MetalTop coverage over the entire die shall be &gt;30%
+                                (Refer to section 10.3 for Dummy Metal-fill guidelines.
+                                Customer needs to ensure enough dummy metal to satisfy Metaln coverage) : 30%</description>
+   <categories>
+   </categories>
+  </category>
+ </categories>
+ <cells>
+  <cell>
+   <name>resistor</name>
+   <variant/>
+   <references>
+   </references>
+  </cell>
+ </cells>
+ <items>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,-0.05;-5.88,1.05;-4.78,1.05;-4.78,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,-0.05;-3.88,1.05;-2.78,1.05;-2.78,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,-0.05;22.78,1.05;23.88,1.05;23.88,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,-0.05;24.78,1.05;25.88,1.05;25.88,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,2.95;-5.88,4.05;-4.78,4.05;-4.78,2.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,2.95;-0.88,4.05;0.22,4.05;0.22,2.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,2.95;19.78,4.05;20.88,4.05;20.88,2.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,5.95;-5.88,7.05;-4.78,7.05;-4.78,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,5.95;-0.88,7.05;0.22,7.05;0.22,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,5.95;19.78,7.05;20.88,7.05;20.88,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,2.95;24.78,7.05;25.88,7.05;25.88,2.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,8.95;-5.88,10.05;-4.78,10.05;-4.78,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,8.95;-0.88,10.05;0.22,10.05;0.22,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,8.95;19.78,10.05;20.88,10.05;20.88,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,8.95;24.78,10.05;25.88,10.05;25.88,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,11.95;-5.88,13.05;-4.78,13.05;-4.78,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,5.95;-3.88,13.05;-2.78,13.05;-2.78,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,11.95;-0.88,13.05;0.22,13.05;0.22,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,11.95;19.78,13.05;20.88,13.05;20.88,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,14.95;-5.88,16.05;-4.78,16.05;-4.78,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,14.95;-0.88,16.05;0.22,16.05;0.22,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,14.95;19.78,16.05;20.88,16.05;20.88,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,11.95;24.78,16.05;25.88,16.05;25.88,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,17.95;-0.88,19.05;0.22,19.05;0.22,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,17.95;19.78,19.05;20.88,19.05;20.88,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,8.95;22.78,19.05;23.88,19.05;23.88,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,17.95;24.78,19.05;25.88,19.05;25.88,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,17.95;-5.88,22.05;-4.78,22.05;-4.78,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,20.95;-0.88,22.05;0.22,22.05;0.22,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,20.95;19.78,22.05;20.88,22.05;20.88,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,20.95;24.78,22.05;25.88,22.05;25.88,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,23.95;-5.88,25.05;-4.78,25.05;-4.78,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,14.95;-3.88,25.05;-2.78,25.05;-2.78,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,23.95;-0.88,25.05;0.22,25.05;0.22,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,23.95;19.78,25.05;20.88,25.05;20.88,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,26.95;-5.88,28.05;-4.78,28.05;-4.78,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,26.95;-0.88,28.05;0.22,28.05;0.22,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,26.95;19.78,28.05;20.88,28.05;20.88,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,23.95;24.78,28.05;25.88,28.05;25.88,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,29.95;-0.88,31.05;0.22,31.05;0.22,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,29.95;19.78,31.05;20.88,31.05;20.88,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,20.95;22.78,31.05;23.88,31.05;23.88,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,29.95;24.78,31.05;25.88,31.05;25.88,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,29.95;-5.88,34.05;-4.78,34.05;-4.78,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,32.95;-0.88,34.05;0.22,34.05;0.22,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,32.95;19.78,34.05;20.88,34.05;20.88,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,32.95;24.78,34.05;25.88,34.05;25.88,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,35.95;-5.88,37.05;-4.78,37.05;-4.78,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,26.95;-3.88,37.05;-2.78,37.05;-2.78,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,35.95;-0.88,37.05;0.22,37.05;0.22,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,35.95;19.78,37.05;20.88,37.05;20.88,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,38.95;-5.88,40.05;-4.78,40.05;-4.78,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,38.95;-0.88,40.05;0.22,40.05;0.22,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,38.95;19.78,40.05;20.88,40.05;20.88,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,35.95;24.78,40.05;25.88,40.05;25.88,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,41.95;-5.88,43.05;-4.78,43.05;-4.78,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,41.95;-0.88,43.05;0.22,43.05;0.22,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,41.95;19.78,43.05;20.88,43.05;20.88,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,32.95;22.78,43.05;23.88,43.05;23.88,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,41.95;24.78,43.05;25.88,43.05;25.88,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,44.95;-5.88,46.05;-4.78,46.05;-4.78,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,38.95;-3.88,46.05;-2.78,46.05;-2.78,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,44.95;-0.88,46.05;0.22,46.05;0.22,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,44.95;19.78,46.05;20.88,46.05;20.88,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,47.95;-5.88,49.05;-4.78,49.05;-4.78,47.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,47.95;-0.88,49.05;0.22,49.05;0.22,47.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,47.95;19.78,49.05;20.88,49.05;20.88,47.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,44.95;24.78,49.05;25.88,49.05;25.88,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,50.95;-5.88,52.05;-4.78,52.05;-4.78,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,50.95;-3.88,52.05;-2.78,52.05;-2.78,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,50.95;22.78,52.05;23.88,52.05;23.88,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,50.95;24.78,52.05;25.88,52.05;25.88,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M1.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,-2.15;-0.88,-0.05;-1.89,-0.05;-1.89,52.05;-0.88,52.05;-0.88,54.15;20.88,54.15;20.88,50.95;19.78,50.95;19.78,53.05;0.22,53.05;0.22,50.95;-1.51,50.95;-1.51,1.05;0.22,1.05;0.22,-1.05;19.78,-1.05;19.78,1.05;20.88,1.05;20.88,-2.15)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,-0.05;-5.88,1.05;-4.78,1.05;-4.78,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,-0.05;-3.88,1.05;-2.78,1.05;-2.78,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,-0.05;-0.88,1.05;0.22,1.05;0.22,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,-0.05;19.78,1.05;20.88,1.05;20.88,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,-0.05;22.78,1.05;23.88,1.05;23.88,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,-0.05;24.78,1.05;25.88,1.05;25.88,-0.05)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,2.95;-5.88,4.05;0.22,4.05;0.22,2.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,2.95;19.78,4.05;25.88,4.05;25.88,2.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,5.95;-5.88,7.05;-4.78,7.05;-4.78,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,5.95;-3.88,7.05;0.22,7.05;0.22,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,5.95;19.78,7.05;25.88,7.05;25.88,5.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,8.95;-5.88,10.05;0.22,10.05;0.22,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,8.95;19.78,10.05;23.88,10.05;23.88,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,8.95;24.78,10.05;25.88,10.05;25.88,8.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,11.95;-5.88,13.05;-4.78,13.05;-4.78,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,11.95;-3.88,13.05;0.22,13.05;0.22,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,11.95;19.78,13.05;25.88,13.05;25.88,11.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,14.95;-5.88,16.05;-4.78,16.05;-4.78,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,14.95;-3.88,16.05;0.22,16.05;0.22,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,14.95;19.78,16.05;25.88,16.05;25.88,14.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,17.95;-5.88,19.05;0.22,19.05;0.22,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,17.95;19.78,19.05;23.88,19.05;23.88,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,17.95;24.78,19.05;25.88,19.05;25.88,17.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,20.95;-5.88,22.05;0.22,22.05;0.22,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,20.95;19.78,22.05;23.88,22.05;23.88,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,20.95;24.78,22.05;25.88,22.05;25.88,20.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,23.95;-5.88,25.05;-4.78,25.05;-4.78,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,23.95;-3.88,25.05;0.22,25.05;0.22,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,23.95;19.78,25.05;25.88,25.05;25.88,23.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,26.95;-5.88,28.05;-4.78,28.05;-4.78,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,26.95;-3.88,28.05;0.22,28.05;0.22,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,26.95;19.78,28.05;25.88,28.05;25.88,26.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,29.95;-5.88,31.05;0.22,31.05;0.22,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,29.95;19.78,31.05;23.88,31.05;23.88,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,29.95;24.78,31.05;25.88,31.05;25.88,29.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,32.95;-5.88,34.05;0.22,34.05;0.22,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,32.95;19.78,34.05;23.88,34.05;23.88,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,32.95;24.78,34.05;25.88,34.05;25.88,32.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,35.95;-5.88,37.05;-4.78,37.05;-4.78,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,35.95;-3.88,37.05;0.22,37.05;0.22,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,35.95;19.78,37.05;25.88,37.05;25.88,35.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,38.95;-5.88,40.05;-4.78,40.05;-4.78,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,38.95;-3.88,40.05;0.22,40.05;0.22,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,38.95;19.78,40.05;25.88,40.05;25.88,38.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,41.95;-5.88,43.05;0.22,43.05;0.22,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,41.95;19.78,43.05;23.88,43.05;23.88,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,41.95;24.78,43.05;25.88,43.05;25.88,41.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,44.95;-5.88,46.05;-4.78,46.05;-4.78,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,44.95;-3.88,46.05;0.22,46.05;0.22,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,44.95;19.78,46.05;25.88,46.05;25.88,44.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,47.95;-5.88,49.05;0.22,49.05;0.22,47.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,47.95;19.78,49.05;25.88,49.05;25.88,47.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-5.88,50.95;-5.88,52.05;-4.78,52.05;-4.78,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-3.88,50.95;-3.88,52.05;-2.78,52.05;-2.78,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (-0.88,50.95;-0.88,52.05;0.22,52.05;0.22,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (19.78,50.95;19.78,52.05;20.88,52.05;20.88,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (22.78,50.95;22.78,52.05;23.88,52.05;23.88,50.95)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>'M2.4'</category>
+   <cell>resistor</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <image/>
+   <values>
+    <value>polygon: (24.78,50.95;24.78,52.05;25.88,52.05;25.88,50.95)</value>
+   </values>
+  </item>
+ </items>
+</report-database>
