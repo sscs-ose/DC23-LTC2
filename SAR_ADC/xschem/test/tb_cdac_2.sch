@@ -5,68 +5,68 @@ K {}
 V {}
 S {}
 E {}
-N 170 150 170 220 {
+N -110 140 -110 210 {
 lab=#net1}
-N 110 150 110 220 {
+N -170 140 -170 210 {
 lab=vref}
-N 110 280 170 280 {
+N -170 270 -110 270 {
 lab=GND}
-N 150 150 150 190 {
+N -130 140 -130 180 {
 lab=#net2}
-N 50 190 150 190 {
+N -230 180 -130 180 {
 lab=#net2}
-N 450 -240 450 -150 {
+N 170 -250 170 -160 {
 lab=sample}
-N 140 -240 450 -240 {
+N -140 -250 170 -250 {
 lab=sample}
-N 140 -240 140 -130 {
+N -140 -250 -140 -140 {
 lab=sample}
-N 410 -70 510 -70 {
+N 130 -80 230 -80 {
 lab=#net3}
-N 290 -130 290 10 {
+N 10 -140 10 0 {
 lab=out}
-N 290 -130 330 -130 {
+N 10 -140 50 -140 {
 lab=out}
-N 170 150 340 150 {
+N -110 140 60 140 {
 lab=#net1}
-N 340 -70 340 150 {
+N 60 -80 60 140 {
 lab=#net1}
-N 340 -70 370 -70 {
+N 60 -80 90 -80 {
 lab=#net1}
-N -90 190 50 190 {
+N -370 180 -230 180 {
 lab=#net2}
-N 510 -70 590 -70 {
+N 230 -80 310 -80 {
 lab=#net3}
-N 450 -230 590 -230 {
+N 170 -240 310 -240 {
 lab=sample}
-N 630 -170 630 190 {
+N 350 -180 350 180 {
 lab=#net1}
-N 170 190 630 190 {
+N -110 180 350 180 {
 lab=#net1}
-C {cdac_2n.sym} 150 10 0 0 {name=x1 cu=5u}
-C {devices/lab_pin.sym} 140 -130 0 0 {name=p1 sig_type=std_logic lab=sample}
-C {devices/gnd.sym} 130 150 0 0 {name=l1 lab=GND}
-C {devices/vsource.sym} 110 250 0 0 {name=V1 value=1.8 savecurrent=false}
-C {devices/vsource.sym} 170 250 0 0 {name=V2 value=3.3 savecurrent=false}
-C {devices/gnd.sym} 140 280 0 0 {name=l2 lab=GND}
-C {bootstrap_sw.sym} 390 -170 0 0 {name=x2}
-C {devices/lab_pin.sym} 110 210 0 0 {name=p2 sig_type=std_logic lab=vref}
-C {devices/lab_pin.sym} 450 -130 0 1 {name=p3 sig_type=std_logic lab=vref}
-C {devices/gnd.sym} 390 -70 0 0 {name=l3 lab=GND}
-C {devices/vsource.sym} -90 220 0 0 {name=V3 value=1 savecurrent=false}
-C {devices/gnd.sym} -90 250 0 0 {name=l4 lab=GND}
-C {devices/lab_pin.sym} 30 -100 0 0 {name=p4 sig_type=std_logic lab=d11}
-C {devices/lab_pin.sym} 30 -80 0 0 {name=p5 sig_type=std_logic lab=d10}
-C {devices/lab_pin.sym} 30 -60 0 0 {name=p6 sig_type=std_logic lab=d9}
-C {devices/lab_pin.sym} 30 -40 0 0 {name=p7 sig_type=std_logic lab=d8}
-C {devices/lab_pin.sym} 30 -20 0 0 {name=p8 sig_type=std_logic lab=d7}
-C {devices/lab_pin.sym} 30 0 0 0 {name=p9 sig_type=std_logic lab=d6}
-C {devices/lab_pin.sym} 30 20 0 0 {name=p10 sig_type=std_logic lab=d5}
-C {devices/lab_pin.sym} 30 40 0 0 {name=p11 sig_type=std_logic lab=d4}
-C {devices/lab_pin.sym} 30 60 0 0 {name=p12 sig_type=std_logic lab=d3}
-C {devices/lab_pin.sym} 30 80 0 0 {name=p13 sig_type=std_logic lab=d2}
-C {devices/lab_pin.sym} 30 100 0 0 {name=p14 sig_type=std_logic lab=d1}
-C {devices/lab_pin.sym} 30 120 0 0 {name=p15 sig_type=std_logic lab=d0}
+C {cdac_2n.sym} -130 0 0 0 {name=x1 cu=5u}
+C {devices/lab_pin.sym} -140 -140 0 0 {name=p1 sig_type=std_logic lab=sample}
+C {devices/gnd.sym} -150 140 0 0 {name=l1 lab=GND}
+C {devices/vsource.sym} -170 240 0 0 {name=V1 value=1.65 savecurrent=false}
+C {devices/vsource.sym} -110 240 0 0 {name=V2 value=3.3 savecurrent=false}
+C {devices/gnd.sym} -140 270 0 0 {name=l2 lab=GND}
+C {bootstrap_sw.sym} 110 -180 0 0 {name=x2}
+C {devices/lab_pin.sym} -170 200 0 0 {name=p2 sig_type=std_logic lab=vref}
+C {devices/lab_pin.sym} 170 -140 0 1 {name=p3 sig_type=std_logic lab=vref}
+C {devices/gnd.sym} 110 -80 0 0 {name=l3 lab=GND}
+C {devices/vsource.sym} -370 210 0 0 {name=V3 value=1 savecurrent=false}
+C {devices/gnd.sym} -370 240 0 0 {name=l4 lab=GND}
+C {devices/lab_pin.sym} -250 110 2 1 {name=p4 sig_type=std_logic lab=d11}
+C {devices/lab_pin.sym} -250 90 2 1 {name=p5 sig_type=std_logic lab=d10}
+C {devices/lab_pin.sym} -250 70 2 1 {name=p6 sig_type=std_logic lab=d9}
+C {devices/lab_pin.sym} -250 50 2 1 {name=p7 sig_type=std_logic lab=d8}
+C {devices/lab_pin.sym} -250 30 2 1 {name=p8 sig_type=std_logic lab=d7}
+C {devices/lab_pin.sym} -250 10 2 1 {name=p9 sig_type=std_logic lab=d6}
+C {devices/lab_pin.sym} -250 -10 2 1 {name=p10 sig_type=std_logic lab=d5}
+C {devices/lab_pin.sym} -250 -30 2 1 {name=p11 sig_type=std_logic lab=d4}
+C {devices/lab_pin.sym} -250 -50 2 1 {name=p12 sig_type=std_logic lab=d3}
+C {devices/lab_pin.sym} -250 -70 2 1 {name=p13 sig_type=std_logic lab=d2}
+C {devices/lab_pin.sym} -250 -90 2 1 {name=p14 sig_type=std_logic lab=d1}
+C {devices/lab_pin.sym} -250 -110 2 1 {name=p15 sig_type=std_logic lab=d0}
 C {devices/code_shown.sym} -1145 -125 0 0 {name=NGSPICE
 only_toplevel=false
 value="
@@ -106,6 +106,6 @@ value="
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
 "
 spice_ignore=false}
-C {devices/lab_pin.sym} 290 -80 0 1 {name=p16 sig_type=std_logic lab=out}
-C {inv.sym} 590 -170 1 0 {name=x3 cl=0.28u wp=0.44u wn=0.22u}
-C {devices/gnd.sym} 550 -170 0 0 {name=l5 lab=GND}
+C {devices/lab_pin.sym} 10 -90 0 1 {name=p16 sig_type=std_logic lab=out}
+C {inv.sym} 310 -180 1 0 {name=x3 cl=0.28u wp=0.44u wn=0.22u}
+C {devices/gnd.sym} 270 -180 0 0 {name=l5 lab=GND}

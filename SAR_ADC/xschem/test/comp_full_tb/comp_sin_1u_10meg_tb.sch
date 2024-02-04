@@ -31,7 +31,7 @@ N 630 -500 630 -490 {
 lab=V}
 C {devices/vsource.sym} 160 -300 0 0 {name=V1 value="SIN(1.6 .1u  7.81meg)"}
 C {devices/vsource.sym} 240 -300 0 0 {name=V2 value=1.6}
-C {devices/vsource.sym} 310 -300 0 0 {name=V3 value="PULSE(0 3 0 100p 100p 5n 10n)"}
+C {devices/vsource.sym} 310 -300 0 0 {name=V3 value="PULSE(0 3 0 100p 100p 4n 8n)"}
 C {devices/gnd.sym} 630 -420 0 0 {name=l1 lab=GND}
 C {devices/gnd.sym} 160 -270 0 0 {name=l2 lab=GND}
 C {devices/gnd.sym} 240 -270 0 0 {name=l3 lab=GND}

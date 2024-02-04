@@ -177,7 +177,7 @@ N 60 -720 100 -720 {
 lab=vss}
 C {symbols/nfet_03v3.sym} 710 -100 3 1 {name=M1
 L=0.28u
-W=12u
+W=7u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
