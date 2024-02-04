@@ -9,12 +9,10 @@ N 80 -20 240 -20 {
 lab=#net1}
 N 240 -20 240 90 {
 lab=#net1}
-N 240 90 250 90 {
-lab=#net1}
 N 310 150 310 180 {
 lab=gnd}
 N 370 90 430 90 {
-lab=vin}
+lab=#net1}
 N 370 40 370 70 {
 lab=sample}
 N 370 40 540 40 {
@@ -115,6 +113,10 @@ N -310 90 -280 90 {
 lab=gnd}
 N 120 250 270 250 {
 lab=gnd}
+N 240 60 300 60 {
+lab=#net1}
+N 300 60 370 90 {
+lab=#net1}
 C {symbols/cap_mim_2f0fF.sym} 70 -50 0 0 {name=C1
 W=CW
 L=CL
@@ -126,7 +128,7 @@ C {devices/iopin.sym} 440 40 3 0 {name=p5 lab=sample
 }
 C {devices/opin.sym} 70 -80 3 0 {name=p6 lab=vout}
 C {bootstrap_sw.sym} 310 50 0 0 {name=x2}
-C {devices/ipin.sym} 430 90 3 0 {name=p1 lab=vin
+C {devices/ipin.sym} 250 90 3 0 {name=p1 lab=vin
 }
 C {inv.sym} 540 110 1 0 {name=x4 cl=0.28u wp=0.44u wn=0.22u}
 C {devices/lab_pin.sym} 580 110 0 1 {name=p2 sig_type=std_logic lab=vdd}
@@ -135,7 +137,7 @@ C {devices/ipin.sym} -330 350 1 1 {name=p8 lab=b}
 C {devices/iopin.sym} -190 90 3 1 {name=p9 lab=vref}
 C {symbols/nfet_03v3.sym} -330 60 2 1 {name=M1
 L=0.28u
-W=10u
+W=7u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -149,7 +151,7 @@ spiceprefix=X
 }
 C {symbols/pfet_03v3.sym} -210 60 0 0 {name=M2
 L=0.28u
-W=10u
+W=7u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"

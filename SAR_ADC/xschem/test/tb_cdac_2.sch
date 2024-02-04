@@ -7,8 +7,6 @@ S {}
 E {}
 N -110 140 -110 210 {
 lab=#net1}
-N -170 140 -170 210 {
-lab=vref}
 N -170 270 -110 270 {
 lab=GND}
 N -130 140 -130 180 {
@@ -43,6 +41,10 @@ N 350 -180 350 180 {
 lab=#net1}
 N -110 180 350 180 {
 lab=#net1}
+N -170 140 -170 170 {
+lab=#net1}
+N -170 170 -110 170 {
+lab=#net1}
 C {cdac_2n.sym} -130 0 0 0 {name=x1 cu=5u}
 C {devices/lab_pin.sym} -140 -140 0 0 {name=p1 sig_type=std_logic lab=sample}
 C {devices/gnd.sym} -150 140 0 0 {name=l1 lab=GND}
@@ -70,7 +72,7 @@ C {devices/lab_pin.sym} -250 -110 2 1 {name=p15 sig_type=std_logic lab=d0}
 C {devices/code_shown.sym} -1145 -125 0 0 {name=NGSPICE
 only_toplevel=false
 value="
-.param period=1u
+.param period=10u
 .param stoptime=\{32*period\}
 
 .tran \{0.01*stoptime\} \{stoptime\} uic
