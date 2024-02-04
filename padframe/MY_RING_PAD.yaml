@@ -1,0 +1,169 @@
+---
+name: MY_RING_PAD
+
+aliases:
+  asig: gf180mcu_fd_io__asig_5p0
+  bi_t: gf180mcu_fd_io__bi_t
+  brk5: gf180mcu_fd_io__brk5
+  cor: gf180mcu_fd_io__cor
+  dvdd: gf180mcu_fd_io__dvdd
+  dvss: gf180mcu_fd_io__dvss
+  fill10: gf180mcu_fd_io__fill10
+  fill5: gf180mcu_fd_io__fill5
+  in_c: gf180mcu_fd_io__in_c
+
+sections:
+  default_spacing:
+  - fill10
+  - fill10
+  - fill5
+
+  default_brk:
+  - fill10
+  - fill10
+  - brk5
+
+  fill75:
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+
+  default_spacing_fill75:
+  - default_spacing
+  - fill75
+
+  default_spacing_asig:
+  - default_spacing
+  - asig
+
+  default_spacing_dvss:
+  - default_spacing
+  - dvss
+
+  default_spacing_dvdd:
+  - default_spacing
+  - dvdd
+
+  default_spacing_in_c:
+  - default_spacing
+  - in_c
+
+  default_spacing_bi_t:
+  - default_spacing
+  - bi_t
+
+sides:
+  bottom:
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_brk
+  - in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_dvdd
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_dvss
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_dvdd
+  - default_spacing_in_c
+
+  right:
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_in_c
+  - default_spacing_dvss
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_brk
+  - fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_dvss
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_spacing
+
+  top:
+  - default_spacing_fill75
+  - default_spacing_dvdd
+  - default_spacing_fill75
+  - default_spacing_fill75
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_dvdd
+  - default_brk
+  - in_c
+  - default_spacing_in_c
+  - default_brk
+  - dvdd
+  - default_spacing_dvss
+  - default_spacing_bi_t
+
+  left:
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_dvdd
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_dvss
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_dvdd
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_spacing_bi_t
+  - default_brk
+  - dvss
+  - default_spacing_dvdd
+  - default_spacing_asig
+  - default_spacing_asig
+  - default_spacing_dvss
+  - default_spacing
