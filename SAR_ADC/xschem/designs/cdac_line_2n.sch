@@ -7,8 +7,6 @@ S {}
 E {}
 N 80 -20 240 -20 {
 lab=#net1}
-N 240 -20 240 90 {
-lab=#net1}
 N 310 150 310 180 {
 lab=gnd}
 N 370 40 370 70 {
@@ -26,8 +24,6 @@ lab=nsample}
 N 70 -20 80 -20 {
 lab=#net1}
 N -310 60 -280 60 {
-lab=gnd}
-N -280 60 -280 90 {
 lab=gnd}
 N -190 60 -150 60 {
 lab=vdd}
@@ -73,20 +69,14 @@ N -330 340 -330 350 {
 lab=b}
 N 240 190 240 200 {
 lab=vdd}
-N 170 110 240 110 {
-lab=#net1}
-N 240 90 240 110 {
-lab=#net1}
 N -310 30 -190 30 {
 lab=#net3}
 N -190 30 -40 30 {
 lab=#net3}
 N -40 30 -40 120 {
 lab=#net3}
-N -40 120 60 120 {
-lab=#net3}
 N 60 110 60 120 {
-lab=#net3}
+lab=#net1}
 N 100 130 100 170 {
 lab=vdd}
 N 100 130 220 130 {
@@ -97,37 +87,55 @@ N 270 250 270 260 {
 lab=gnd}
 N 120 170 120 250 {
 lab=gnd}
-N -310 90 -310 110 {
-lab=gnd}
-N -310 110 -300 110 {
-lab=gnd}
-N -310 90 -280 90 {
-lab=gnd}
 N 120 250 270 250 {
 lab=gnd}
-N -360 260 -300 260 {
-lab=#net4}
-N -360 210 -360 220 {
-lab=gnd}
-N -390 210 -360 210 {
-lab=gnd}
-N -390 210 -390 220 {
-lab=gnd}
-N -300 210 -300 220 {
-lab=vdd}
-N -300 210 -270 210 {
-lab=vdd}
-N -270 210 -270 220 {
-lab=vdd}
-N -330 260 -330 270 {
-lab=#net4}
 N -330 270 -330 300 {
 lab=#net4}
-N -330 130 -330 220 {
+N 60 130 180 110 {
+lab=#net3}
+N -50 130 60 130 {
+lab=#net3}
+N -50 130 -40 120 {
+lab=#net3}
+N -330 220 -330 270 {
+lab=#net4}
+N -310 90 -290 90 {
+lab=gnd}
+N -290 60 -290 90 {
+lab=gnd}
+N -360 230 -300 230 {
+lab=#net4}
+N -360 180 -360 190 {
+lab=gnd}
+N -390 180 -360 180 {
+lab=gnd}
+N -390 180 -390 190 {
+lab=gnd}
+N -300 180 -300 190 {
+lab=vdd}
+N -300 180 -270 180 {
+lab=vdd}
+N -270 180 -270 190 {
+lab=vdd}
+N -330 230 -330 240 {
+lab=#net4}
+N -330 160 -330 190 {
 lab=#net2}
-N 290 70 370 90 {
+N -330 130 -330 160 {
+lab=#net2}
+N 60 -20 60 10 {
 lab=#net1}
-N 240 70 290 70 {
+N 60 -20 70 -20 {
+lab=#net1}
+N 240 -20 250 -20 {
+lab=#net1}
+N 370 90 390 90 {
+lab=#net1}
+N 390 -20 390 90 {
+lab=#net1}
+N 250 -20 390 -20 {
+lab=#net1}
+N 60 10 60 110 {
 lab=#net1}
 C {symbols/cap_mim_2f0fF.sym} 70 -50 0 0 {name=C1
 W=CW
@@ -147,7 +155,7 @@ C {devices/lab_pin.sym} 580 110 0 1 {name=p2 sig_type=std_logic lab=vdd}
 C {devices/lab_pin.sym} 590 200 0 1 {name=p7 sig_type=std_logic lab=gnd}
 C {devices/ipin.sym} -330 350 1 1 {name=p8 lab=b}
 C {devices/iopin.sym} -190 90 3 1 {name=p9 lab=vref}
-C {symbols/nfet_03v3.sym} -330 60 2 1 {name=M1
+C {symbols/nfet_03v3.sym} -330 60 0 0 {name=M1
 L=0.28u
 W=7u
 nf=1
@@ -161,7 +169,7 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {symbols/pfet_03v3.sym} -210 60 0 0 {name=M2
+C {symbols/pfet_03v3.sym} -210 60 2 1 {name=M2
 L=0.28u
 W=7u
 nf=1
@@ -179,7 +187,7 @@ C {devices/lab_pin.sym} -270 300 0 1 {name=p12 sig_type=std_logic lab=vdd}
 C {devices/lab_pin.sym} -390 300 0 0 {name=p13 sig_type=std_logic lab=gnd}
 C {symbols/nfet_03v3.sym} -360 320 3 0 {name=M5
 L=0.28u
-W=.22u
+W=.8u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -193,7 +201,7 @@ spiceprefix=X
 }
 C {symbols/pfet_03v3.sym} -300 320 3 0 {name=M6
 L=0.28u
-W=.22u
+W=.8u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -210,12 +218,12 @@ C {devices/lab_pin.sym} 390 180 0 1 {name=p14 sig_type=std_logic lab=nsample}
 C {devices/lab_pin.sym} 140 170 1 1 {name=p17 sig_type=std_logic lab=sample}
 C {devices/lab_pin.sym} 180 90 3 1 {name=p15 sig_type=std_logic lab=nsample}
 C {devices/lab_pin.sym} -150 180 0 1 {name=p16 sig_type=std_logic lab=vdd}
-C {devices/lab_pin.sym} -300 110 0 1 {name=p10 sig_type=std_logic lab=gnd}
-C {devices/lab_pin.sym} -270 220 0 1 {name=p11 sig_type=std_logic lab=vdd}
-C {devices/lab_pin.sym} -390 220 0 0 {name=p18 sig_type=std_logic lab=gnd}
-C {symbols/nfet_03v3.sym} -360 240 3 0 {name=M3
+C {devices/lab_pin.sym} -280 60 0 1 {name=p11 sig_type=std_logic lab=gnd}
+C {devices/lab_pin.sym} -270 190 0 1 {name=p10 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} -390 190 0 0 {name=p18 sig_type=std_logic lab=gnd}
+C {symbols/nfet_03v3.sym} -360 210 3 0 {name=M3
 L=0.28u
-W=2u
+W=3u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -227,9 +235,9 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {symbols/pfet_03v3.sym} -300 240 3 0 {name=M4
+C {symbols/pfet_03v3.sym} -300 210 3 0 {name=M4
 L=0.28u
-W=2u
+W=3u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"

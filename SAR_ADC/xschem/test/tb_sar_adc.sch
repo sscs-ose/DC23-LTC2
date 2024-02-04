@@ -6,7 +6,7 @@ V {}
 S {}
 E {}
 N -240 -270 -215 -270 {
-lab=GND}
+lab=#net1}
 N -240 -330 -215 -330 {
 lab=vinp}
 N -300 -270 -270 -270 {
@@ -47,7 +47,7 @@ plot compn compp compout clk \{2*eoc\} 1.65 \{2*rst\}
 *plot compout
 .endc
 "}
-C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=1.5}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=0}
 C {devices/ipin.sym} -145 -410 1 0 {name=p1 lab=rst}
 C {devices/ipin.sym} -120 -410 1 0 {name=p2 lab=clk}
 C {devices/opin.sym} 15 -350 0 0 {name=p3 lab=d0}
@@ -82,5 +82,6 @@ C {devices/opin.sym} -105 -190 1 0 {name=p16 lab=compp}
 C {devices/opin.sym} -60 -190 1 0 {name=p17 lab=compout}
 C {devices/opin.sym} -30 -190 1 0 {name=p18 lab=eoc}
 C {devices/gnd.sym} -270 -270 0 0 {name=l6 lab=GND}
-C {devices/gnd.sym} -220 -270 0 0 {name=l7 lab=GND}
+C {devices/gnd.sym} -230 -210 0 0 {name=l7 lab=GND}
 C {devices/gnd.sym} -30 -410 0 0 {name=l2 lab=GND}
+C {devices/vsource.sym} -230 -240 0 1 {name=VIN2 value=1.65}

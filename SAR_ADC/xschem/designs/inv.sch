@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -33,7 +33,7 @@ value="
 spice_ignore=false}
 C {symbols/nfet_03v3.sym} 30 -20 3 0 {name=M1
 L=0.28u
-W=4u
+W=8u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -47,7 +47,7 @@ spiceprefix=X
 }
 C {symbols/pfet_03v3.sym} 90 -20 3 0 {name=M2
 L=0.28u
-W=4u
+W=8u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"

@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -21,10 +21,6 @@ C {devices/ipin.sym} 20 0 0 0 {name=p3 lab=data_in}
 C {devices/ipin.sym} 80 -150 1 0 {name=p4 lab=clk}
 C {devices/ipin.sym} 100 -150 1 0 {name=p5 lab=rst}
 C {devices/code_shown.sym} -920 -220 0 0 {name=NGSPICE only_toplevel=false value="
-.include /home/designer/.volare/gf180mcuC/libs.tech/ngspice/design.ngspice
-.lib /home/designer/.volare/gf180mcuC/libs.tech/ngspice/sm141064.ngspice typical
-.lib /home/designer/.volare/gf180mcuC/libs.tech/ngspice/sm141064.ngspice diode_typical
-.include /home/designer/repositories/DC23-LTC2/SAR_ADC/xschem/spice/sar_logic.spice
 
 .param period=10n
 .param stoptime=\{36*period\}
@@ -60,3 +56,14 @@ C {devices/opin.sym} 200 110 0 0 {name=p16 lab=q11}
 C {devices/vsource.sym} 0 100 0 0 {name=V1 value=3.3}
 C {devices/lab_pin.sym} 0 150 0 0 {name=l1 sig_type=std_logic lab=gnd}
 C {devices/lab_pin.sym} 0 -190 0 0 {name=l2 sig_type=std_logic lab=vdd}
+C {devices/code_shown.sym} -945 -390 0 0 {name=Libraries/Includes
+format="tcleval(  @value  )"
+only_toplevel=false
+value="
+.include $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.include [pwd]/designs/sar_logic.spice
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+"
+spice_ignore=false}

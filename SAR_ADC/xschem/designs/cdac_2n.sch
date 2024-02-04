@@ -81,8 +81,6 @@ N 490 -70 490 -30 {
 lab=gnd}
 N 360 -70 360 -30 {
 lab=gnd}
-N -70 -70 -70 -20 {
-lab=gnd}
 N -70 -30 1580 -30 {
 lab=gnd}
 N 730 -210 730 -160 {
@@ -205,12 +203,44 @@ N 1220 -70 1220 90 {
 lab=vdd}
 N 1090 -70 1090 90 {
 lab=vdd}
+N 850 -140 850 -100 {
+lab=sample}
+N 850 -140 880 -140 {
+lab=sample}
+N 880 -270 880 -140 {
+lab=sample}
+N -70 -60 -70 -50 {
+lab=vin}
+N -70 -40 80 -40 {
+lab=vin}
+N -70 -50 -70 -40 {
+lab=vin}
+N -50 -60 -50 -30 {
+lab=gnd}
+N -20 -60 -20 50 {
+lab=vdd}
+N -20 50 130 50 {
+lab=vdd}
+N -90 20 50 20 {
+lab=vref}
+N -100 20 -90 20 {
+lab=vref}
+N -100 -60 -100 20 {
+lab=vref}
+N -130 -260 -130 -90 {
+lab=sample}
+N -130 -260 20 -260 {
+lab=sample}
+N -30 -90 -0 -90 {
+lab=gnd}
+N -0 -90 0 -30 {
+lab=gnd}
 C {cdac_line_2n.sym} 80 -90 0 0 {name=x1
+CW=\{sqrt(1)*cu\}
+CL=\{sqrt(1)*cu\}}
+C {cdac_line_2n.sym} 210 -90 0 0 {name=x2
 CW=\{sqrt(2)*cu\}
 CL=\{sqrt(2)*cu\}}
-C {cdac_line_2n.sym} 210 -90 0 0 {name=x2
-CW=\{sqrt(3)*cu\}
-CL=\{sqrt(3)*cu\}}
 C {cdac_line_2n.sym} 340 -90 0 0 {name=x3
 CW=\{sqrt(4)*cu\}
 CL=\{sqrt(4)*cu\}}
@@ -260,13 +290,10 @@ C {devices/ipin.sym} 1470 -100 1 0 {name=p11 lab=d[10]}
 C {devices/ipin.sym} 1600 -100 1 0 {name=p12 lab=d[11]}
 C {devices/iopin.sym} 80 -20 3 1 {name=p13 lab=vin}
 C {devices/iopin.sym} -70 -30 1 0 {name=p14 lab=gnd}
-C {symbols/cap_mim_2f0fF.sym} -70 -100 0 0 {name=C1
-W=\{cu\}
-L=\{cu\}
-model=cap_mim_2f0fF
-spiceprefix=X
-m=1}
 C {devices/iopin.sym} 1330 -230 0 0 {name=p16 lab=xd}
 C {devices/iopin.sym} 50 70 1 0 {name=p17 lab=vref}
 C {devices/iopin.sym} 140 90 1 0 {name=p18 lab=vdd}
 C {devices/iopin.sym} 20 -240 0 0 {name=p19 lab=sample}
+C {cdac_line_2n.sym} -70 -80 0 0 {name=x13
+CW=\{sqrt(1)*cu\}
+CL=\{sqrt(1)*cu\}}
