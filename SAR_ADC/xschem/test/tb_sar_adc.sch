@@ -11,7 +11,7 @@ N -240 -330 -215 -330 {
 lab=vinp}
 N -300 -270 -270 -270 {
 lab=GND}
-C {sar_adc.sym} -120 -290 0 0 {name=x1}
+C {sar_adc_2.sym} -120 -290 0 0 {name=x1}
 C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
 value="
@@ -28,8 +28,9 @@ vr  rst 0 PULSE(0 5 \{0.5*period\}  1ps 1ps \{1*period\} \{12*period\} 1)
 .control
 save all
 run
-plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} eoc
-plot compn compp compout clk eoc 1.8
+plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} eoc vinp
+plot compn compp compout clk eoc 1.65
+plot d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 compout
 .endc
 "}
 C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=1}
