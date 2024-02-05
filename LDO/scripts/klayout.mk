@@ -25,11 +25,6 @@ KLAYOUT_DRC_PRECHECK_LOG=$(LOG_DIR)/$(TIMESTAMP_TIME)_klayout_drc_precheck_$(TOP
 # This variable is case sensitive, VSS != vss
 GND_NAME:=VSS
 
-GDS_REPORT_DIR:=$(TOP_GDS_DIR)/reports
-ifeq (,$(GDS_REPORT_DIR))
-mkdir -p $(GDS_REPORT_DIR)
-endif
-
 TOP_ALL_LYRDB:=$(filter %.lyrdb,$(wildcard $(GDS_REPORT_DIR)/*))
 TOP_ALL_LVSDB:=$(filter %.lvsdb,$(wildcard $(GDS_REPORT_DIR)/*))
 

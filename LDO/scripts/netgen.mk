@@ -70,8 +70,8 @@ endif
 .PHONY: netgen-lvs-magic
 netgen-lvs-magic: netgen-validation magic-lvs-extraction xschem-netlist-lvs-prefix
 	cd $(TOP_GDS_DIR) && $(NETGEN_LVS_WITH_MAGIC) |& tee $(NETGEN_LOG) || true
-	mv $(TOP_GDS_DIR)/comp.out $(TOP_GDS_DIR)/lvs_magic_comp.out
-	grep "Netlist" $(TOP_GDS_DIR)/lvs_magic_comp.out
+	mv $(TOP_GDS_DIR)/comp.out $(GDS_REPORT_DIR)/lvs_magic_comp.out
+	grep "Netlist" $(GDS_REPORT_DIR)/lvs_magic_comp.out
 
 .PHONY: netgen-lvs-klayout
 netgen-lvs-klayout: netgen-validation xschem-netlist-lvs-noprefix
@@ -84,5 +84,5 @@ endif
 	sed -i '/R.*ppoly/s/L/r_length/' $(TOP_EXTRACTED_KLAYOUT)
 
 	cd $(TOP_GDS_DIR) && $(NETGEN_LVS_WITH_KLAYOUT) |& tee $(NETGEN_LOG) || true
-	mv $(TOP_GDS_DIR)/comp.out $(TOP_GDS_DIR)/lvs_klayout_comp.out
-	grep "Netlist" $(TOP_GDS_DIR)/lvs_klayout_comp.out
+	mv $(TOP_GDS_DIR)/comp.out $(GDS_REPORT_DIR)/lvs_klayout_comp.out
+	grep "Netlist" $(GDS_REPORT_DIR)/lvs_klayout_comp.out

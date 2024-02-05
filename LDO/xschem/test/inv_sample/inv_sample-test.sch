@@ -13,16 +13,15 @@ ypos2=2
 divy=5
 
 unity=1
-x1=-1e-08
-x2=9e-08
+x1=0
+x2=3.3
 divx=5
 subdivx=1
 xlabmag=1.0
 ylabmag=1.0
-node="Vout;v(out)
-Vin;in
-\\"Limit;1\\""
-color="4 7 21"
+node="Vout;out
+Vin;in"
+color="4 10"
 
 unitx=1
 logx=0
@@ -31,15 +30,15 @@ rainbow=1
 dataset=-1
 subdivy=1}
 B 2 1040 260 1840 660 {flags=graph
-y1=0
+y1=1.1e-08
 y2=3.3
 ypos1=0
 ypos2=2
 divy=5
 subdivy=4
 unity=1
-x1=-1e-08
-x2=9e-08
+x1=0
+x2=3.3
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -51,22 +50,23 @@ unitx=1
 logx=0
 logy=0
 
-color=5
-node="Transfer_Curve;out"
+color="5 6"
+node="out
+out_pex"
 
 digital=0
 rainbow=0
 dataset=-1}
-B 2 1050 740 1850 1140 {flags=graph
-y1=0
-y2=3.3
+B 2 1860 260 2660 660 {flags=graph
+y1=-0.0028
+y2=0.00013
 ypos1=0
 ypos2=2
 divy=5
 subdivy=4
 unity=1
-x1=-1e-08
-x2=9e-08
+x1=0
+x2=3.3
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -79,7 +79,7 @@ logx=0
 logy=0
 
 color=5
-node="\\"Vout;v(out) %0 $netlist_dir/rawspice.raw transient\\""
+node="\\"Difference between clean and pex; out out_pex -\\""
 
 digital=0
 rainbow=0
@@ -87,7 +87,8 @@ dataset=-1}
 T {Template usage:
 
 1. Each simulation should has a "code_shown", "launcher" and at least one "graph"
-2. Each simulation should have a unique name. It should be added on the launcher} 1230 -370 0 0 0.4 0.4 {}
+2. Each simulation should have a unique name. It should be added on the launcher
+3. Sadly, 'Load rawspice.raw' has to be manually modified to set which dataset load} 1230 -370 0 0 0.4 0.4 {}
 C {/workspaces/DC23-LTC2-LDO/LDO/xschem/test/inv_sample/inv_sample.sym} 80 0 0 0 {name=x1}
 C {devices/vdd.sym} 60 -50 0 0 {name=l1 lab=VDD}
 C {devices/gnd.sym} 60 50 0 0 {name=l2 lab=GND}
@@ -164,4 +165,10 @@ write
 set appendwrite
 .endc
 
+"}
+C {devices/code_shown.sym} 20 -270 0 0 {name="PEX Simulation"
+value="
+.include inv_sample_pex.spice
+* inv_sample_pex vdd vss out     in
+XDUT             VDD GND out_pex in inv_sample_pex
 "}

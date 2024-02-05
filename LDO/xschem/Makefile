@@ -101,10 +101,15 @@ CLEANABLE:= \
 ## 3. Files related with the TOP
 
 ifeq (,$(TOP))
+# TOP is undefined
+
 # NEVER define TOP in this section. Empty TOP is useful as an indicator
 $(warning $(COLOR_YELLOW)TOP not defined, using default values$(COLOR_END))
 TOP_SCH=0_top.sch
-else
+
+else # ifeq (,$(TOP))
+
+# TOP is defined
 TOP_SCH:=$(realpath $(filter %/$(TOP).sch,$(SCH)))
 TOP_TB:=$(realpath $(filter %/$(TOP)-test.sch,$(TB)))
 TOP_SYM:=$(realpath $(filter %/$(TOP).sym,$(ALL_SYM)))
@@ -114,6 +119,11 @@ TOP_GDS_CELL:=$(basename $(notdir $(TOP_GDS)))
 
 TOP_GDS_DIR:=$(abspath $(dir $(TOP_GDS)))
 TOP_SCH_DIR:=$(abspath $(dir $(TOP_SCH)))
+
+GDS_REPORT_DIR:=$(TOP_GDS_DIR)/reports
+ifeq (,$(GDS_REPORT_DIR))
+mkdir -p $(GDS_REPORT_DIR)
+endif
 
 # Extracted from schematics (xschem)
 TOP_NETLIST_SCH:=$(realpath $(filter %/$(TOP).spice,$(ALL_NETLIST)))
@@ -127,7 +137,7 @@ TOP_EXTRACTED_KLAYOUT:=$(realpath $(filter %/$(TOP).cir,$(wildcard $(TOP_GDS_DIR
 TOP_EXTRACTED_MAGIC:=$(realpath $(filter %/$(TOP)_extracted.spice,$(wildcard $(TOP_GDS_DIR)/*)))
 TOP_EXTRACTED_PEX:=$(realpath $(filter %/$(TOP)_pex.spice,$(wildcard $(TOP_GDS_DIR)/*)))
 
-endif
+endif # ifeq (,$(TOP))
 
 # Relevant directories
 ##################
@@ -138,9 +148,7 @@ $(shell mkdir -p $(LOG_DIR))
 endif
 
 XSCHEM_RCFILE=$(realpath ./xschemrc)
-
 MAGIC_RCFILE=$(realpath ./magicrc)
-
 NETGEN_RCFILE=$(realpath $(PDK_ROOT)/$(PDK)/libs.tech/netgen/setup.tcl)
 
 # Rules
@@ -175,6 +183,7 @@ include ../scripts/klayout.mk
 include ../scripts/magic.mk
 include ../scripts/netgen.mk
 include ../scripts/ngspice.mk
+include ../scripts/extra_be_checks.mk
 
 
 .PHONY: help
