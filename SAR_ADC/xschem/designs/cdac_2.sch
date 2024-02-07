@@ -143,8 +143,6 @@ N 180 20 180 30 {
 lab=vref}
 N 20 -270 20 -100 {
 lab=sample}
-N 20 -270 620 -270 {
-lab=sample}
 N 150 -270 150 -100 {
 lab=sample}
 N 280 -270 280 -100 {
@@ -158,8 +156,6 @@ lab=sample}
 N 1500 -260 1500 -100 {
 lab=sample}
 N 1500 -280 1500 -260 {
-lab=sample}
-N 620 -270 1500 -270 {
 lab=sample}
 N 1240 -270 1240 -100 {
 lab=sample}
@@ -227,6 +223,53 @@ N 880 -270 880 -150 {
 lab=sample}
 N 600 -160 730 -160 {
 lab=#net1}
+N 1500 -280 1500 -260 {
+lab=sample}
+N 130 -500 130 -430 {
+lab=#net3}
+N 120 -500 130 -500 {
+lab=#net3}
+N 880 -280 880 -270 {
+lab=sample}
+N 980 -280 980 -270 {
+lab=sample}
+N 1110 -280 1110 -270 {
+lab=sample}
+N 1240 -280 1240 -270 {
+lab=sample}
+N 1370 -280 1370 -270 {
+lab=sample}
+N 1070 -510 1070 -440 {
+lab=#net4}
+N 1060 -510 1070 -510 {
+lab=#net4}
+N 120 -660 1060 -670 {
+lab=sample}
+N 620 -270 670 -270 {
+lab=sample}
+N 1370 -510 1370 -440 {
+lab=#net5}
+N 1360 -510 1370 -510 {
+lab=#net5}
+N 450 -270 450 -260 {
+lab=sample}
+N 410 -500 410 -430 {
+lab=#net6}
+N 400 -500 410 -500 {
+lab=#net6}
+N 20 -270 150 -270 {
+lab=sample}
+N 410 -270 620 -270 {
+lab=sample}
+N 1230 -280 1500 -280 {
+lab=sample}
+N 880 -280 1100 -280 {
+lab=sample}
+N 1100 -280 1110 -280 {
+lab=sample}
+N 1060 -670 1360 -670 {
+lab=sample}
+N 150 -270 280 -270 {}
 C {cdac_line_2.sym} 80 -90 0 0 {name=x1
 CW=\{sqrt(1)*cu\}
 CL=\{sqrt(1)*cu\}}
@@ -285,7 +328,31 @@ C {devices/iopin.sym} -70 -30 1 0 {name=p14 lab=gnd}
 C {devices/iopin.sym} 1330 -230 0 0 {name=p16 lab=xd}
 C {devices/iopin.sym} 50 70 1 0 {name=p17 lab=vref}
 C {devices/iopin.sym} 140 90 1 0 {name=p18 lab=vdd}
-C {devices/iopin.sym} 20 -240 0 0 {name=p19 lab=sample}
 C {cdac_line_2.sym} -70 -90 0 0 {name=x13
 CW=\{sqrt(1)*cu\}
 CL=\{sqrt(1)*cu\}}
+C {devices/iopin.sym} 120 -660 0 0 {name=p15 lab=sample}
+C {inv.sym} 120 -600 1 0 {name=x14 cl=0.28u wp=0.44u wn=0.22u wx=2u}
+C {devices/lab_pin.sym} 160 -600 0 1 {name=p20 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 80 -600 0 0 {name=p21 sig_type=std_logic lab=gnd}
+C {inv.sym} 130 -370 1 0 {name=x15 cl=0.28u wp=0.44u wn=0.22u wx=8u}
+C {devices/lab_pin.sym} 170 -370 0 1 {name=p22 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 90 -370 0 0 {name=p23 sig_type=std_logic lab=gnd}
+C {inv.sym} 1060 -610 1 0 {name=x16 cl=0.28u wp=0.44u wn=0.22u wx=2u}
+C {devices/lab_pin.sym} 1100 -610 0 1 {name=p24 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 1020 -610 0 0 {name=p25 sig_type=std_logic lab=gnd}
+C {inv.sym} 1070 -380 1 0 {name=x17 cl=0.28u wp=0.44u wn=0.22u wx=8u}
+C {devices/lab_pin.sym} 1110 -380 0 1 {name=p26 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 1030 -380 0 0 {name=p27 sig_type=std_logic lab=gnd}
+C {inv.sym} 1360 -610 1 0 {name=x18 cl=0.28u wp=0.44u wn=0.22u wx=2u}
+C {devices/lab_pin.sym} 1400 -610 0 1 {name=p28 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 1320 -610 0 0 {name=p29 sig_type=std_logic lab=gnd}
+C {inv.sym} 1370 -380 1 0 {name=x19 cl=0.28u wp=0.44u wn=0.22u wx=8u}
+C {devices/lab_pin.sym} 1410 -380 0 1 {name=p30 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 1330 -380 0 0 {name=p31 sig_type=std_logic lab=gnd}
+C {inv.sym} 400 -600 1 0 {name=x20 cl=0.28u wp=0.44u wn=0.22u wx=2u}
+C {devices/lab_pin.sym} 440 -600 0 1 {name=p32 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 360 -600 0 0 {name=p33 sig_type=std_logic lab=gnd}
+C {inv.sym} 410 -370 1 0 {name=x21 cl=0.28u wp=0.44u wn=0.22u wx=8u}
+C {devices/lab_pin.sym} 450 -370 0 1 {name=p34 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 370 -370 0 0 {name=p35 sig_type=std_logic lab=gnd}

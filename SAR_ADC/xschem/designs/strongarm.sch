@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -289,4 +289,4 @@ C {devices/iopin.sym} 400 140 0 1 {name=p6 lab=CLK
 }
 C {devices/iopin.sym} 760 -30 0 0 {name=p7 lab=GND
 }
-C {inv.sym} 510 140 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}
+C {inv.sym} 510 140 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u wx=4u}

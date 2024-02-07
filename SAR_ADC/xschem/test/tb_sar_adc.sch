@@ -6,7 +6,7 @@ V {}
 S {}
 E {}
 N -240 -270 -215 -270 {
-lab=#net1}
+lab=vinn}
 N -240 -330 -215 -330 {
 lab=vinp}
 N -300 -270 -270 -270 {
@@ -15,23 +15,24 @@ C {sar_adc_2.sym} -120 -290 0 0 {name=x1}
 C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
 value="
-.param period=10n
+.param period=15n
 .param stoptime=\{48*period\}
 *.param stoptime=.2u
 
 
 .model swm1 sw vt=1 vh=0.2 ron=0.1 roff=100k
 
-vclk clk 0 PULSE(0 3.3 \{0*period\} 1ps 1ps \{period/2\} \{period\})
-vr  rst 0 PULSE(0 3.3 \{0.5*period\}  1ps 1ps \{period/2\} \{12*period\})
+vclk clk 0 PULSE(0 3.3 \{0*period\} 10ps 10ps \{period/2\} \{period\})
+vr  rst 0 PULSE(0 3.3 \{0*period\}  10ps 10ps \{period/2\} \{15*period\} )
 
 .tran \{0.02*stoptime\} \{stoptime\} uic
 
 .control
 save all
 run
-plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{2*rst\} eoc vinp
-plot compn compp compout clk \{2*eoc\} 1.65 \{2*rst\}
+*plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{2*rst\} eoc \{vinp - vinn\}
+plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d7)*32+V(d6)*64+V(d5)*128+V(d4)*256+V(d3)*512+V(d2)*1024+V(d1)*2048)/4095\} \{2*rst\} eoc \{vinp - vinn\}
+plot compn compp compout clk \{3*eoc\} 1.65 \{2*rst\}
 *plot d0 
 *plot d1 
 *plot d2 
@@ -47,7 +48,7 @@ plot compn compp compout clk \{2*eoc\} 1.65 \{2*rst\}
 *plot compout
 .endc
 "}
-C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=0}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=1}
 C {devices/ipin.sym} -145 -410 1 0 {name=p1 lab=rst}
 C {devices/ipin.sym} -120 -410 1 0 {name=p2 lab=clk}
 C {devices/opin.sym} 15 -350 0 0 {name=p3 lab=d0}
@@ -85,3 +86,4 @@ C {devices/gnd.sym} -270 -270 0 0 {name=l6 lab=GND}
 C {devices/gnd.sym} -230 -210 0 0 {name=l7 lab=GND}
 C {devices/gnd.sym} -30 -410 0 0 {name=l2 lab=GND}
 C {devices/vsource.sym} -230 -240 0 1 {name=VIN2 value=1.65}
+C {devices/lab_pin.sym} -220 -270 1 0 {name=l4 lab=vinn}
