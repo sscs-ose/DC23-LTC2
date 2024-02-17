@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {type=primitive
@@ -43,11 +43,13 @@ L 4 0 -0 140 -0 {}
 L 4 140 -500 140 -0 {}
 L 4 -0 -500 140 -500 {}
 L 4 0 -500 0 -0 {}
+L 4 -20 -70 0 -70 {}
 B 5 97.5 17.5 102.5 22.5 {name=eoc dir=out sim_pinnumber=0}
 B 5 97.5 -522.5 102.5 -517.5 {name=vdd dir=in sim_pinnumber=1}
 B 5 37.5 17.5 42.5 22.5 {name=gnd dir=in sim_pinnumber=2}
 B 5 37.5 -522.5 42.5 -517.5 {name=clock dir=in sim_pinnumber=3}
 B 5 -22.5 -252.5 -17.5 -247.5 {name=data_in dir=in sim_pinnumber=4}
+B 5 -22.5 -72.5 -17.5 -67.5 {name=sample dir=out sim_pinnumber=4}
 B 5 157.5 -242.5 162.5 -237.5 {name=qb0 dir=out sim_pinnumber=5}
 B 5 157.5 -42.5 162.5 -37.5 {name=qb10 dir=out sim_pinnumber=6}
 B 5 157.5 -22.5 162.5 -17.5 {name=qb11 dir=out sim_pinnumber=7}
@@ -104,3 +106,4 @@ T {qt3} 120 -429 0 0 0.2 0.2 {}
 T {qt2} 120 -449 0 0 0.2 0.2 {}
 T {qt1} 120 -469 0 0 0.2 0.2 {}
 T {qt0} 120 -489 0 0 0.2 0.2 {}
+T {sample} 5 -74 0 0 0.2 0.2 {}
