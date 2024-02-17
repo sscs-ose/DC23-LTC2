@@ -31,8 +31,6 @@ N 1300 -160 1300 -140 {
 lab=xd}
 N 1430 -160 1430 -140 {
 lab=xd}
-N 1560 -160 1560 -140 {
-lab=xd}
 N 80 -70 80 -40 {
 lab=vin}
 N 210 -70 210 -50 {
@@ -85,8 +83,6 @@ N -70 -30 1580 -30 {
 lab=gnd}
 N 730 -210 730 -160 {
 lab=#net1}
-N 730 -210 790 -210 {
-lab=#net1}
 N 850 -210 910 -210 {
 lab=xd}
 N 910 -210 910 -160 {
@@ -98,12 +94,6 @@ lab=gnd}
 N 1040 -160 1560 -160 {
 lab=xd}
 N 910 -160 1050 -160 {
-lab=xd}
-N 1290 -220 1290 -160 {
-lab=xd}
-N 1290 -230 1290 -210 {
-lab=xd}
-N 1290 -230 1330 -230 {
 lab=xd}
 N 50 -70 50 70 {
 lab=vref}
@@ -142,29 +132,29 @@ lab=vref}
 N 180 20 180 30 {
 lab=vref}
 N 20 -270 20 -100 {
-lab=sample}
+lab=#net3}
 N 150 -270 150 -100 {
-lab=sample}
+lab=#net3}
 N 280 -270 280 -100 {
-lab=sample}
+lab=#net3}
 N 410 -270 410 -100 {
-lab=sample}
+lab=#net4}
 N 540 -270 540 -100 {
-lab=sample}
+lab=#net4}
 N 670 -270 670 -100 {
-lab=sample}
+lab=#net4}
 N 1500 -260 1500 -100 {
-lab=sample}
+lab=#net5}
 N 1500 -280 1500 -260 {
-lab=sample}
+lab=#net5}
 N 1240 -270 1240 -100 {
-lab=sample}
+lab=#net5}
 N 980 -270 980 -100 {
-lab=sample}
+lab=#net6}
 N 1110 -270 1110 -100 {
-lab=sample}
+lab=#net6}
 N 1370 -270 1370 -100 {
-lab=sample}
+lab=#net5}
 N 130 -70 130 80 {
 lab=vdd}
 N 1610 -80 1610 90 {
@@ -203,73 +193,80 @@ N -100 -70 -100 10 {
 lab=vref}
 N -100 10 50 10 {
 lab=vref}
-N -30 -100 -30 -50 {
-lab=vin}
 N -20 -70 -20 60 {
 lab=vdd}
 N -20 60 130 60 {
 lab=vdd}
 N -130 -250 -130 -100 {
-lab=sample}
+lab=#net3}
 N -130 -250 20 -250 {
-lab=sample}
+lab=#net3}
 N -70 -160 600 -160 {
 lab=#net1}
 N 850 -150 850 -100 {
-lab=sample}
+lab=#net6}
 N 850 -150 880 -150 {
-lab=sample}
+lab=#net6}
 N 880 -270 880 -150 {
-lab=sample}
+lab=#net6}
 N 600 -160 730 -160 {
 lab=#net1}
 N 1500 -280 1500 -260 {
-lab=sample}
+lab=#net5}
 N 130 -500 130 -430 {
-lab=#net3}
+lab=#net7}
 N 120 -500 130 -500 {
-lab=#net3}
+lab=#net7}
 N 880 -280 880 -270 {
-lab=sample}
+lab=#net6}
 N 980 -280 980 -270 {
-lab=sample}
+lab=#net6}
 N 1110 -280 1110 -270 {
-lab=sample}
+lab=#net6}
 N 1240 -280 1240 -270 {
-lab=sample}
+lab=#net5}
 N 1370 -280 1370 -270 {
-lab=sample}
+lab=#net5}
 N 1070 -510 1070 -440 {
-lab=#net4}
+lab=#net8}
 N 1060 -510 1070 -510 {
-lab=#net4}
+lab=#net8}
 N 120 -660 1060 -670 {
 lab=sample}
 N 620 -270 670 -270 {
-lab=sample}
+lab=#net4}
 N 1370 -510 1370 -440 {
-lab=#net5}
+lab=#net9}
 N 1360 -510 1370 -510 {
-lab=#net5}
+lab=#net9}
 N 450 -270 450 -260 {
-lab=sample}
+lab=#net4}
 N 410 -500 410 -430 {
-lab=#net6}
+lab=#net10}
 N 400 -500 410 -500 {
-lab=#net6}
+lab=#net10}
 N 20 -270 150 -270 {
-lab=sample}
+lab=#net3}
 N 410 -270 620 -270 {
-lab=sample}
+lab=#net4}
 N 1230 -280 1500 -280 {
-lab=sample}
+lab=#net5}
 N 880 -280 1100 -280 {
-lab=sample}
+lab=#net6}
 N 1100 -280 1110 -280 {
-lab=sample}
+lab=#net6}
 N 1060 -670 1360 -670 {
 lab=sample}
-N 150 -270 280 -270 {}
+N 150 -270 280 -270 {
+lab=#net3}
+N 1340 -130 1340 -100 {
+lab=d[9]}
+N 1560 -160 1560 -140 {
+lab=xd}
+N 730 -210 790 -210 {
+lab=#net1}
+N -30 -100 -30 -30 {
+lab=gnd}
 C {cdac_line_2.sym} 80 -90 0 0 {name=x1
 CW=\{sqrt(1)*cu\}
 CL=\{sqrt(1)*cu\}}
@@ -320,12 +317,12 @@ C {devices/ipin.sym} 770 -100 1 0 {name=p6 lab=d[5]}
 C {devices/ipin.sym} 950 -100 1 0 {name=p7 lab=d[6]}
 C {devices/ipin.sym} 1080 -100 1 0 {name=p8 lab=d[7]}
 C {devices/ipin.sym} 1210 -100 1 0 {name=p9 lab=d[8]}
-C {devices/ipin.sym} 1340 -100 1 0 {name=p10 lab=d[9]}
+C {devices/ipin.sym} 1340 -130 1 0 {name=p10 lab=d[9]}
 C {devices/ipin.sym} 1470 -100 1 0 {name=p11 lab=d[10]}
 C {devices/ipin.sym} 1600 -100 1 0 {name=p12 lab=d[11]}
 C {devices/iopin.sym} 80 -20 3 1 {name=p13 lab=vin}
 C {devices/iopin.sym} -70 -30 1 0 {name=p14 lab=gnd}
-C {devices/iopin.sym} 1330 -230 0 0 {name=p16 lab=xd}
+C {devices/iopin.sym} 1560 -140 0 0 {name=p16 lab=xd}
 C {devices/iopin.sym} 50 70 1 0 {name=p17 lab=vref}
 C {devices/iopin.sym} 140 90 1 0 {name=p18 lab=vdd}
 C {cdac_line_2.sym} -70 -90 0 0 {name=x13

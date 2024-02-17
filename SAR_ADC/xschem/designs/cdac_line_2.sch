@@ -77,10 +77,6 @@ N -310 110 -300 110 {
 lab=gnd}
 N -310 90 -280 90 {
 lab=gnd}
-N 240 60 300 60 {
-lab=#net1}
-N 300 60 370 90 {
-lab=#net1}
 N 540 210 540 220 {
 lab=#net5}
 N 540 370 540 380 {
@@ -93,6 +89,8 @@ N 760 370 760 380 {
 lab=#net7}
 N 540 50 760 50 {
 lab=sample}
+N 240 60 370 90 {
+lab=#net1}
 C {symbols/cap_mim_2f0fF.sym} 70 -50 0 0 {name=C1
 W=CW
 L=CL

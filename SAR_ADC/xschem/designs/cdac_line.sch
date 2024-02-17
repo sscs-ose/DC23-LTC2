@@ -21,5 +21,5 @@ C {devices/ipin.sym} 110 160 2 0 {name=p4 lab=gnd}
 C {devices/ipin.sym} 70 340 3 0 {name=p5 lab=vin
 }
 C {devices/opin.sym} 70 -80 3 0 {name=p6 lab=vout}
-C {inv.sym} 70 80 3 0 {name=x3 cl=0.28u wp=0.44u wn=0.22u}
-C {inv.sym} 70 240 3 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u}
+C {inv.sym} 70 80 3 0 {name=x3 cl=0.28u wp=0.44u wn=0.22u wx=6u}
+C {inv.sym} 70 240 3 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u wx=.22u}
