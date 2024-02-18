@@ -9,6 +9,16 @@ N -240 -270 -215 -270 {
 lab=vinn}
 N -240 -330 -215 -330 {
 lab=vinp}
+N 260 -250 340 -250 {
+lab=GND}
+N 380 -350 420 -350 {
+lab=ld0}
+N 190 -350 230 -350 {
+lab=d0}
+N 290 -430 305 -430 {
+lab=#net1}
+N 290 -430 290 -425 {
+lab=#net1}
 C {sar_adc_2.sym} -120 -290 0 0 {name=x1}
 C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
@@ -28,12 +38,12 @@ vr  rst 0 PULSE(0 3.3 \{0*period\}  10ps 10ps \{period/2\} \{15*period\} 1)
 .control
 save all
 run
-plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{(rst/3.3) + 4\} eoc \{vinp - vinn\}
-*plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d7)*32+V(d6)*64+V(d5)*128+V(d4)*256+V(d3)*512+V(d2)*1024+V(d1)*2048)/4095\} \{2*rst\} eoc \{vinp - vinn\}
-plot \{d0\} \{d1 + 4\} \{d2 + 8\} \{d3 + 12\} \{d4 + 16\} \{d5 + 20\} \{d6 + 24\} \{d7 + 28\} \{d8 + 32\} \{d9 + 36\} \{d10 + 40\} \{d11 + 44\} \{clk + 50\} \{compout + 55\} \{eoc + 60\}
+*plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{(rst/3.3) + 4\} eoc \{vinp - vinn\}
+plot \{(V(d11)*2+V(d10)*4+V(d9)*8+V(d8)*16+V(d7)*32+V(d6)*64+V(d5)*128+V(d4)*256+V(d3)*512+V(d2)*1024+V(d1)*2048)/4095\} \{2*rst\} eoc \{vinp - vinn\}
+plot \{d0\} \{d1 + 4\} \{d2 + 8\} \{d3 + 12\} \{d4 + 16\} \{d5 + 20\} \{d6 + 24\} \{d7 + 28\} \{d8 + 32\} \{d9 + 36\} \{d10 + 40\} \{d11 + 44\} \{clk + 50\} \{compout + 55\} \{eoc + 60\} \{sample + 65\}
 
-
-plot compn compp compout  eoc \{clk + 4\}
+plot d0 ld0
+plot compn compp compout  eoc \{sample + 4\}  \{(clk/3.3) + 4\}
 *plot d0
 *plot d1 
 *plot d2 
@@ -49,7 +59,7 @@ plot compn compp compout  eoc \{clk + 4\}
 *plot compout
 .endc
 "}
-C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=0}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=2u}
 C {devices/ipin.sym} -145 -410 1 0 {name=p1 lab=rst}
 C {devices/ipin.sym} -120 -410 1 0 {name=p2 lab=clk}
 C {devices/opin.sym} 15 -240 2 1 {name=p3 lab=d0}
@@ -77,6 +87,10 @@ value="
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $::PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+
+
+.include $::PDK_ROOT/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/spice/gf180mcu_fd_sc_mcu7t5v0.spice
+
 "
 spice_ignore=false}
 C {devices/opin.sym} -140 -190 1 0 {name=p15 lab=compn}
@@ -88,3 +102,13 @@ C {devices/gnd.sym} -240 -210 0 0 {name=l7 lab=GND}
 C {devices/gnd.sym} -30 -410 0 0 {name=l2 lab=GND}
 C {devices/vsource.sym} -240 -240 0 1 {name=VIN2 value=1.65}
 C {devices/lab_pin.sym} -240 -270 2 1 {name=l4 lab=vinn}
+C {devices/lab_pin.sym} 30 -400 0 1 {name=l8 lab=sample}
+C {ff.sym} 250 -270 0 0 {name=FF3
+model=gf180mcu_fd_sc_mcu7t5v0__dffrsnq_1
+}
+C {devices/lab_pin.sym} 360 -430 1 0 {name=l9 lab=vdd}
+C {devices/gnd.sym} 340 -250 0 0 {name=l11 lab=GND}
+C {devices/lab_pin.sym} 230 -320 0 0 {name=l12 lab=eoc}
+C {devices/lab_pin.sym} 420 -350 1 0 {name=l13 lab=ld0}
+C {devices/lab_pin.sym} 190 -350 1 0 {name=l14 lab=d0}
+C {devices/gnd.sym} 289.96826171875 -426.6455078125 0 0 {name=l10 lab=GND}

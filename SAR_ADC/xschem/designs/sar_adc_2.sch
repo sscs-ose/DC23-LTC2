@@ -7,10 +7,6 @@ S {}
 E {}
 N 480 -0 500 0 {
 lab=compout}
-N 280 -160 280 0 {
-lab=clk}
-N -220 -0 320 0 {
-lab=clk}
 N 300 -20 320 -20 {
 lab=compp}
 N 300 20 320 20 {
@@ -47,17 +43,17 @@ N 420 0 470 -0 {
 lab=compout}
 N 470 0 480 0 {
 lab=compout}
-N 280 -270 560 -270 {
-lab=clk}
-N 280 -270 280 -160 {
-lab=clk}
+N -60 -70 -60 0 {
+lab=#net1}
+N -60 0 320 -0 {
+lab=#net1}
 C {cdac.sym} 130 160 1 1 {name=x1 cu=5u}
 C {cdac.sym} 130 -160 1 0 {name=x2 cu=5u}
 C {devices/ipin.sym} -450 110 0 0 {name=p1 lab=vinn}
 C {devices/ipin.sym} -450 -70 0 0 {name=p2 lab=vinp}
 C {Preamp-Strong-Latch.sym} 340 30 0 0 {name=X5}
 C {sar_logic.sym} 520 250 0 0 {name=X6}
-C {devices/ipin.sym} -220 0 0 0 {name=p3 lab=clk}
+C {devices/ipin.sym} 560 -270 0 0 {name=p3 lab=clk}
 C {devices/ipin.sym} 580 -270 1 0 {name=p5 lab=rst}
 C {devices/ipin.sym} 620 -270 1 0 {name=p6 lab=vdd}
 C {devices/ipin.sym} 560 270 0 0 {name=p7 lab=gnd}
@@ -148,3 +144,7 @@ C {devices/lab_pin.sym} 240 -280 1 0 {name=l12 sig_type=std_logic lab=d[11]b}
 C {devices/lab_pin.sym} -390 -10 3 0 {name=p14 sig_type=std_logic lab=gnd}
 C {devices/lab_pin.sym} -410 170 3 0 {name=p15 sig_type=std_logic lab=vdd}
 C {devices/opin.sym} 500 180 3 0 {name=p38 sig_type=std_logic lab=samplex}
+C {inv.sym} -160 -70 0 0 {name=x7 cl=0.28u wp=0.44u wn=1u}
+C {devices/lab_pin.sym} -160 -30 0 0 {name=p43 sig_type=std_logic lab=gnd}
+C {devices/lab_pin.sym} -160 -110 0 0 {name=p44 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} -220 -70 0 0 {name=p16 sig_type=std_logic lab=clk}
