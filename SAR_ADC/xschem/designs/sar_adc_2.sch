@@ -42,7 +42,7 @@ lab=compp}
 N 130 20 300 20 {
 lab=compn}
 N -570 -360 -570 -220 {
-lab=#net1}
+lab=samplex}
 N 420 0 470 -0 {
 lab=compout}
 N 470 0 480 0 {
@@ -88,15 +88,11 @@ C {bootstrap_sw.sym} -390 70 0 0 {name=x4}
 C {devices/lab_pin.sym} -330 90 0 1 {name=p19 sig_type=std_logic lab=sample}
 C {devices/lab_pin.sym} -330 -90 0 1 {name=p22 sig_type=std_logic lab=sample}
 C {devices/lab_pin.sym} -370 170 0 1 {name=p39 sig_type=std_logic lab=nsample}
-C {devices/lab_pin.sym} -660 -240 0 0 {name=p42 sig_type=std_logic lab=sample}
-C {devices/lab_pin.sym} -90 -220 0 1 {name=p47 sig_type=std_logic lab=sample}
-C {devices/lab_pin.sym} -250 -360 3 1 {name=p23 sig_type=std_logic lab=nsample}
+C {devices/lab_pin.sym} -570 -300 0 0 {name=p42 sig_type=std_logic lab=samplex}
+C {devices/lab_pin.sym} -250 -360 0 1 {name=p47 sig_type=std_logic lab=sample}
+C {devices/lab_pin.sym} -90 -220 2 0 {name=p23 sig_type=std_logic lab=nsample}
 C {devices/lab_pin.sym} -390 170 3 0 {name=p37 sig_type=std_logic lab=gnd}
 C {devices/lab_pin.sym} -370 -10 0 1 {name=p24 sig_type=std_logic lab=nsample}
-C {norgate.sym} -660 -190 0 0 {name=X11}
-C {devices/lab_pin.sym} -660 -190 0 0 {name=p46 sig_type=std_logic lab=rst}
-C {devices/lab_pin.sym} -620 -240 0 0 {name=p51 sig_type=std_logic lab=vdd}
-C {devices/lab_pin.sym} -620 -190 0 0 {name=p52 sig_type=std_logic lab=gnd}
 C {inv.sym} -510 -220 0 0 {name=x8 cl=0.28u wp=0.44u wn=0.22u}
 C {devices/lab_pin.sym} -510 -180 0 0 {name=p40 sig_type=std_logic lab=gnd}
 C {devices/lab_pin.sym} -510 -260 0 0 {name=p41 sig_type=std_logic lab=vdd}
@@ -151,4 +147,4 @@ C {devices/lab_pin.sym} 220 -280 1 0 {name=l11 sig_type=std_logic lab=d[10]b}
 C {devices/lab_pin.sym} 240 -280 1 0 {name=l12 sig_type=std_logic lab=d[11]b}
 C {devices/lab_pin.sym} -390 -10 3 0 {name=p14 sig_type=std_logic lab=gnd}
 C {devices/lab_pin.sym} -410 170 3 0 {name=p15 sig_type=std_logic lab=vdd}
-C {devices/lab_pin.sym} 500 180 0 0 {name=p16 sig_type=std_logic lab=sample}
+C {devices/opin.sym} 500 180 3 0 {name=p38 sig_type=std_logic lab=samplex}

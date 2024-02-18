@@ -14,7 +14,8 @@ C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
 value="
 .param period=150n
-.param stoptime=\{48*period\}
+*.param stoptime=\{48*period\}
+.param stoptime= 2u
 *.param stoptime=.2u
 
 
@@ -23,17 +24,16 @@ value="
 vclk clk 0 PULSE(0 3.3 \{0*period\} 10ps 10ps \{period/2\} \{period\})
 vr  rst 0 PULSE(0 3.3 \{0*period\}  10ps 10ps \{period/2\} \{15*period\} 1)
 
-.tran \{0.02*stoptime\} \{stoptime\} uic
+.tran \{0.1*period\} \{stoptime\} uic
 
 .control
 save all
 run
-plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{(rst/3.3) + 4\} eoc \{vinp - vinn\}
-*plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d7)*32+V(d6)*64+V(d5)*128+V(d4)*256+V(d3)*512+V(d2)*1024+V(d1)*2048)/4095\} \{2*rst\} eoc \{vinp - vinn\}
-plot \{d0\} \{d1 + 4\} \{d2 + 8\} \{d3 + 12\} \{d4 + 16\} \{d5 + 20\} \{d6 + 24\} \{d7 + 28\} \{d8 + 32\} \{d9 + 36\} \{d10 + 40\} \{d11 + 44\} \{clk + 50\} \{compout + 55\} \{eoc + 60\}
+plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{vinp - vinn\}
+*plot \{d0\} \{d1 + 4\} \{d2 + 8\} \{d3 + 12\} \{d4 + 16\} \{d5 + 20\} \{d6 + 24\} \{d7 + 28\} \{d8 + 32\} \{d9 + 36\} \{d10 + 40\} \{d11 + 44\} \{clk + 50\} \{compout + 55\} \{eoc + 60\}
 
 
-plot compn compp compout  eoc \{clk + 4\}
+plot compn compp compout 1.65 
 *plot d0
 *plot d1 
 *plot d2 
@@ -49,7 +49,7 @@ plot compn compp compout  eoc \{clk + 4\}
 *plot compout
 .endc
 "}
-C {devices/vsource.sym} -240 -300 0 1 {name=VIN value=0}
+C {devices/vsource.sym} -240 -300 0 1 {name=VIN value="SIN(0 1 1meg)"}
 C {devices/ipin.sym} -145 -410 1 0 {name=p1 lab=rst}
 C {devices/ipin.sym} -120 -410 1 0 {name=p2 lab=clk}
 C {devices/opin.sym} 15 -240 2 1 {name=p3 lab=d0}

@@ -88,3 +88,4 @@ C {comp_step_tb.sym} 990 -680 0 0 {name=x5}
 C {comp_random_tb.sym} 990 -780 0 0 {name=x6}
 C {comp_0input_tb.sym} 990 -830 0 0 {name=xf1}
 C {tb_cdac_2.sym} 1670 -690 0 0 {name=x7}
+C {tb_sar_adc_sin.sym} 650 -660 0 0 {name=xj1}
