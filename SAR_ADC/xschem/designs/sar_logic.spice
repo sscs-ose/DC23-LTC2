@@ -20,7 +20,9 @@ X8 ZN A3 VDD VNW pfet_06v0 ad=0.2561p pd=1.505u as=0.4334p ps=2.85u w=0.985u l=0
 X9 VDD A2 ZN VNW pfet_06v0 ad=0.2561p pd=1.505u as=0.2561p ps=1.505u w=0.985u l=0.5u
 X10 a_452_68# A2 a_276_68# VPW nfet_06v0 ad=0.1312p pd=1.14u as=0.1148p ps=1.1u w=0.82u l=0.6u
 X11 ZN A1 a_452_68# VPW nfet_06v0 ad=0.2132p pd=1.34u as=0.1312p ps=1.14u w=0.82u l=0.6u
-.ends .subckt gf180mcu_fd_sc_mcu7t5v0__oai31_1 VDD ZN B A1 A2 VSS A3 VNW VPW
+.ends 
+
+.subckt gf180mcu_fd_sc_mcu7t5v0__oai31_1 VDD ZN B A1 A2 VSS A3 VNW VPW
 X0 a_468_497# A1 ZN VNW pfet_06v0 ad=0.58035p pd=2.155u as=0.4012p ps=1.85u w=1.095u l=0.5u
 X1 a_244_69# A2 ZN VPW nfet_06v0 ad=0.2119p pd=1.335u as=0.4137p ps=1.9u w=0.815u l=0.6u
 X2 a_780_497# A2 a_468_497# VNW pfet_06v0 ad=0.2847p pd=1.615u as=0.58035p ps=2.155u w=1.095u l=0.5u
