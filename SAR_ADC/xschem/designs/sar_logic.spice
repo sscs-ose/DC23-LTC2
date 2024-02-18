@@ -547,7 +547,7 @@ X14 VDD a_124_375# a_36_472# VNW pfet_06v0 ad=0.5368p pd=3.32u as=0.5368p ps=3.3
 X15 a_1020_375# a_932_472# VSS VPW nfet_06v0 ad=0.3608p pd=2.52u as=0.3608p ps=2.52u w=0.82u l=1u
 .ends
 
-.subckt sar EOC VDD VSS clk comp current_state dbot[0] dbot[10] dbot[11] dbot[1] dbot[2]
+.subckt sar_logic EOC VDD VSS clk comp current_state dbot[0] dbot[10] dbot[11] dbot[1] dbot[2]
 + dbot[3] dbot[4] dbot[5] dbot[6] dbot[7] dbot[8] dbot[9] dtop[0] dtop[10] dtop[11]
 + dtop[1] dtop[2] dtop[3] dtop[4] dtop[5] dtop[6] dtop[7] dtop[8] dtop[9] rst
 X_200_ VDD net24 clknet_2_0_0_clk VSS _021_ VDD VSS gf180mcu_fd_sc_mcu7t5v0__dffq_1

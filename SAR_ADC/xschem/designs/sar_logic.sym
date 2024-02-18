@@ -49,7 +49,7 @@ B 5 97.5 -522.5 102.5 -517.5 {name=vdd dir=in sim_pinnumber=1}
 B 5 37.5 17.5 42.5 22.5 {name=gnd dir=in sim_pinnumber=2}
 B 5 37.5 -522.5 42.5 -517.5 {name=clock dir=in sim_pinnumber=3}
 B 5 -22.5 -252.5 -17.5 -247.5 {name=data_in dir=in sim_pinnumber=4}
-B 5 -22.5 -72.5 -17.5 -67.5 {name=sample dir=out sim_pinnumber=4}
+B 5 -22.5 -72.5 -17.5 -67.5 {name=sample dir=out sim_pinnumber=5}
 B 5 157.5 -242.5 162.5 -237.5 {name=qb0 dir=out sim_pinnumber=5}
 B 5 157.5 -42.5 162.5 -37.5 {name=qb10 dir=out sim_pinnumber=6}
 B 5 157.5 -22.5 162.5 -17.5 {name=qb11 dir=out sim_pinnumber=7}

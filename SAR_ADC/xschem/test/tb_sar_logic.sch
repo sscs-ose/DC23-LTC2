@@ -10,7 +10,7 @@ C {devices/opin.sym} 450 110 1 0 {name=p2 lab=eoc}
 C {devices/ipin.sym} 330 -160 0 0 {name=p3 lab=data_in}
 C {devices/ipin.sym} 390 -430 1 0 {name=p4 lab=clk}
 C {devices/ipin.sym} 410 -430 1 0 {name=p5 lab=rst}
-C {devices/code_shown.sym} -920 -220 0 0 {name=NGSPICE only_toplevel=false value="
+C {devices/code_shown.sym} -1520 -170 0 0 {name=NGSPICE only_toplevel=false value="
 
 .param period=10n
 .param span=4
@@ -25,8 +25,8 @@ vr  rst 0 PULSE(0 3.3 \{0.5*period\}  1ps 1ps \{1*period\} \{12*period\} 1)
 .control
 run
 plot data_in
-plot \{qt0\} \{qt1 + 4\} \{qt2 + 8\} \{qt3 + 12\} \{qt4 + 16\} \{qt5 + 20\} \{qt6 + 24\} \{qt7 + 28\} \{qt8 + 32\} \{qt9 + 36\} \{qt10 + 40\} \{qt11 + 44\} \{data_in + 55\} \{clk + 50\} \{eoc + 60\}
-plot \{q0\} \{q1 + 4\} \{q2 + 8\} \{q3 + 12\} \{q4 + 16\} \{q5 + 20\} \{q6 + 24\} \{q7 + 28\} \{q8 + 32\} \{q9 + 36\} \{q10 + 40\} \{q11 + 44\} \{data_in + 55\} \{clk + 50\} \{eoc + 60\}
+plot \{qt0\} \{qt1 + 4\} \{qt2 + 8\} \{qt3 + 12\} \{qt4 + 16\} \{qt5 + 20\} \{qt6 + 24\} \{qt7 + 28\} \{qt8 + 32\} \{qt9 + 36\} \{qt10 + 40\} \{qt11 + 44\} \{data_in + 55\} \{clk + 50\} \{eoc + 60\} \{sample + 65\}
+plot \{q0\} \{q1 + 4\} \{q2 + 8\} \{q3 + 12\} \{q4 + 16\} \{q5 + 20\} \{q6 + 24\} \{q7 + 28\} \{q8 + 32\} \{q9 + 36\} \{q10 + 40\} \{q11 + 44\} \{data_in + 55\} \{clk + 50\} \{eoc + 60\} \{sample + 65\}
 
 
 *plot \{(V(q11)*2048+V(q10)*1024+V(q9)*512+V(q8)*256+V(q7)*128+V(q6)*64+V(q5)*32+V(q4)*16+V(q3)*8+V(q2)*4+V(q1)*2+V(q0))/4096\} V(eoc)
@@ -72,3 +72,4 @@ C {devices/opin.sym} 510 -230 0 0 {name=p25 lab=qt8}
 C {devices/opin.sym} 510 -210 0 0 {name=p26 lab=qt9}
 C {devices/opin.sym} 510 -190 0 0 {name=p27 lab=qt10}
 C {devices/opin.sym} 510 -170 0 0 {name=p28 lab=qt11}
+C {devices/ipin.sym} 330 20 0 0 {name=p29 lab=sample}
