@@ -9,6 +9,14 @@ N -240 -270 -215 -270 {
 lab=vinn}
 N -240 -330 -215 -330 {
 lab=vinp}
+N 40 -700 120 -700 {
+lab=GND}
+N 50 -880 90 -880 {
+lab=GND}
+N 160 -800 200 -800 {
+lab=ld0}
+N -30 -800 10 -800 {
+lab=d0}
 C {sar_adc_2.sym} -120 -290 0 0 {name=x1}
 C {devices/code_shown.sym} -895 -345 0 0 {name=NGSPICE
 only_toplevel=false
@@ -31,7 +39,7 @@ save all
 run
 plot \{(V(d11)+V(d10)*2+V(d9)*4+V(d8)*8+V(d7)*16+V(d6)*32+V(d5)*64+V(d4)*128+V(d3)*256+V(d2)*512+V(d1)*1024+V(d0)*2048)/4095\} \{vinp - vinn\}
 *plot \{d0\} \{d1 + 4\} \{d2 + 8\} \{d3 + 12\} \{d4 + 16\} \{d5 + 20\} \{d6 + 24\} \{d7 + 28\} \{d8 + 32\} \{d9 + 36\} \{d10 + 40\} \{d11 + 44\} \{clk + 50\} \{compout + 55\} \{eoc + 60\}
-
+plot d0 ld0
 
 plot compn compp compout 1.65 
 *plot d0
@@ -88,3 +96,12 @@ C {devices/gnd.sym} -240 -210 0 0 {name=l7 lab=GND}
 C {devices/gnd.sym} -30 -410 0 0 {name=l2 lab=GND}
 C {devices/vsource.sym} -240 -240 0 1 {name=VIN2 value=1.65}
 C {devices/lab_pin.sym} -240 -270 2 1 {name=l4 lab=vinn}
+C {ff.sym} 30 -720 0 0 {name=FF3
+model=gf180mcu_fd_sc_mcu7t5v0__dffrsnq_1
+}
+C {devices/lab_pin.sym} 140 -880 1 0 {name=l8 lab=vdd}
+C {devices/gnd.sym} 50 -880 0 0 {name=l9 lab=GND}
+C {devices/gnd.sym} 110 -700 0 0 {name=l10 lab=GND}
+C {devices/lab_pin.sym} 10 -770 0 0 {name=l11 lab=eoc}
+C {devices/lab_pin.sym} 200 -800 1 0 {name=l12 lab=ld0}
+C {devices/lab_pin.sym} -30 -800 1 0 {name=l13 lab=d0}
