@@ -1,0 +1,10 @@
+** sch_path: /workspaces/DC23-LTC2-LDO/LDO/xschem/test/waffle-12x12/waffle-12x12.sch
+**.subckt waffle-12x12 S D G
+*.iopin S
+*.iopin D
+*.iopin G
+XM2 D G S S pfet_03v3 L=0.5u W=1121.28u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+**.ends
+.end

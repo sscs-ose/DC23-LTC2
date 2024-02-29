@@ -1,4 +1,5 @@
 {
+    "STD_CELL_LIBRARY": "$STD_CELL_LIBRARY",
     "INCLUDE_CONFIGS": [
         "$LVS_ROOT/tech/gf180mcuD/lvs_config.base.json"
     ],

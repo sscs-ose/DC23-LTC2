@@ -160,3 +160,4 @@ cython_debug/
 
 # Eventually, make a script that shows if this spices are really different.
 #**/*.spice
+**/output

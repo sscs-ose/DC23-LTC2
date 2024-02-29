@@ -27,5 +27,5 @@ set wr_vecnames
 ** Solver selector
 ******************
 
-option sparse
-* option klu             ;  (ngspice 42+) select KLU as matrix solver 
+*option sparse
+option klu             ;  (ngspice 42+) select KLU as matrix solver

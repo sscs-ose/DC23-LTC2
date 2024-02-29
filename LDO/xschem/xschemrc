@@ -1,21 +1,19 @@
-source $env(PDK_ROOT)/gf180mcuD/libs.tech/xschem/xschemrc
+source $env(PDK_ROOT)/$env(PDK)/libs.tech/xschem/xschemrc
 
-set script_path [ file dirname [ file normalize [ info script ] ] ]
+proc append_modules { path } {
+    global XSCHEM_LIBRARY_PATH
 
-foreach ldo_directory [ glob -nocomplain -type d * ] {
+    foreach module [ glob -nocomplain -type d $path ] {
+        set module_sch_sym {}
 
-    set ldo_files {}
-
-    append ldo_files [ glob -nocomplain ./$ldo_directory/*.sch ]
-    append ldo_files [ glob -nocomplain ./$ldo_directory/*.sym ]
-
-    if { [ llength $ldo_files ] > 0 } {
-        append XSCHEM_LIBRARY_PATH :$script_path/$ldo_directory
+        append module_sch_sym [ glob -nocomplain $module/symbol/*.sch ]
+        append module_sch_sym [ glob -nocomplain $module/symbol/*.sym ]
+        
+        if { [ llength $module_sch_sym ] > 0 } {
+            append XSCHEM_LIBRARY_PATH :[file normalize $module]
+        }
     }
 }
-
-set XSCHEM_START_WINDOW {0_top.sch}
-
 
 proc create_empty_sch { filename } {
     puts "Hola $filename"
@@ -32,3 +30,29 @@ proc get_variables { } {
     puts "netlist_type:     [ xschem get netlist_type ]" 
     puts "version:          [ xschem get version ]" 
 }
+
+proc startup_information { } {
+    global XSCHEM_LIBRARY_PATH
+    puts ""
+    puts "Paths registered on xschem:"
+    foreach path [ lsort [ split $XSCHEM_LIBRARY_PATH : ]] {puts "- $path"}
+    
+    set script_path [ file normalize [ info script ] ]
+    set working_path [pwd]
+    puts ""
+    puts "xschemrc:     $script_path"
+    puts "working path: $working_path"
+
+    puts ""
+    puts "-- THIS DEPENDS ON THE STRUCTURE OF THE PROJECT --"
+    puts "The spice is generated on \$module/output/extraction/test/"
+    puts "When doing pex simulations, use relative references from there"
+}
+
+set XSCHEM_START_WINDOW {0_top.sch}
+
+
+append_modules ./*
+append_modules ./test/*
+
+startup_information
