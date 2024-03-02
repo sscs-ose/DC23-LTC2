@@ -1,5 +1,5 @@
 ---
-name: MY_RING_PAD
+name: padring_openfasoc
 
 aliases:
   asig: gf180mcu_fd_io__asig_5p0
