@@ -160,10 +160,10 @@ value="
 C {devices/code_shown.sym} -430 -660 0 0 {name=DUT only_toplevel=true
 format="tcleval( @value )"
 value="
-.include /home/gmaranhao/Desktop/gf180_work/Pads/gf180mcu_fd_io__asig_5p0_extracted.spice
-.include /home/gmaranhao/Desktop/gf180_work/Pads/gf180mcu_fd_io__asig_5p0_gab.spice
+.include ../../../../spice/gf180mcu_fd_io__asig_5p0_extracted.spice
+.include ../../../../spice/gf180mcu_fd_io__asig_5p0_gab.spice
 
-*.include /home/gmaranhao/Desktop/gf180_work/Pads/asig5v_io_cell.spice
+*.include ../../../../spice/asig5v_io_cell.spice
 
 
 Xclosed DVSS DVDD VSS VDD ASIG ASIG gf180mcu_fd_io__asig_5p0_extracted
