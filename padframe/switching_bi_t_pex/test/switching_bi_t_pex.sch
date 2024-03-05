@@ -1,10 +1,78 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
 V {}
 S {}
 E {}
+B 2 1240 -680 2040 -280 {flags=graph
+y1=-0.075
+y2=3.2
+ypos1=0
+ypos2=2
+divy=5
+subdivy=1
+unity=1
+x1=0
+x2=1e-07
+divx=5
+subdivx=1
+xlabmag=1.0
+ylabmag=1.0
+node="A
+PAD0
+Y0"
+color="7 12 21"
+dataset=-1
+unitx=1
+logx=0
+logy=0
+}
+B 2 2060 -680 2860 -280 {flags=graph
+y1=-0.075
+y2=3.2
+ypos1=0
+ypos2=2
+divy=5
+subdivy=1
+unity=1
+x1=0
+x2=1e-07
+divx=5
+subdivx=1
+xlabmag=1.0
+ylabmag=1.0
+
+
+dataset=-1
+unitx=1
+logx=0
+logy=0
+color="7 12"
+node="pad0
+pad1"}
+B 2 2880 -690 3680 -290 {flags=graph
+y1=-1.9
+y2=1.6
+ypos1=0
+ypos2=2
+divy=5
+subdivy=1
+unity=1
+x1=0
+x2=1e-07
+divx=5
+subdivx=1
+xlabmag=1.0
+ylabmag=1.0
+
+
+dataset=-1
+unitx=1
+logx=0
+logy=0
+color=7
+node="\\"pad0 pad1 -\\""}
 N 150 -490 150 -470 {
 lab=GND}
 N 150 -610 150 -550 {
@@ -77,19 +145,11 @@ run
 display
 plot A PAD0 Y0
 plot PAD0 PAD1
+
+write
 .endc
 "}
-C {devices/code_shown.sym} 1050 -800 0 0 {name=MODELS only_toplevel=true
-format="tcleval( @value )"
-value="
-.include $::180MCU_MODELS/design.ngspice
-.lib $::180MCU_MODELS/sm141064.ngspice typical
-.lib $::180MCU_MODELS/sm141064.ngspice diode_typical
-.lib $::180MCU_MODELS/sm141064.ngspice res_typical
-.lib $::180MCU_MODELS/sm141064.ngspice mimcap_typical
-.lib $::180MCU_MODELS/sm141064.ngspice moscap_typical
-"}
-C {devices/code_shown.sym} -100 -830 0 0 {name=DUT only_toplevel=true
+C {devices/code_shown.sym} 40 -750 0 0 {name=DUT only_toplevel=true
 format="tcleval( @value )"
 value="
 .include "../../../../spice/gf180mcu_fd_io.spice"
@@ -121,3 +181,69 @@ C {devices/lab_wire.sym} 750 -590 0 0 {name=p11 sig_type=std_logic lab=SL}
 C {devices/gnd.sym} 390 -280 0 0 {name=l2 lab=GND}
 C {devices/vsource.sym} 810 -520 0 0 {name=V13 value=3.3}
 C {devices/lab_wire.sym} 810 -590 0 0 {name=p13 sig_type=std_logic lab=CS}
+C {devices/code.sym} 200 -960 0 0 {name=GF_MODELS
+only_toplevel=true
+place=header
+format="tcleval( @value )"
+value="
+.include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice diode_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice bjt_typical
+*.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+"}
+C {devices/launcher.sym} 1310 -720 0 0 {name=h2
+descr="Load TRAN"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath tran
+"
+}
+C {devices/launcher.sym} 1310 -820 0 0 {name=h5
+descr="Load ALL 3.4.5+"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+
+puts $filepath
+
+xschem raw clear
+xschem raw read $filepath tran
+xschem redraw
+xschem raw read $filepath dc
+xschem redraw
+"}
+C {devices/launcher.sym} 1310 -760 0 0 {name=h3
+descr="Load DC"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath dc
+"
+}
+C {devices/code_shown.sym} 1300 -930 0 0 {name="Setup testbench"
+only_toplevel=false
+place=header
+format="tcleval( @value )"
+value="
+.control
+write
+set appendwrite
+.endc"}
+C {devices/launcher.sym} 1510 -760 0 0 {name=h4
+descr="Load AC"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath ac
+"
+}

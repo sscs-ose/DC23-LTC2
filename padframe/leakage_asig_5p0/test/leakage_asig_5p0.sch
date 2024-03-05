@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -6,7 +6,7 @@ V {}
 S {}
 E {}
 L 0 940 10 970 20 {}
-B 2 -100 -180 700 220 {flags=graph
+B 2 1810 -210 2610 190 {flags=graph
 
 
 ypos1=0
@@ -45,15 +45,12 @@ y2=10.05n
 digital=0
 rainbow=0}
 P 3 7 970 20 920 20 920 10 900 20 920 30 920 20 970 20 {}
-P 7 7 540 -560 490 -560 490 -570 470 -560 490 -550 490 -560 540 -560 {}
 T {This is the PAD conection
 ASIG net is supouse to have same signal (minus leak).
 
 Circuit block represented by a simple CM.} 980 -40 0 0 0.4 0.4 { layer=3}
-T {Change PATH 
-.include /PATH/gf180mcu_fd_io__asig_5p0_extracted.spice} 550 -590 0 0 0.4 0.4 { layer=7}
-T {Current Source - In} 500 -220 0 0 0.4 0.4 { layer=6}
-T {Current Source - After PAD} 500 -290 0 0 0.4 0.4 { layer=7}
+T {Current Source - In} 2410 -250 0 0 0.4 0.4 { layer=6}
+T {Current Source - After PAD} 2410 -280 0 0 0.4 0.4 { layer=7}
 N 1050 -130 1050 -110 {
 lab=GND}
 N 1050 -250 1050 -190 {
@@ -130,34 +127,19 @@ N 1010 120 1040 120 {
 lab=vout}
 N 890 0 890 40 {
 lab=ASIG}
-C {devices/code_shown.sym} -410 -210 0 0 {name=s1
+C {devices/code_shown.sym} 1540 -110 0 0 {name="dc"
 only_toplevel=false
 value="
 .option gmin=1e-24
-
 .control
 save all
 
 dc Vout 0 3.3 10m
 
 remzerovec 
-set filetype = binary
-write analog_leak_pads.raw
-set appendwrite
-
-.endc
-"}
-C {devices/code_shown.sym} -420 -380 0 0 {name=MODELS only_toplevel=true
-format="tcleval( @value )"
-value="
-.include $::180MCU_MODELS/design.ngspice
-.lib $::180MCU_MODELS/sm141064.ngspice typical
-.lib $::180MCU_MODELS/sm141064.ngspice diode_typical
-.lib $::180MCU_MODELS/sm141064.ngspice res_typical
-.lib $::180MCU_MODELS/sm141064.ngspice mimcap_typical
-.lib $::180MCU_MODELS/sm141064.ngspice moscap_typical
-"}
-C {devices/code_shown.sym} -430 -660 0 0 {name=DUT only_toplevel=true
+write
+.endc"}
+C {devices/code_shown.sym} 810 -460 0 0 {name=DUT only_toplevel=true
 format="tcleval( @value )"
 value="
 .include ../../../../spice/gf180mcu_fd_io__asig_5p0_extracted.spice
@@ -215,16 +197,73 @@ C {devices/lab_wire.sym} 1010 120 0 0 {name=p6 sig_type=std_logic lab=vout}
 C {devices/lab_wire.sym} 850 -190 0 0 {name=p8 sig_type=std_logic lab=VDD}
 C {devices/gnd.sym} 1100 240 0 0 {name=l2 lab=GND}
 C {devices/isource.sym} 890 -60 0 0 {name=I0 value=10n}
-C {devices/launcher.sym} -45 -205 0 0 {name=h1
-descr="Load/unload waveforms in graph."
-tclcommand="
-xschem raw_read $netlist_dir/[file tail [file rootname [xschem get current_name]]].raw dc
-"
-}
 C {devices/ammeter.sym} 890 -150 0 0 {name=Vi_in}
 C {devices/ammeter.sym} 890 120 0 0 {name=Vi_in_pad}
 C {devices/ammeter.sym} 1100 210 0 0 {name=Vi_out}
 C {devices/vsource.sym} 1100 150 0 0 {name=Vout value=1}
-C {devices/launcher.sym} 510 -460 0 0 {name=h2
-descr="GF180 Padframe Cell Testbench Examples"
-url="https://github.com/idea-fasoc/openfasoc-tapeouts/tree/main/gf180mcu_padframe/tb"}
+C {devices/launcher.sym} 1870 -250 0 0 {name=h4
+descr="Load TRAN"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath tran
+"
+}
+C {devices/launcher.sym} 1870 -350 0 0 {name=h5
+descr="Load ALL 3.4.5+"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+
+puts $filepath
+
+xschem raw clear
+xschem raw read $filepath tran
+xschem redraw
+xschem raw read $filepath dc
+xschem redraw
+"}
+C {devices/launcher.sym} 1870 -290 0 0 {name=h9
+descr="Load DC"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath dc
+"
+}
+C {devices/code_shown.sym} 1860 -460 0 0 {name=Setup testbench1
+only_toplevel=false
+place=header
+format="tcleval( @value )"
+value="
+.control
+write
+set appendwrite
+.endc"}
+C {devices/launcher.sym} 2070 -290 0 0 {name=h10
+descr="Load AC"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath ac
+"
+}
+C {devices/code.sym} 2050 -470 0 0 {name=GF_MODELS
+only_toplevel=true
+place=header
+format="tcleval( @value )"
+value="
+.include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice diode_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice bjt_typical
+*.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+"}

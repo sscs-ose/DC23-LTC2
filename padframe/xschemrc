@@ -49,7 +49,11 @@ proc startup_information { } {
     puts "When doing pex simulations, use relative references from there"
 }
 
-set XSCHEM_START_WINDOW {0_top.sch}
+# disable bespice
+unset bespice_listen_port
+
+set XSCHEM_START_WINDOW ${PDK_ROOT}/$env(PDK)/libs.tech/xschem/tests/0_top.sch
+set 180MCU_MODELS $env(PDK_ROOT)/gf180mcuD/libs.tech/ngspice
 
 
 append_modules ./*

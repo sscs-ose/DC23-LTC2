@@ -16,7 +16,7 @@ proc append_modules { path } {
 }
 
 proc create_empty_sch { filename } {
-    puts "Hola $filename"
+    puts "Creating $filename"
     xschem clear force
     xschem saveas $filename schematic
     exit
@@ -53,6 +53,5 @@ set XSCHEM_START_WINDOW {0_top.sch}
 
 
 append_modules ./*
-append_modules ./test/*
 
 startup_information
