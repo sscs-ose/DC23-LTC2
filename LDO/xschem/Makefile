@@ -162,7 +162,7 @@ SCH_NETLIST_PREFIX:=$(SCH_DIR)/$(TOP)_prefix.spice
 SCH_NETLIST_NOPREFIX:=$(SCH_DIR)/$(TOP)_noprefix.spice
 
 LAYOUT_NETLIST_KLAYOUT:=$(EXTRACTION_DIR)/layout_clean/$(TOP).cir
-LAYOUT_NETLIST_MAGIC:=$(EXTRACTION_DIR)/layout_clean/$(TOP)_extracted.spice
+LAYOUT_NETLIST_MAGIC:=$(EXTRACTION_DIR)/layout_clean/$(TOP)_clean.spice
 LAYOUT_NETLIST_PEX:=$(EXTRACTION_DIR)/layout_pex/$(TOP)_pex.spice
 
 endif # ifeq (UNDEFINED,$(TOP))

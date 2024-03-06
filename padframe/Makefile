@@ -162,7 +162,7 @@ SCH_NETLIST_PREFIX:=$(SCH_DIR)/$(TOP)_prefix.spice
 SCH_NETLIST_NOPREFIX:=$(SCH_DIR)/$(TOP)_noprefix.spice
 
 LAYOUT_NETLIST_KLAYOUT:=$(EXTRACTION_DIR)/layout_clean/$(TOP).cir
-LAYOUT_NETLIST_MAGIC:=$(EXTRACTION_DIR)/layout_clean/$(TOP)_extracted.spice
+LAYOUT_NETLIST_MAGIC:=$(EXTRACTION_DIR)/layout_clean/$(TOP)_clean.spice
 LAYOUT_NETLIST_PEX:=$(EXTRACTION_DIR)/layout_pex/$(TOP)_pex.spice
 
 endif # ifeq (UNDEFINED,$(TOP))
@@ -314,3 +314,190 @@ lvs:
 
 pex:
 	$(MAKE) magic-pex-extraction
+
+IO_GDS:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds
+IO_SPICE:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice
+GDS_IO_CELLS:= \
+	gf180mcu_fd_io__asig_5p0 \
+	gf180mcu_fd_io__bi_24t \
+	gf180mcu_fd_io__bi_t \
+	gf180mcu_fd_io__brk2 \
+	gf180mcu_fd_io__brk5 \
+	gf180mcu_fd_io__cor \
+	gf180mcu_fd_io__dvdd \
+	gf180mcu_fd_io__dvss \
+	gf180mcu_fd_io__fill1 \
+	gf180mcu_fd_io__fill5 \
+	gf180mcu_fd_io__fill10 \
+	gf180mcu_fd_io__fillnc \
+	gf180mcu_fd_io__in_c \
+	gf180mcu_fd_io__in_s
+
+
+klayout-io:
+	$(KLAYOUT) -e -t $(IO_GDS)
+
+
+extract-lvs-pads:
+	$(MAKE) TOP=dummy create-schematic
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__asig_5p0_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_t magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__bi_t_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_24t magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__bi_24t_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk2 magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__brk2_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk5 magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__brk5_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__cor magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__cor_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvdd magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__dvdd_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvss magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__dvss_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill1 magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fill1_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill5 magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fill5_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill10 magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fill10_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fillnc magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fillnc_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_c magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__in_c_clean.spice
+	
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_s magic-lvs-extraction
+	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__in_s_clean.spice
+
+
+extract-pex-pads:
+	$(MAKE) TOP=dummy create-schematic
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_t magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_24t magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk2 magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk5 magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__cor magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvdd magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvss magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill1 magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill5 magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill10 magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fillnc magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_c magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+
+	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_s magic-pex-extraction
+	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
+	
+
+# extract-io-pads:
+# 	$(MAKE) TOP=dummy create-schematic
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__asig_5p0.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__asig_5p0_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_t magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_t magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__bi_t.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__bi_t_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_24t magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_24t magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__bi_24t.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__bi_24t_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk2 magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk2 magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__brk2.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__brk2_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk5 magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk5 magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__brk5.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__brk5_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__cor magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__cor magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__cor.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__cor_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvdd magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvdd magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__dvdd.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__dvdd_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvss magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvss magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__dvss.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__dvss_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill1 magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill1 magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fill1.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fill1_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill5 magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill5 magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fill5.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fill5_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill10 magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill10 magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fill10.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fill10_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fillnc magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fillnc magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fillnc.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fillnc_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_c magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_c magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__in_c.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__in_c_pex.spice
+
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_s magic-lvs-extraction
+# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_s magic-pex-extraction
+# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__in_s.spice
+# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__in_s_pex.spice

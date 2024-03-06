@@ -12,11 +12,11 @@ aliases:
   fill5:  gf180mcu_fd_io__fill5
   in_c:   gf180mcu_fd_io__in_c
   clock_in:    gf180mcu_fd_io__in_c
-  clock_out:   gf180mcu_fd_io__in_c
+  clock_out:   gf180mcu_fd_io__bi_t
   digital_in:  gf180mcu_fd_io__in_c
-  digital_out: gf180mcu_fd_io__in_c
+  digital_out: gf180mcu_fd_io__bi_t
   analog:    gf180mcu_fd_io__asig_5p0
-  reference: gf180mcu_fd_io__bi_t
+  reference: gf180mcu_fd_io__asig_5p0
   vdd:  gf180mcu_fd_io__dvdd
   vddx: gf180mcu_fd_io__dvdd
   vss:  gf180mcu_fd_io__dvss
