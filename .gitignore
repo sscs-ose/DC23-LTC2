@@ -161,3 +161,22 @@ cython_debug/
 # Eventually, make a script that shows if this spices are really different.
 #**/*.spice
 **/output
+
+**/.vscode
+
+**/gf180mcu_fd_io__asig_5p0/*
+**/gf180mcu_fd_io__bi_24t/*
+**/gf180mcu_fd_io__bi_t/*
+**/gf180mcu_fd_io__brk2/*
+**/gf180mcu_fd_io__brk5/*
+**/gf180mcu_fd_io__cor/*
+**/gf180mcu_fd_io__dvdd/*
+**/gf180mcu_fd_io__dvss/*
+**/gf180mcu_fd_io__fill1/*
+**/gf180mcu_fd_io__fill5/*
+**/gf180mcu_fd_io__fill10/*
+**/gf180mcu_fd_io__fillnc/*
+**/gf180mcu_fd_io__in_c/*
+**/gf180mcu_fd_io__in_s/*
+**/spice/clean/*
+**/spice/pex/*

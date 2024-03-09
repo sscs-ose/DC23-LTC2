@@ -4,6 +4,10 @@ Requisites :
     - Add a simulation folder where test benches are available to simulate your padring
 
 
+# Extracted spice
+
+The files `clean.zip` and `pex.zip` contains all the spices extracted from the pads in the pdk.
+
 # Simulation Tips
 
 ## Non-Configurable Pads

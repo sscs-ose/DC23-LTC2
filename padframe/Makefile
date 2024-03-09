@@ -52,6 +52,7 @@ EBC_CONFIG=$(realpath $(MODULE_CONFIG_FILES)/lvs_config.json)
 
 ## KLAYOUT
 KLAYOUT_HOME=$(PDK_ROOT)/$(PDK)/libs.tech/klayout
+KLAYOUT_RCFILE=$(realpath $(MODULE_CONFIG_FILES)/klayoutrc)
 
 # Documentation
 
@@ -430,74 +431,98 @@ extract-pex-pads:
 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
 	
 
-# extract-io-pads:
-# 	$(MAKE) TOP=dummy create-schematic
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__asig_5p0.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__asig_5p0_pex.spice
+klayout-cell-extraction:
+	$(KLAYOUT) -zz \
+		-r $(_IC_MAKEFILE)/scripts/top-cell-extractor.py \
+		-rd layout=$(GDS) \
+		-rd output_dir=$(GDS_DIR)
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_t magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_t magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__bi_t.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__bi_t_pex.spice
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_24t magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__bi_24t magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__bi_24t.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__bi_24t_pex.spice
+# Conclusion: Neiter pad has drc problems
+.PHONY: klayout-gf180mcu-drc-view
+gf180mcu-drc-view:
+	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__bi_t     klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__brk2     klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__brk5     klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__cor      klayout-drc-view	
+	$(MAKE) TOP=gf180mcu_fd_io__dvdd     klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__dvss     klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__fill1    klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__fill5    klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__fill10   klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__fillnc   klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__in_c     klayout-drc-view
+	$(MAKE) TOP=gf180mcu_fd_io__in_s     klayout-drc-view
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk2 magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk2 magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__brk2.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__brk2_pex.spice
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk5 magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__brk5 magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__brk5.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__brk5_pex.spice
+.PHONY: klayout-gf180mcu-drc
+gf180mcu-drc:
+	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__bi_t     klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__brk2     klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__brk5     klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__cor      klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__dvdd     klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__dvss     klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__fill1    klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__fill5    klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__fill10   klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__fillnc   klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__in_c     klayout-drc-only
+	$(MAKE) TOP=gf180mcu_fd_io__in_s     klayout-drc-only
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__cor magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__cor magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__cor.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__cor_pex.spice
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvdd magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvdd magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__dvdd.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__dvdd_pex.spice
+.PHONY: klayout-gf180mcu-clean-extraction
+gf180mcu-clean-extraction:
+	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__bi_t     magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__brk2     magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__brk5     magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__cor      magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__dvdd     magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__dvss     magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fill1    magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fill5    magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fill10   magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fillnc   magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__in_c     magic-lvs-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__in_s     magic-lvs-extraction
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvss magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__dvss magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__dvss.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__dvss_pex.spice
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill1 magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill1 magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fill1.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fill1_pex.spice
+.PHONY: klayout-gf180mcu-pex-extraction
+gf180mcu-pex-extraction:
+	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__bi_t     magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__brk2     magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__brk5     magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__cor      magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__dvdd     magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__dvss     magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fill1    magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fill5    magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fill10   magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__fillnc   magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__in_c     magic-pex-extraction
+	$(MAKE) TOP=gf180mcu_fd_io__in_s     magic-pex-extraction
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill5 magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill5 magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fill5.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fill5_pex.spice
 
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill10 magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fill10 magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fill10.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fill10_pex.spice
-
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fillnc magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__fillnc magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__fillnc.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__fillnc_pex.spice
-
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_c magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_c magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__in_c.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__in_c_pex.spice
-
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_s magic-lvs-extraction
-# 	$(MAKE) TOP=dummy GDS=$(IO_GDS) GDS_CELL=gf180mcu_fd_io__in_s magic-pex-extraction
-# 	mv ./dummy/output/extraction/layout_clean/*.spice  ./spice/gf180mcu_fd_io__in_s.spice
-# 	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/gf180mcu_fd_io__in_s_pex.spice
+.PHONY: klayout-gf180mcu-lvs
+gf180mcu-lvs:
+	$(call ERROR_MESSAGE, gf180mcu LVS is not working right now)
+	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__bi_t     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__brk2     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__brk5     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__dvdd     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__dvss     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__fill1    SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__fill5    SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__fill10   SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	$(MAKE) TOP=gf180mcu_fd_io__in_c     SCH_NETLIST_NOPREFIX=$(IO_SPICE) SCH_NETLIST_PREFIX=$(IO_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__in_s     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
