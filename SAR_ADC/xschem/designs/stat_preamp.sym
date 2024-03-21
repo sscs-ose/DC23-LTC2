@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {type=subcircuit
@@ -21,6 +21,7 @@ L 4 100 0 180 0 {}
 L 4 -160 -40 -60 -40 {}
 L 4 -160 40 -60 40 {}
 L 4 100 140 100 180 {}
+L 4 100 50 180 50 {}
 L 6 -60 -80 -60 80 {}
 L 6 -60 80 100 0 {}
 L 6 -60 -80 100 0 {}
@@ -30,6 +31,7 @@ B 5 177.5 -2.5 182.5 2.5 {name=OUT dir=out}
 B 5 -62.5 -182.5 -57.5 -177.5 {name=VDD dir=inout}
 B 5 77.5 -182.5 82.5 -177.5 {name=VSS dir=inout}
 B 5 97.5 177.5 102.5 182.5 {name=ibias dir=inout}
+B 5 177.5 47.5 182.5 52.5 {name=OUTn dir=out}
 T {IN_P} -50 -50 0 0 0.4 0.4 {}
 T {IN_M} -50 30 0 0 0.4 0.4 {}
 T {OUT} 10 -10 0 0 0.4 0.4 {}

@@ -95,12 +95,6 @@ N 510 180 1010 180 {
 lab=GND}
 N 1010 -0 1010 180 {
 lab=GND}
-N 690 50 690 140 {
-lab=#net1}
-N 610 140 690 140 {
-lab=#net1}
-N 400 140 450 140 {
-lab=CLK}
 N 610 -0 630 0 {
 lab=GND}
 N 760 -0 920 -0 {
@@ -167,6 +161,12 @@ N 750 -480 770 -480 {
 lab=V}
 N 770 -440 770 -410 {
 lab=V}
+N 510 100 670 100 {
+lab=V}
+N 400 140 450 140 {
+lab=CLK}
+N 770 50 770 140 {
+lab=#net1}
 C {symbols/pfet_03v3.sym} 650 -320 0 1 {name=M1
 L=0.28u
 W=2u
@@ -290,3 +290,4 @@ C {devices/iopin.sym} 400 140 0 1 {name=p6 lab=CLK
 C {devices/iopin.sym} 760 -30 0 0 {name=p7 lab=GND
 }
 C {inv.sym} 510 140 0 0 {name=x1 cl=0.28u wp=0.44u wn=0.22u wx=4u}
+C {inv.sym} 670 140 0 0 {name=x2 cl=0.28u wp=0.44u wn=0.22u wx=4u}

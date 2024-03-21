@@ -61,6 +61,8 @@ B 5 12.5 97.5 17.5 102.5 {name=compp dir=out}
 B 5 57.5 97.5 62.5 102.5 {name=compout dir=out}
 B 5 87.5 97.5 92.5 102.5 {name=eoc dir=out}
 B 5 147.5 -112.5 152.5 -107.5 {name=samplex dir=out}
+B 5 177.5 -112.5 182.5 -107.5 {name=vpp dir=out}
+B 5 207.5 -112.5 212.5 -107.5 {name=vpn dir=out}
 T {@symname} -34.5 -26 0 0 0.3 0.3 {}
 T {@name} -35 -2 0 0 0.2 0.2 {}
 T {rst} -30 -94 0 0 0.2 0.2 {}

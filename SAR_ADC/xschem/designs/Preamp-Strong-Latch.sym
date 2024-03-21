@@ -1,4 +1,4 @@
-v {xschem version=3.1.0 file_version=1.2 
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {type=subcircuit
@@ -33,5 +33,11 @@ dir=inout}
 B 5 -22.5 -32.5 -17.5 -27.5 {name=clk
 dir=inout}
 B 5 47.5 2.5 52.5 7.5 {name=GND
+
+dir=inout}
+B 5 77.5 12.5 82.5 17.5 {name=vpp
+
+dir=inout}
+B 5 97.5 12.5 102.5 17.5 {name=vpn
 
 dir=inout}
