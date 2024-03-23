@@ -167,7 +167,7 @@ function get-value-from-wsl() {
 }
 
 function set-common-parameters () {
-    $global:IMAGE = "git.1159.cl/mario1159/$SELECTED_STACK-$EXECMODE"
+    $global:IMAGE = "akilesalreadytaken/chipathon-tools"
 
     if ($attach) {
         $global:PARAMS += " -it --rm"
