@@ -1,7 +1,7 @@
 // More info: https://containers.dev/implementors/json_reference/
 {
 	"name": "chipathon-devcontainer",
-	"image": "git.1159.cl/mario1159/chipathon-tools-desktop:latest",
+	"image": "akilesalreadytaken/chipathon-tools",
 	"features": {},
 	"customizations": {
 		"vscode": {
@@ -9,13 +9,19 @@
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-toolsai.jupyter",
-				"ms-python.black-formatter"
+				"ms-python.black-formatter",
+				"mutantdino.resourcemonitor"
 			],
 			"settings": {
 				"[python]": {
 					"editor.defaultFormatter": "ms-python.black-formatter",
 					"editor.formatOnSave": true
-				}
+				},
+				"resmon.show.battery": false,
+				"resmon.show.disk": true,
+				"resmon.show.cpufreq": false,
+				"resmon.show.cputemp": false,
+				"resmon.updatefrequencyms": 5000
 			}
 		}
 	},
