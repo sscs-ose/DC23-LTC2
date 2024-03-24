@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -6,15 +6,15 @@ V {}
 S {}
 E {}
 B 2 580 -330 1380 70 {flags=graph,unlocked
-y1=-6.5e-46
-y2=3000
+y1=-1.3
+y2=4e-33
 ypos1=0
 ypos2=2
 divy=5
 subdivy=4
 unity=1
-x1=0.09
-x2=1.89
+x1=0
+x2=-3.3
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -39,20 +39,19 @@ sim_type=dc
 
 
 
-color="4 4"
-node="\\"ids1;i(vids1)\\"
-\\"ids3;i(vids3)\\""
+color=4
+node="\\"Id vs Vgs (Spice);i(vids1)\\""
 }
 B 2 1400 -330 2200 70 {flags=graph,unlocked
-y1=-110
-y2=8.1
+y1=-1.3
+y2=0
 ypos1=0
 ypos2=2
 divy=5
 subdivy=4
 unity=1
-x1=0.09
-x2=1.89
+x1=0
+x2=-3.3
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -77,57 +76,19 @@ sim_type=dc
 
 
 
-
-color="4 4"
-node="\\"i(vids1) ln()\\"
-\\"i(vids2) ln()\\""}
-B 2 580 180 1380 580 {flags=graph,unlocked
-y1=-6.5e-46
-y2=3000
-ypos1=0
-ypos2=2
-divy=5
-subdivy=4
-unity=1
-x1=0.09
-x2=1.89
-divx=5
-subdivx=4
-xlabmag=1.0
-ylabmag=1.0
-
-
-
-unitx=1
-logx=0
-logy=0
-
-
-
-
-digital=0
-rainbow=0
-
-rawfile=$netlist_dir/rawspice.raw
-sim_type=dc
-
-
-
-
-
 color=4
-node="\\"ids1 - ids2;i(vids1) i(vids2) -\\""
+node="\\"Id vs Vgs (Clean extraction);i(vids2)\\""
 }
-B 2 1420 180 2220 580 {flags=graph,unlocked
-y1=-71
-y2=44
+B 2 2220 -330 3020 70 {flags=graph,unlocked
+y1=0
+y2=0.01
 ypos1=0
 ypos2=2
 divy=5
 subdivy=4
 unity=1
-
-x2=1.89
+x1=0
+x2=-3.3
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -143,7 +104,7 @@ logy=0
 
 
 digital=0
-rainbow=0
+rainbow=1
 
 rawfile=$netlist_dir/rawspice.raw
 sim_type=dc
@@ -153,24 +114,82 @@ sim_type=dc
 
 
 color=4
-node="\\"ln(ids1) - ln(ids2);i(vids1) ln() i(vids2) ln() -\\""
-x1=0.09}
-N -280 -130 -230 -130 {
-lab=g1}
-N -190 -60 -190 0 {
-lab=GND}
-N -190 -130 -110 -130 {
-lab=GND}
-N -110 -130 -110 -60 {
-lab=GND}
-N -190 -60 -110 -60 {
-lab=GND}
-N -190 -300 -190 -170 {
-lab=#net1}
-N -190 -100 -190 -60 {
-lab=GND}
-N -190 -170 -190 -160 {
-lab=#net1}
+node="\\"Id vs Vgs (PEX extraction);i(vids3)\\""
+}
+B 2 580 120 1380 520 {flags=graph,unlocked
+y1=-1.3
+y2=4e-33
+ypos1=0
+ypos2=2
+divy=5
+subdivy=4
+unity=1
+x1=0
+x2=-3.3
+divx=5
+subdivx=4
+xlabmag=1.0
+ylabmag=1.0
+
+
+
+unitx=1
+logx=0
+logy=0
+
+
+
+
+digital=0
+rainbow=1
+
+rawfile=$netlist_dir/rawspice.raw
+sim_type=dc
+
+
+
+
+
+color=4
+node="\\"Id vs Vgs (Spice);i(vids1)\\""
+}
+B 2 1400 120 2200 520 {flags=graph,unlocked
+y1=-1.9e-12
+y2=0.00023
+ypos1=0
+ypos2=2
+divy=5
+subdivy=4
+unity=1
+x1=0
+x2=-3.3
+divx=5
+subdivx=4
+xlabmag=1.0
+ylabmag=1.0
+
+
+
+unitx=1
+logx=0
+logy=0
+
+
+
+
+digital=0
+rainbow=1
+
+rawfile=$netlist_dir/rawspice.raw
+sim_type=dc
+
+
+
+
+
+color=4
+node="\\"Difference spice vs clean;i(vids1) i(vids2) -\\""
+}
 N -400 -230 -400 -220 {
 lab=GND}
 N -340 -230 -340 -220 {
@@ -180,25 +199,39 @@ lab=GND}
 N -370 -220 -370 -210 {
 lab=GND}
 N -340 -320 -340 -290 {
-lab=d1}
+lab=d}
 N -400 -320 -400 -290 {
-lab=g1}
-C {devices/ipin.sym} -280 -130 0 0 {name=p1 lab=g1}
-C {devices/iopin.sym} -190 -360 0 0 {name=p2 lab=d1}
-C {devices/gnd.sym} -190 0 0 0 {name=l3 lab=GND}
+lab=g}
+N -200 -200 -200 -170 {
+lab=d_spice}
+N -200 -140 -180 -140 {
+lab=GND}
+N -200 -110 -200 -90 {
+lab=GND}
+N -260 -140 -240 -140 {
+lab=g}
+N -180 -140 -180 -100 {
+lab=GND}
+N -200 -100 -180 -100 {
+lab=GND}
+C {devices/gnd.sym} -200 -90 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} -370 -210 0 0 {name=l6 lab=GND}
-C {devices/vsource.sym} -400 -260 0 0 {name=vgs value=0.9 savecurrent=false}
-C {devices/vsource.sym} -340 -260 0 0 {name=vds value=0.9 savecurrent=false}
-C {devices/lab_pin.sym} -340 -320 0 0 {name=p4 sig_type=std_logic lab=d1}
-C {devices/lab_pin.sym} -400 -320 0 0 {name=p3 sig_type=std_logic lab=g1}
+C {devices/vsource.sym} -400 -260 0 0 {name=vgs value=-3.3 savecurrent=false}
+C {devices/vsource.sym} -340 -260 0 0 {name=vds value=-3.3 savecurrent=false}
+C {devices/lab_pin.sym} -340 -320 0 0 {name=p4 sig_type=std_logic lab=d}
+C {devices/lab_pin.sym} -400 -320 0 0 {name=p3 sig_type=std_logic lab=g}
 C {devices/code_shown.sym} 100 -220 0 0 {name="dc: voltage transference curve"
 only_toplevel=true
 spice_ignore=0
 value="
 .control
-dc vds 0 1.8 0.001 vgs 0.3 1.8 0.5
+dc vds 0 -3.3 -0.01 vgs 0 -3.3 -0.55
 
-plot i(vids1)
+plot -i(vids1) -i(vids2) -i(vids3)
+
+plot -i(vids1)
+plot -i(vids2)
+plot -i(vids3)
 
 write
 .endc
@@ -246,30 +279,28 @@ xschem raw_clear
 xschem raw_read $filepath ac
 "
 }
-C {devices/code_shown.sym} 50 -450 0 0 {name="Setup testbench"
+C {devices/code_shown.sym} 420 -510 0 0 {name="Setup testbench"
 only_toplevel=false
 place=header
 format="tcleval( @value )"
-value="
-.control
+value=".control
 write
 set appendwrite
-.endc
-
-"}
-C {devices/code_shown.sym} -60 60 0 0 {name="Extracted devices"
+.endc"}
+C {devices/code_shown.sym} -460 -50 0 0 {name="Extracted devices"
 only_toplevel=false
 spice_ignore=0
 value="
-.include ../layout_clean/waffle_1984_extracted.spice
-xclean dclean g1 GND GND waffle_1984
+xclean GND g d_clean GND waffle_1984_clean
+*xpex   GND g d_pex   GND waffle_1984_pex
+
+.include ../layout_clean/waffle_1984_clean.spice
+.include ../layout_pex/waffle_1984_pex.spice
 "
 }
 C {devices/ammeter.sym} -190 -330 0 0 {name=vids1 savecurrent=true}
-C {devices/iopin.sym} -90 -360 0 0 {name=p5 lab=d1}
 C {devices/ammeter.sym} -90 -330 0 0 {name=vids2 savecurrent=true}
-C {devices/iopin.sym} -90 -300 0 0 {name=p6 lab=dpex}
-C {symbols/pfet_03v3.sym} -210 -130 0 0 {name=M2
+C {symbols/pfet_03v3.sym} -220 -140 0 0 {name=M1
 L=0.5u
 W=4.38u
 nf=1
@@ -296,16 +327,12 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice bjt_typical
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
 "}
-C {devices/code_shown.sym} -110 200 0 0 {name="Clean Simulation"
-spice_ignore=1
-value="
-.include ../layout_clean/waffle_1984_extracted.spice
-.include ../layout_pex/waffle_1984_pex.spice
-
-Xclean  vdd_clean g vss vss waffle_1984
-
-*.save i(vid_clean)
-"}
-C {devices/iopin.sym} -10 -360 0 0 {name=p7 lab=d1}
 C {devices/ammeter.sym} -10 -330 0 0 {name=vids3 savecurrent=true}
-C {devices/iopin.sym} -10 -300 0 0 {name=p8 lab=dclean}
+C {devices/lab_pin.sym} -260 -140 0 0 {name=p11 sig_type=std_logic lab=g}
+C {devices/lab_pin.sym} -190 -360 0 0 {name=p1 sig_type=std_logic lab=d}
+C {devices/lab_pin.sym} -90 -360 0 0 {name=p2 sig_type=std_logic lab=d}
+C {devices/lab_pin.sym} -10 -360 0 0 {name=p5 sig_type=std_logic lab=d}
+C {devices/lab_pin.sym} -190 -300 0 0 {name=p6 sig_type=std_logic lab=d_spice}
+C {devices/lab_pin.sym} -90 -300 0 0 {name=p7 sig_type=std_logic lab=d_clean}
+C {devices/lab_pin.sym} -10 -300 0 0 {name=p8 sig_type=std_logic lab=d_pex}
+C {devices/lab_pin.sym} -200 -200 0 0 {name=p9 sig_type=std_logic lab=d_spice}

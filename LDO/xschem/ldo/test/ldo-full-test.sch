@@ -1,101 +1,103 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
 V {}
 S {}
 E {}
-N 200 -160 200 -140 {
+N 260 -300 260 -280 {
 lab=GND}
-N 200 -320 200 -220 {
+N 260 -460 260 -360 {
 lab=#net1}
-N 200 -320 230 -320 {
+N 260 -460 290 -460 {
 lab=#net1}
-N 90 -150 90 -130 {
+N 150 -290 150 -270 {
 lab=GND}
-N 90 -350 230 -350 {
+N 150 -490 290 -490 {
 lab=ref}
-N 90 -350 90 -210 {
+N 150 -490 150 -350 {
 lab=ref}
-N 680 -680 680 -550 {
-lab=vin}
-N 520 -470 520 -420 {
-lab=vin}
-N 610 -350 700 -350 {
+N 670 -490 760 -490 {
 lab=op_out}
-N 840 -320 840 -300 { lab=out}
-N 840 -70 840 -50 { lab=pos}
-N 840 -350 940 -350 { lab=vin}
-N 840 -90 840 -80 { lab=pos}
-N 840 -80 840 -70 { lab=pos}
-N 700 -350 800 -350 { lab=op_out}
-N 840 -450 840 -380 {
+N 900 -460 900 -440 { lab=#net2}
+N 900 -210 900 -190 { lab=pos}
+N 900 -490 1000 -490 { lab=vin}
+N 900 -230 900 -220 { lab=pos}
+N 900 -220 900 -210 { lab=pos}
+N 760 -490 860 -490 { lab=op_out}
+N 900 -590 900 -520 {
 lab=vin}
-N 940 -450 940 -350 {
+N 1000 -590 1000 -490 {
 lab=vin}
-N 840 -300 840 -270 {
-lab=out}
-N 840 -210 840 -170 {
+N 900 -440 900 -410 {
 lab=#net2}
-N 840 -50 840 -20 {
-lab=pos}
-N 840 -530 840 -450 {
-lab=vin}
-N 520 -530 520 -470 {
-lab=vin}
-N 520 -530 835 -530 {
-lab=vin}
-N 835 -530 840 -530 {
-lab=vin}
-N 840 -310 930 -310 {
-lab=out}
-N 840 -110 840 -90 {
-lab=pos}
-N 840 40 840 70 {
-lab=GND}
-N 280 -380 280 -60 {
+N 900 -350 900 -310 {
 lab=#net3}
-N 280 -380 410 -380 {
-lab=#net3}
-N 680 -550 680 -530 {
+N 900 -190 900 -160 {
+lab=pos}
+N 900 -670 900 -590 {
 lab=vin}
-N 780 -240 820 -240 {
-lab=GND}
-N 780 10 820 10 {
-lab=GND}
-N 520 70 840 70 {
-lab=GND}
-N 520 -280 520 70 {
-lab=GND}
-N 680 70 680 90 {
-lab=GND}
-N 780 -240 780 10 {
-lab=GND}
-N 780 10 780 70 {
-lab=GND}
-N 940 -530 940 -450 {
+N 580 -670 895 -670 {
 lab=vin}
-N 840 -530 940 -530 {
+N 895 -670 900 -670 {
 lab=vin}
-N 230 -350 410 -350 {
+N 900 -450 990 -450 {
+lab=#net2}
+N 900 -250 900 -230 {
+lab=pos}
+N 900 -100 900 -70 {
+lab=GND}
+N 340 -520 340 -200 {
+lab=#net4}
+N 340 -520 470 -520 {
+lab=#net4}
+N 740 -690 740 -670 {
+lab=vin}
+N 840 -380 880 -380 {
+lab=GND}
+N 840 -130 880 -130 {
+lab=GND}
+N 580 -70 900 -70 {
+lab=GND}
+N 740 -70 740 -50 {
+lab=GND}
+N 840 -380 840 -130 {
+lab=GND}
+N 840 -130 840 -70 {
+lab=GND}
+N 1000 -670 1000 -590 {
+lab=vin}
+N 900 -670 1000 -670 {
+lab=vin}
+N 290 -490 470 -490 {
 lab=ref}
-N 700 -60 840 -60 {
+N 760 -200 900 -200 {
 lab=pos}
-N 280 -60 330 -60 {
-lab=#net3}
-N 390 -60 700 -60 {
+N 340 -200 390 -200 {
+lab=#net4}
+N 450 -200 760 -200 {
 lab=pos}
-N 310 -320 410 -320 {
+N 370 -460 470 -460 {
 lab=#net1}
-N 230 -320 310 -320 {
+N 290 -460 370 -460 {
 lab=#net1}
-C {devices/isource.sym} 200 -190 2 0 {name=I1 value=3u
+N 1050 -450 1070 -450 {
+lab=out}
+N 580 -310 580 -70 {
+lab=GND}
+N 580 -420 580 -310 {
+lab=GND}
+N 580 -670 580 -650 {
+lab=vin}
+N 580 -590 580 -560 {
+lab=#net5}
+C {devices/isource.sym} 260 -330 2 0 {name=I1 value=3u
 }
-C {devices/gnd.sym} 200 -140 0 0 {name=l10 lab=GND}
-C {devices/gnd.sym} 680 90 0 0 {name=l1 lab=GND}
-C {devices/gnd.sym} 90 -130 0 0 {name=l2 lab=GND}
-C {devices/vsource.sym} 90 -180 0 0 {name=V1 value=1.25}
-C {devices/code.sym} 68.75 -571.875 0 0 {name=MODELS
+C {devices/gnd.sym} 260 -280 0 0 {name=l10 lab=GND}
+C {devices/gnd.sym} 740 -50 0 0 {name=l1 lab=GND}
+C {devices/gnd.sym} 150 -270 0 0 {name=l2 lab=GND}
+C {devices/vsource.sym} 150 -320 0 0 {name=V1 value=1.25}
+C {devices/code.sym} -321.25 -991.875 0 0 {name=MODELS
 only_toplevel=true
 place=header
 format="tcleval( @value )"
@@ -111,7 +113,7 @@ only_toplevel=true
 format="tcleval( @value )"
 spice_ignore=false
 value="
-.param R=66
+.param R=66k
 R10 out 0 \{R\}
 IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
 *CL out 0 10p
@@ -129,6 +131,7 @@ let gds = @x1.xm2.m0[gds]
 print ic
 plot gds
 plot v(out) v(ref) v(pos) v(vin)
+plot i(v5)
 *plot v(op_out)
 *plot v(out)
 *plot i(out)
@@ -189,7 +192,7 @@ meas TRAN V_ldo_10m FIND v(out) AT=100u
 let load_reg= V_ldo_100u-V_ldo_10m
 let load_current =(-1*i(Vs)-131.8e-6)
 print load_reg
-plot load_current v(out)-3.3
+plot i(v2) v(out)-3.3
 .endc
 
 
@@ -203,12 +206,12 @@ tran 0.1u 100u
 plot v(vin) v(out)
 .endc
 "}
-C {devices/lab_pin.sym} 160 -350 1 0 {name=l3 sig_type=std_logic lab=ref}
-C {devices/lab_pin.sym} 680 -620 2 0 {name=l4 sig_type=std_logic lab=vin}
-C {devices/lab_pin.sym} 705 -350 1 0 {name=l12 sig_type=std_logic lab=op_out
+C {devices/lab_pin.sym} 220 -490 1 0 {name=l3 sig_type=std_logic lab=ref}
+C {devices/lab_pin.sym} 740 -690 2 0 {name=l4 sig_type=std_logic lab=vin}
+C {devices/lab_pin.sym} 765 -490 1 0 {name=l12 sig_type=std_logic lab=op_out
 
 }
-C {symbols/pfet_03v3.sym} 820 -350 0 0 {name=M1
+C {symbols/pfet_03v3.sym} 880 -490 0 0 {name=M1
 L=0.3u
 W=10u
 nf=1
@@ -222,22 +225,24 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-C {symbols/ppolyf_u.sym} 840 -240 0 0 {name=R1
+C {symbols/ppolyf_u.sym} 900 -380 0 0 {name=R1
 W=1e-6
 L=164e-6
 model=ppolyf_u_2k
 spiceprefix=X
 m=1}
-C {symbols/ppolyf_u.sym} 840 10 0 0 {name=R2
+C {symbols/ppolyf_u.sym} 900 -130 0 0 {name=R2
 W=1e-6
 L=100e-6
 model=ppolyf_u_2k
 spiceprefix=X
 m=1}
-C {devices/vsource.sym} 840 -140 0 0 {name=v4 value=0}
-C {devices/iopin.sym} 930 -310 0 0 {name=p2 lab=out}
-C {devices/lab_pin.sym} 695 -60 1 0 {name=l5 sig_type=std_logic lab=pos
+C {devices/vsource.sym} 900 -280 0 0 {name=v4 value=0}
+C {devices/iopin.sym} 1070 -450 0 0 {name=p2 lab=out}
+C {devices/lab_pin.sym} 755 -200 1 0 {name=l5 sig_type=std_logic lab=pos
 
 }
-C {symbol/ota-ldo.sym} 500 -350 0 0 {name=X1}
-C {devices/vsource.sym} 360 -60 3 0 {name=vt value=0}
+C {symbol/ota-ldo.sym} 560 -490 0 0 {name=X1}
+C {devices/vsource.sym} 420 -200 3 0 {name=vt value=0}
+C {devices/vsource.sym} 1020 -450 3 0 {name=v2 value=0}
+C {devices/vsource.sym} 580 -620 0 0 {name=v5 value=0}

@@ -32,6 +32,7 @@ _FIRST_TOP_MODULE_DIR=$(word 1, $(MODULE_SOURCE_DIR))
 # Tool configuration files
 
 PDK=gf180mcuD
+PYTHON=python
 
 ## XSCHEM
 XSCHEM_RCFILE=$(realpath $(MODULE_CONFIG_FILES)/xschemrc)
@@ -52,6 +53,7 @@ EBC_CONFIG=$(realpath $(MODULE_CONFIG_FILES)/lvs_config.json)
 
 ## KLAYOUT
 KLAYOUT_HOME=$(PDK_ROOT)/$(PDK)/libs.tech/klayout
+KLAYOUT_RCFILE=$(realpath $(MODULE_CONFIG_FILES)/klayoutrc)
 
 # Documentation
 
@@ -202,15 +204,15 @@ MAKE=make TOP=$(TOP) TEST=$(TEST) GND_NAME=$(GND_NAME)
 
 .PHONY: print_vars
 print_vars : \
-	print_MAKE \
-	print_TOP \
+	print_raw_MAKE \
+	print_raw_TOP \
 	print_MODULE_DIR \
 	print_SCH \
 	print_SYM \
 	print_TB \
 	print_GDS \
-	print_GDS_CELL \
-	print_TBS \
+	print_raw_GDS_CELL \
+	print_names_TBS \
 	print_SCH_NETLIST \
 	print_SCH_NETLIST_NOPREFIX \
 	print_SCH_NETLIST_PREFIX \
@@ -231,16 +233,43 @@ klayout: klayout-edit
 magic: magic-edit
 
 
-.PHONY: create-module
-create-module:
+.PHONY: create-validation
+create-validation:
 ifeq (UNDEFINED,$(TOP))
-	$(call ERROR_MESSAGE, TOP not defined, couldn't create any design)
+	$(call ERROR_MESSAGE, TOP not defined and couldn't create anything)
 endif
 	mkdir -p $(_FIRST_TOP_MODULE_DIR)/$(TOP)/symbol
 	mkdir -p $(_FIRST_TOP_MODULE_DIR)/$(TOP)/layout
 	mkdir -p $(_FIRST_TOP_MODULE_DIR)/$(TOP)/test
 
+
+.PHONY: create-schematic
+create-schematic: create-validation
 ifneq (,$(wildcard $(_FIRST_TOP_MODULE_DIR)/$(TOP)/symbol/$(TOP).sch))
+	$(call ERROR_MESSAGE, schematic already exists)
+else
+	xschem --rcfile $(XSCHEM_RCFILE) \
+	--no_x \
+	--quit \
+	--command "xschem clear; xschem saveas $(_FIRST_TOP_MODULE_DIR)/$(TOP)/symbol/$(TOP).sch"
+endif
+
+
+.PHONY: create-testbench
+create-testbench: create-validation
+ifndef TEST
+	$(call ERROR_MESSAGE, TEST parameter not defined)
+else ifneq (,$(wildcard $(_FIRST_TOP_MODULE_DIR)/$(TOP)/test/$(TEST).sch))
+	$(call ERROR_MESSAGE, testbench already exists)
+else
+	xschem --rcfile $(XSCHEM_RCFILE) \
+	--no_x \
+	--quit \
+	--command "xschem clear; xschem saveas $(_FIRST_TOP_MODULE_DIR)/$(TOP)/test/$(TEST).sch
+endif
+
+
+ifneq (,$(wildcard $(_FIRST_TOP_MODULE_DIR)/$(TOP)/test/$(TOP)-test.sch))
 	$(call WARNING_MESSAGE, schematic already exists)
 else
 	xschem --rcfile $(XSCHEM_RCFILE) \
@@ -249,11 +278,20 @@ else
 	--command "xschem clear; xschem saveas $(_FIRST_TOP_MODULE_DIR)/$(TOP)/symbol/$(TOP).sch"
 endif
 
+
+.PHONY: create-layout
+create-layout: create-validation
 ifneq (,$(wildcard $(_FIRST_TOP_MODULE_DIR)/$(TOP)/layout/$(TOP).gds))
 	$(call WARNING_MESSAGE, layout already exists)
 else
 	klayout -t -e -zz -r $(_IC_MAKEFILE)/scripts/empty-gds.py -rd filepath=$(_FIRST_TOP_MODULE_DIR)/$(TOP)/layout/$(TOP).gds
 endif
+
+
+.PHONY: create-module
+create-module:
+	$(MAKE) create-schematic
+	$(MAKE) create-layout
 
 
 .PHONY: extensive-test
