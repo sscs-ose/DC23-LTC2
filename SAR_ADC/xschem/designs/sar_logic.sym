@@ -1,0 +1,109 @@
+v {xschem version=3.4.4 file_version=1.2
+}
+G {}
+K {type=primitive
+format="@name @pinlist @symname"
+template="name=X1"}
+V {}
+S {}
+E {}
+L 4 140 -20 160 -20 {}
+L 4 30 -500 40 -490 {}
+L 4 40 -490 50 -500 {}
+L 4 -20 -250 0 -250 {}
+L 4 60 -520 60 -500 {}
+L 4 40 -520 40 -500 {}
+L 4 100 0 100 20 {}
+L 4 100 -520 100 -500 {}
+L 4 40 0 40 20 {}
+L 4 140 -40 160 -40 {}
+L 4 140 -60 160 -60 {}
+L 4 140 -80 160 -80 {}
+L 4 140 -100 160 -100 {}
+L 4 140 -120 160 -120 {}
+L 4 140 -140 160 -140 {}
+L 4 140 -160 160 -160 {}
+L 4 140 -180 160 -180 {}
+L 4 140 -200 160 -200 {}
+L 4 140 -220 160 -220 {}
+L 4 140 -240 160 -240 {}
+L 4 140 -260 160 -260 {}
+L 4 140 -280 160 -280 {}
+L 4 140 -300 160 -300 {}
+L 4 140 -320 160 -320 {}
+L 4 140 -340 160 -340 {}
+L 4 140 -360 160 -360 {}
+L 4 140 -380 160 -380 {}
+L 4 140 -400 160 -400 {}
+L 4 140 -420 160 -420 {}
+L 4 140 -440 160 -440 {}
+L 4 140 -460 160 -460 {}
+L 4 140 -480 160 -480 {}
+L 4 0 -0 140 -0 {}
+L 4 140 -500 140 -0 {}
+L 4 -0 -500 140 -500 {}
+L 4 0 -500 0 -0 {}
+L 4 -20 -70 0 -70 {}
+B 5 97.5 -522.5 102.5 -517.5 {name=vdd dir=in sim_pinnumber=0}
+B 5 37.5 17.5 42.5 22.5 {name=gnd dir=in sim_pinnumber=1}
+B 5 37.5 -522.5 42.5 -517.5 {name=clock dir=in sim_pinnumber=2}
+B 5 -22.5 -252.5 -17.5 -247.5 {name=data_in dir=in sim_pinnumber=3}
+B 5 97.5 17.5 102.5 22.5 {name=eoc dir=out sim_pinnumber=4}
+B 5 -22.5 -72.5 -17.5 -67.5 {name=sample dir=out sim_pinnumber=5}
+B 5 157.5 -242.5 162.5 -237.5 {name=qb0 dir=out sim_pinnumber=6}
+B 5 157.5 -42.5 162.5 -37.5 {name=qb10 dir=out sim_pinnumber=7}
+B 5 157.5 -22.5 162.5 -17.5 {name=qb11 dir=out sim_pinnumber=8}
+B 5 157.5 -222.5 162.5 -217.5 {name=qb1 dir=out sim_pinnumber=9}
+B 5 157.5 -202.5 162.5 -197.5 {name=qb2 dir=out sim_pinnumber=10}
+B 5 157.5 -182.5 162.5 -177.5 {name=qb3 dir=out sim_pinnumber=11}
+B 5 157.5 -162.5 162.5 -157.5 {name=qb4 dir=out sim_pinnumber=12}
+B 5 157.5 -142.5 162.5 -137.5 {name=qb5 dir=out  sim_pinnumber=13}
+B 5 157.5 -122.5 162.5 -117.5 {name=qb6 dir=out sim_pinnumber=14}
+B 5 157.5 -102.5 162.5 -97.5 {name=qb7 dir=out sim_pinnumber=15}
+B 5 157.5 -82.5 162.5 -77.5 {name=qb8 dir=out sim_pinnumber=16}
+B 5 157.5 -62.5 162.5 -57.5 {name=qb9 dir=out sim_pinnumber=17}
+B 5 157.5 -482.5 162.5 -477.5 {name=qt0 dir=out sim_pinnumber=18}
+B 5 157.5 -282.5 162.5 -277.5 {name=qt10 dir=out sim_pinnumber=19}
+B 5 157.5 -262.5 162.5 -257.5 {name=qt11 dir=out sim_pinnumber=20}
+B 5 157.5 -462.5 162.5 -457.5 {name=qt1 dir=out sim_pinnumber=21}
+B 5 157.5 -442.5 162.5 -437.5 {name=qt2 dir=out sim_pinnumber=22}
+B 5 157.5 -422.5 162.5 -417.5 {name=qt3 dir=out sim_pinnumber=23}
+B 5 157.5 -402.5 162.5 -397.5 {name=qt4 dir=out sim_pinnumber=24}
+B 5 157.5 -382.5 162.5 -377.5 {name=qt5 dir=out  sim_pinnumber=25}
+B 5 157.5 -362.5 162.5 -357.5 {name=qt6 dir=out sim_pinnumber=26}
+B 5 157.5 -342.5 162.5 -337.5 {name=qt7 dir=out sim_pinnumber=27}
+B 5 157.5 -322.5 162.5 -317.5 {name=qt8 dir=out sim_pinnumber=28}
+B 5 157.5 -302.5 162.5 -297.5 {name=qt9 dir=out sim_pinnumber=29}
+B 5 57.5 -522.5 62.5 -517.5 {name=reset dir=in sim_pinnumber=30}
+T {qb11} 120 -29 0 0 0.2 0.2 {}
+T {@symname} 4 -436 0 0 0.3 0.3 {}
+T {@name} 5 -412 0 0 0.2 0.2 {}
+T {reset} 55 -494 0 0 0.2 0.2 {}
+T {data_in} 5 -254 0 0 0.2 0.2 {}
+T {eoc} 95 -19 0 0 0.2 0.2 {}
+T {vdd} 95 -494 0 0 0.2 0.2 {}
+T {gnd} 35 -19 0 0 0.2 0.2 {}
+T {qb10} 120 -49 0 0 0.2 0.2 {}
+T {qb9} 120 -69 0 0 0.2 0.2 {}
+T {qb8} 120 -89 0 0 0.2 0.2 {}
+T {qb7} 120 -109 0 0 0.2 0.2 {}
+T {qb6} 120 -129 0 0 0.2 0.2 {}
+T {qb5} 120 -149 0 0 0.2 0.2 {}
+T {qb4} 120 -169 0 0 0.2 0.2 {}
+T {qb3} 120 -189 0 0 0.2 0.2 {}
+T {qb2} 120 -209 0 0 0.2 0.2 {}
+T {qb1} 120 -229 0 0 0.2 0.2 {}
+T {qb0} 120 -249 0 0 0.2 0.2 {}
+T {qt11} 120 -269 0 0 0.2 0.2 {}
+T {qt10} 120 -289 0 0 0.2 0.2 {}
+T {qt9} 120 -309 0 0 0.2 0.2 {}
+T {qt8} 120 -329 0 0 0.2 0.2 {}
+T {qt7} 120 -349 0 0 0.2 0.2 {}
+T {qt6} 120 -369 0 0 0.2 0.2 {}
+T {qt5} 120 -389 0 0 0.2 0.2 {}
+T {qt4} 120 -409 0 0 0.2 0.2 {}
+T {qt3} 120 -429 0 0 0.2 0.2 {}
+T {qt2} 120 -449 0 0 0.2 0.2 {}
+T {qt1} 120 -469 0 0 0.2 0.2 {}
+T {qt0} 120 -489 0 0 0.2 0.2 {}
+T {sample} 5 -74 0 0 0.2 0.2 {}

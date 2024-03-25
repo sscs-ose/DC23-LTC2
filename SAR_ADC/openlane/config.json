@@ -1,0 +1,16 @@
+{
+    "DESIGN_NAME": "SAR_Logic",
+    "PDK": "gf180mcuD",
+    "VERILOG_FILES": "dir::src/*.v",
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 20.0,
+    "DESIGN_IS_CORE": true,
+    "SYNTH_BUFFERING": 0, 
+    "GRT_REPAIR_ANTENNAS": 0,
+    "DIODE_ON_PORTS": "None",
+    "RUN_HEURISTIC_DIODE_INSERTION": 0,
+    "DIODE_INSERTION_STRATEGY": 0,
+    "SYNTH_SIZING" : 1, 
+    "FP_PDN_CORE_RING": false, 
+    "STD_CELL_LIBRARY":"gf180mcu_fd_sc_mcu7t5v0"
+}

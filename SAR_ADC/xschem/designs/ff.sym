@@ -1,0 +1,37 @@
+v {xschem version=3.4.0 file_version=1.2
+}
+G {}
+K {type=primitive
+format="X@name @#0:net_name @#3:net_name @#2:net_name @#1:net_name @#4:net_name @#6:net_name @#5:net_name @#5:net_name @#5:net_name @model"
+template="name=FF1
+model=gf180mcu_fd_sc_mcu7t5v0__dffrsnq_1
+"
+}
+V {}
+S {}
+E {}
+L 4 0 -40 10 -50 {}
+L 4 0 -60 10 -50 {}
+L 4 -20 -80 0 -80 {}
+L 4 -20 -50 0 -50 {}
+L 4 115 -80 135 -80 {}
+L 4 110 -160 110 -140 {}
+L 4 15 0 15 20 {}
+L 4 55 -160 55 -140 {}
+L 4 55 0 55 20 {}
+B 5 -22.5 -82.5 -17.5 -77.5 {name=D dir=in sim_pinnumber=0}
+B 5 -22.5 -52.5 -17.5 -47.5 {name=CLK dir=in sim_pinnumber=1}
+B 5 52.5 -162.5 57.5 -157.5 {name=SET dir=in sim_pinnumber=2}
+B 5 52.5 17.5 57.5 22.5 {name=RST dir=in sim_pinnumber=3}
+B 5 132.5 -82.5 137.5 -77.5 {name=Q dir=out sim_pinnumber=4}
+B 5 12.5 17.5 17.5 22.5 {name=VSS dir=in sim_pinnumber=5}
+B 5 107.5 -162.5 112.5 -157.5 {name=VDD dir=in sim_pinnumber=6}
+P 4 5 0 0 0 -140 120 -140 120 0 -0 -0 {}
+T {@name} 40 -87 0 0 0.2 0.2 {}
+T {D} 5 -84 0 0 0.2 0.2 {}
+T {Q} 105 -84 0 0 0.2 0.2 {}
+T {@symname} 14 -111 0 0 0.3 0.3 {}
+T {VDD} 114 -135 1 0 0.2 0.2 {}
+T {VSS} 11 -5 3 0 0.2 0.2 {}
+T {SET} 59 -135 1 0 0.2 0.2 {}
+T {RST} 51 -5 3 0 0.2 0.2 {}
