@@ -200,65 +200,8 @@ plot v(op_out)
 *plot i(out)
 *plot i(v3)*v(vin)
 .endc
-
-*supply_sweep
-.control
-reseet
-alter IL 0
-dc Vs 6 0 -0.1
-plot v(vin) v(out)
-meas DC vldo_sup_4_6 FIND v(out) AT=4.6
-meas DC vldo_nom FIND v(out) AT=5
-meas DC vldo_sup_5_4 FIND v(out) AT=5.4
-let line_reg = abs((vldo_sup_5_4-vldo_sup_4_6)/0.8)
-print line_reg
-meas DC vin WHEN v(out)=3.2982
-let dropout = vin-3.2982
-print dropout
-.endc
-
-*PSRR_Analysis
-.control
-reset
-alter Vs AC =1
-alter Vt AC=0
-ac dec 100 1 1G
-plot vdb(out)
-let phase_val = 180/PI*cph(out)
-plot phase_val
-*plot (180/pi)*vp(out)
-*let gm0=@m.xm0.m0[gm]
-*let Zout=(1.5)/(gm0*v(op_out))
-*let Zout2=v(out)/gm0
-*plot vdb(Zout2)
-*wrdata /foss/designs/LDO_Design/data/data_PSRR.dat vdb(out)
-.endc
-
-**Load_Transient
-.control
-reset
-alter IL 50u
-alter R10 3600k
-tran 0.1u 100u
-meas TRAN V_ldo_100u FIND v(out) AT=5u
-meas TRAN V_ldo_10m FIND v(out) AT=100u
-let load_reg= V_ldo_100u-V_ldo_10m
-let load_current =(-1*i(Vs)-131.8e-6)
-print load_reg
-plot i(v2) v(out)-3.3
-.endc
-
-.control
-alter R10 36k
-reset
-alter @IL[pwl]=[ 0 0 10u 0 20u 0 30u 0 ]
-alter @Vs[pulse]=[ 5 4 50u 1u 1u 10u 100u ]
-alter IL 0
-tran 0.1u 100u
-plot v(vin) v(out)
-.endc
 "}
-C {devices/code.sym} -141.25 -561.875 0 0 {name=MODELS_TT
+C {devices/code.sym} -381.25 -801.875 0 0 {name=MODELS_TT
 only_toplevel=true
 place=header
 spice_ignore=0
@@ -270,7 +213,7 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_typical
 "}
-C {devices/code.sym} -21.25 -561.875 0 0 {name=MODELS_SS
+C {devices/code.sym} -261.25 -801.875 0 0 {name=MODELS_SS
 only_toplevel=true
 place=header
 spice_ignore=1
@@ -282,7 +225,7 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_ss
 "}
-C {devices/code.sym} 98.75 -561.875 0 0 {name=MODELS_FF
+C {devices/code.sym} -141.25 -801.875 0 0 {name=MODELS_FF
 only_toplevel=true
 place=header
 spice_ignore=1

@@ -95,7 +95,7 @@ N -150 -180 -100 -200 {
 lab=ref}
 N -150 -210 -100 -160 {
 lab=#net4}
-C {devices/isource.sym} -60 -70 2 0 {name=I1 value=100u
+C {devices/isource.sym} -60 -70 2 0 {name=I1 value=10u
 }
 C {devices/gnd.sym} 120 260 0 0 {name=l1 lab=GND}
 C {devices/gnd.sym} -470 40 0 0 {name=l2 lab=GND}
@@ -107,9 +107,9 @@ C {devices/lab_pin.sym} 145 -180 1 0 {name=l12 sig_type=std_logic lab=op_out
 }
 C {symbols/pfet_03v3.sym} 260 -180 0 0 {name=M1
 L=0.5u
-W=10u
+W=4.38u
 nf=1
-m=900
+m=1984
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
 pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
 as="'int((nf+2)/2) * W/nf * 0.18u'"
@@ -148,9 +148,10 @@ value=1
 footprint=1206
 device="ceramic capacitor"}
 C {devices/gnd.sym} -140 -30 3 0 {name=l5 lab=GND}
-C {devices/code.sym} -961.25 -921.875 0 0 {name=MODELS
+C {devices/code.sym} -911.25 -931.875 0 0 {name=MODELS_TT
 only_toplevel=true
 place=header
+spice_ignore=0
 format="tcleval( @value )"
 value="
 .include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
@@ -204,6 +205,7 @@ ac dec 100 1 1G
 let phase_val = 180/PI*cph(out)
 plot phase_val vdb(out)
 meas ac pm FIND phase_val WHEN vdb(out)=0
+meas ac cut_freq FIND frequency WHEN vdb(out)=0
 *plot (180/pi)*vp(out)
 *let gm0=@m.xm0.m0[gm]
 *let Zout=(1.5)/(gm0*v(op_out))
@@ -258,3 +260,27 @@ print v(out)
 
 "}
 C {devices/lab_pin.sym} -60 -20 3 0 {name=l6 sig_type=std_logic lab=vin}
+C {devices/code.sym} -791.25 -931.875 0 0 {name=MODELS_SS
+only_toplevel=true
+place=header
+spice_ignore=1
+format="tcleval( @value )"
+value="
+.include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice ss
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_ss
+"}
+C {devices/code.sym} -671.25 -931.875 0 0 {name=MODELS_FF
+only_toplevel=true
+place=header
+spice_ignore=1
+format="tcleval( @value )"
+value="
+.include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice ff
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_ff
+"}
