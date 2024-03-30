@@ -5,8 +5,12 @@ K {}
 V {}
 S {}
 E {}
-T {v_ref: 5V 
-i_ref: 10uA} -10 -310 0 0 0.4 0.4 {}
+T {v_in:  5V
+v_ref: 1.25V 
+i_ref: 10uA} -10 -310 0 0 0.4 0.4 {font=Monospace}
+T {Electrolitic
+Capacitor
+Off-chip} 810 -360 0 0 0.4 0.4 {}
 N 410 -310 500 -310 {
 lab=#net1}
 N 500 -310 600 -310 { lab=#net1}
@@ -56,6 +60,12 @@ N 220 -290 220 -160 {
 lab=#net2}
 N 640 -280 640 -240 {
 lab=out}
+N 860 -160 860 -140 {
+lab=#net3}
+N 860 -80 860 -60 {
+lab=GND}
+N 860 -260 860 -220 {
+lab=out}
 C {devices/gnd.sym} 450 -40 0 0 {name=l1 lab=GND}
 C {devices/lab_pin.sym} 170 -330 0 0 {name=l3 sig_type=std_logic lab=v_ref}
 C {devices/lab_pin.sym} 160 -420 0 0 {name=l4 sig_type=std_logic lab=vin}
@@ -86,5 +96,17 @@ model=ppolyf_u_2k
 spiceprefix=X
 m=1}
 C {devices/iopin.sym} 730 -260 0 0 {name=p2 lab=out}
-C {symbol/ota_ldo_v2.sym} 320 -310 0 0 {name=x1}
+C {symbol/ota.sym} 320 -310 0 0 {name=x1}
 C {devices/lab_pin.sym} 170 -220 0 0 {name=l6 sig_type=std_logic lab=i_ref}
+C {devices/iopin.sym} 860 -260 2 0 {name=p1 lab=out}
+C {devices/capa.sym} 860 -110 0 0 {name=C1
+m=1
+value=10u
+footprint=1206
+device="ceramic capacitor"}
+C {devices/res.sym} 860 -190 2 0 {name=R4
+value=2
+footprint=1206
+device=resistor
+m=1}
+C {devices/gnd.sym} 860 -60 0 0 {name=l7 lab=GND}

@@ -266,46 +266,50 @@ class KlayoutUtilities:
         return dict(
             {
                 (64, 20): cells.layers_def.layer["nwell"],  # N-well region
-                (66, 20): cells.layers_def.layer["poly2"],  # Polysilicon
-                (93, 44): cells.layers_def.layer["nplus"],  # N+ source/drain implant
-                (94, 20): cells.layers_def.layer["pplus"],  # P+ source/drain implant
-                (66, 44): cells.layers_def.layer[
-                    "contact"
-                ],  # Contact to local interconnect
-                (67, 44): cells.layers_def.layer[
-                    "via1"
-                ],  # Contact from local interconnect to metal1
-                (68, 44): cells.layers_def.layer[
-                    "via2"
-                ],  # Contact from metal 1 to metal 2
-                (69, 44): cells.layers_def.layer[
-                    "via3"
-                ],  # Contact from metal 2 to metal 3
-                (70, 44): cells.layers_def.layer[
-                    "via4"
-                ],  # Contact from metal 3 to metal 4
-                (71, 44): cells.layers_def.layer[
-                    "via5"
-                ],  # Contact from metal 4 to metal 5
-                (67, 20): cells.layers_def.layer["metal1"],  # Local interconnect
-                (68, 20): cells.layers_def.layer["metal2"],  # Metal1
-                (69, 20): cells.layers_def.layer["metal3"],  # Metal 2
-                (70, 20): cells.layers_def.layer["metal4"],  # Metal 3
-                (71, 20): cells.layers_def.layer["metal5"],  # Metal 4
-                (72, 20): cells.layers_def.layer["metaltop"],  # Metal 5
                 (65, 20): cells.layers_def.layer[
                     "comp"
                 ],  # Active (diffusion) area (type opposite of well/substrate underneath)
                 (65, 44): cells.layers_def.layer[
                     "comp"
                 ],  # Active (diffusion) area (type equal to the well/substrate underneath) (i.e., N+ and P+)
+                (66, 20): cells.layers_def.layer["poly2"],  # Polysilicon
+                (66, 44): cells.layers_def.layer[
+                    "contact"
+                ],  # Contact to local interconnect
+                (67, 5): cells.layers_def.layer["metal1_label"],
+                (67, 20): cells.layers_def.layer["metal1"],  # Local interconnect
+                (67, 44): cells.layers_def.layer[
+                    "via1"
+                ],  # Contact from local interconnect to metal1
+                (68, 5): cells.layers_def.layer["metal2_label"],  # Metal 1 Layer
+                (68, 20): cells.layers_def.layer["metal2"],  # Metal1
+                (68, 44): cells.layers_def.layer[
+                    "via2"
+                ],  # Contact from metal 1 to metal 2
+                (69, 5): cells.layers_def.layer["metal3_label"],  # Metal 2 Layer
+                (69, 20): cells.layers_def.layer["metal3"],  # Metal 2
+                (69, 44): cells.layers_def.layer[
+                    "via3"
+                ],  # Contact from metal 2 to metal 3
+                (70, 5): cells.layers_def.layer["metal4_label"],  # Metal 3 Label
+                (70, 20): cells.layers_def.layer["metal4"],  # Metal 3
+                (70, 44): cells.layers_def.layer[
+                    "via4"
+                ],  # Contact from metal 3 to metal 4
+                (71, 5): cells.layers_def.layer["metal5_label"],  # Metal 4 Label
+                (71, 20): cells.layers_def.layer["metal5"],  # Metal 4
+                (71, 44): cells.layers_def.layer[
+                    "via5"
+                ],  # Contact from metal 4 to metal 5
+                (72, 5): cells.layers_def.layer["metaltop_label"],  # Metal 5 Layer
+                (72, 20): cells.layers_def.layer["metaltop"],  # Metal 5
                 (75, 20): cells.layers_def.layer[
                     "dualgate"
                 ],  # High voltage (5.0V) thick oxide gate regions
-                (68, 5): cells.layers_def.layer["metal2_label"],  # Metal 1 Layer
-                (69, 5): cells.layers_def.layer["metal3_label"],  # Metal 2 Layer
-                (72, 5): cells.layers_def.layer["metaltop_label"],  # Metal 5 Layer
+                (93, 44): cells.layers_def.layer["nplus"],  # N+ source/drain implant
+                (94, 20): cells.layers_def.layer["pplus"],  # P+ source/drain implant
                 (95, 20): None,  # Nitride poly cut (under licon1 areas)
+                (100, 5): None,  # ?
             }
         )
 

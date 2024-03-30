@@ -174,7 +174,8 @@ CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/output/reports/*.drc)) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.ext)) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.sim)) \
-	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.nodes))
+	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.nodes)) \
+	$(foreach module,$(MODULES),$(wildcard $(module)/layout/extfiles))
 
 FULL_CLEANABLE:= $(CLEANABLE) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/output))
