@@ -255,8 +255,8 @@ spiceprefix=X
 }
 C {symbols/ppolyf_u.sym} 330 0 3 0 {name=R2
 W=1e-6
-L=5e-6
-model=ppolyf_u_2k
+L=10e-6
+model=ppolyf_u_1k
 spiceprefix=X
 m=1}
 C {symbols/cap_mim_2f0fF.sym} 420 0 3 0 {name=C1
