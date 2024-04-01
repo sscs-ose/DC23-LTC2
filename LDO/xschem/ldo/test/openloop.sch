@@ -166,7 +166,6 @@ value="
 
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
-
 "}
 C {devices/code_shown.sym} -1301.25 -691.875 0 0 {name=NGSPICE
 only_toplevel=true

@@ -198,6 +198,7 @@ include $(_IC_MAKEFILE)/magic.mk
 include $(_IC_MAKEFILE)/netgen.mk
 include $(_IC_MAKEFILE)/ngspice.mk
 include $(_IC_MAKEFILE)/extra_be_checks.mk
+include $(_IC_MAKEFILE)/cace.mk
 
 # Some variables are created on included makefiles
 MAKE=make TOP=$(TOP) TEST=$(TEST) GND_NAME=$(GND_NAME)

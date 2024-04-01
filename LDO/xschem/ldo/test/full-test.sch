@@ -288,7 +288,6 @@ value="
 
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
-
 "}
 C {devices/code.sym} -11.25 -531.875 0 0 {name=MODELS_SS
 only_toplevel=true
@@ -302,7 +301,6 @@ value="
 
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ss
-
 "}
 C {devices/code.sym} 108.75 -531.875 0 0 {name=MODELS_FF
 only_toplevel=true
@@ -316,5 +314,4 @@ value="
 
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ff
-
 "}
