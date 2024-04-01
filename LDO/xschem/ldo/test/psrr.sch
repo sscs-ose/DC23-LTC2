@@ -10,9 +10,9 @@ Electrolitic Capacitor} 870 -200 0 0 0.4 0.4 {}
 N 0 -120 0 -100 {
 lab=GND}
 N 0 -280 0 -180 {
-lab=#net1}
+lab=iref}
 N 0 -280 30 -280 {
-lab=#net1}
+lab=iref}
 N -110 -110 -110 -90 {
 lab=GND}
 N -110 -310 30 -310 {
@@ -21,7 +21,7 @@ N -110 -310 -110 -170 {
 lab=ref}
 N 410 -310 500 -310 {
 lab=op_out}
-N 640 -280 640 -260 { lab=#net2}
+N 640 -280 640 -260 { lab=#net1}
 N 640 -30 640 -10 { lab=pos}
 N 640 -310 740 -310 { lab=vin}
 N 640 -50 640 -40 { lab=pos}
@@ -32,9 +32,9 @@ lab=vin}
 N 740 -410 740 -310 {
 lab=vin}
 N 640 -260 640 -230 {
-lab=#net2}
+lab=#net1}
 N 640 -170 640 -130 {
-lab=#net3}
+lab=#net2}
 N 640 -10 640 20 {
 lab=pos}
 N 640 -490 640 -410 {
@@ -44,15 +44,15 @@ lab=vin}
 N 635 -490 640 -490 {
 lab=vin}
 N 640 -270 730 -270 {
-lab=#net2}
+lab=#net1}
 N 640 -70 640 -50 {
 lab=pos}
 N 640 80 640 110 {
 lab=GND}
 N 80 -340 80 -20 {
-lab=#net4}
+lab=vin_p}
 N 80 -340 210 -340 {
-lab=#net4}
+lab=vin_p}
 N 480 -510 480 -490 {
 lab=vin}
 N 580 -200 620 -200 {
@@ -76,13 +76,13 @@ lab=ref}
 N 500 -20 640 -20 {
 lab=pos}
 N 80 -20 130 -20 {
-lab=#net4}
+lab=vin_p}
 N 190 -20 500 -20 {
 lab=pos}
 N 110 -280 210 -280 {
-lab=#net1}
+lab=iref}
 N 30 -280 110 -280 {
-lab=#net1}
+lab=iref}
 N 790 -270 810 -270 {
 lab=out}
 N 320 -130 320 110 {
@@ -92,21 +92,21 @@ lab=GND}
 N 320 -490 320 -470 {
 lab=vin}
 N 320 -410 320 -380 {
-lab=#net5}
+lab=vdd}
 N 320 -240 340 -270 {
 lab=GND}
 N 210 -280 300 -250 {
-lab=#net1}
+lab=iref}
 N 320 -380 320 -360 {
-lab=#net5}
+lab=vdd}
 N 210 -340 260 -290 {
-lab=#net4}
+lab=vin_p}
 N 210 -310 260 -330 {
 lab=ref}
 N 400 -310 410 -310 {
 lab=op_out}
 N 810 -170 810 -150 {
-lab=#net6}
+lab=#net3}
 N 810 -90 810 -70 {
 lab=GND}
 N 810 -270 810 -230 {
@@ -156,7 +156,8 @@ C {devices/lab_pin.sym} 495 -20 1 0 {name=l5 sig_type=std_logic lab=pos
 C {devices/vsource.sym} 160 -20 3 0 {name=vt value=0}
 C {devices/vsource.sym} 760 -270 3 0 {name=v2 value=0}
 C {devices/vsource.sym} 320 -440 0 0 {name=v5 value=0}
-C {symbol/ota.sym} 320 -310 0 0 {name=x1}
+C {symbol/ota.sym} 320 -310 0 0 {name=x1
+spice_ignore=0}
 C {devices/code_shown.sym} -921.25 -581.875 0 0 {name=NGSPICE1
 only_toplevel=true
 spice_ignore=false
@@ -233,7 +234,6 @@ value="
 
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
-
 "}
 C {devices/code.sym} -11.25 -531.875 0 0 {name=MODELS_SS
 only_toplevel=true
@@ -247,7 +247,6 @@ value="
 
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ss
-
 "}
 C {devices/code.sym} 108.75 -531.875 0 0 {name=MODELS_FF
 only_toplevel=true
@@ -262,4 +261,19 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ff
 
+"}
+C {devices/lab_pin.sym} 320 -380 2 0 {name=l6 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} 150 -340 2 0 {name=l9 sig_type=std_logic lab=vin_p}
+C {devices/lab_pin.sym} 150 -280 2 0 {name=l11 sig_type=std_logic lab=iref}
+C {devices/code_shown.sym} 270 210 0 0 {name="Extracted devices"
+only_toplevel=false
+spice_ignore=1
+value="
+.include ../../../../ota/output/extraction/layout_clean/ota_clean.spice
+**  iref vin_n vin_p vdd vss vout ota_clean
+*x1 iref ref   vin_p vdd GND op_out ota_clean
+
+.include ../../../../ota/output/extraction/layout_pex/ota_pex.spice
+*  vin_n vin_p vdd iref vout   vss ota_pex
+x1 ref   vin_p vdd iref op_out GND ota_pex
 "}

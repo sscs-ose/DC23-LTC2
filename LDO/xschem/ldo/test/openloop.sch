@@ -44,9 +44,9 @@ lab=#net2}
 N 280 210 280 240 {
 lab=GND}
 N -280 -210 -280 110 {
-lab=#net4}
+lab=vin_p}
 N -280 -210 -150 -210 {
-lab=#net4}
+lab=vin_p}
 N 120 -380 120 -360 {
 lab=vin}
 N 220 -70 260 -70 {
@@ -68,7 +68,7 @@ lab=ref}
 N 140 110 280 110 {
 lab=#net2}
 N -280 110 -230 110 {
-lab=#net4}
+lab=vin_p}
 N -170 110 140 110 {
 lab=#net2}
 N 430 -140 450 -140 {
@@ -76,27 +76,27 @@ lab=out}
 N -40 -360 -40 -340 {
 lab=vin}
 N -40 -280 -40 -250 {
-lab=#net5}
+lab=vdd}
 N -40 -250 -40 -230 {
-lab=#net5}
+lab=vdd}
 N 40 -180 50 -180 {
 lab=op_out}
 N -60 -120 -60 -100 {
-lab=#net6}
+lab=iref}
 N -20 -140 -20 240 {
 lab=GND}
 N -20 240 280 240 {
 lab=GND}
 N -280 -30 -270 -30 {
-lab=#net4}
+lab=vin_p}
 N -210 -30 -200 -30 {
-lab=#net7}
+lab=#net4}
 N -150 -180 -100 -200 {
 lab=ref}
 N -150 -210 -100 -160 {
-lab=#net4}
+lab=vin_p}
 N 450 -20 450 -0 {
-lab=#net8}
+lab=#net5}
 N 450 -140 450 -80 {
 lab=out}
 N 450 60 450 80 {
@@ -142,7 +142,8 @@ C {devices/iopin.sym} 450 -140 0 0 {name=p2 lab=out}
 C {devices/vsource.sym} -170 -30 3 0 {name=vt value=0}
 C {devices/vsource.sym} 400 -140 3 0 {name=v2 value=0}
 C {devices/vsource.sym} -40 -310 0 0 {name=v5 value=0}
-C {symbol/ota.sym} -40 -180 0 0 {name=x1}
+C {symbol/ota.sym} -40 -180 0 0 {name=x1
+spice_ignore=1}
 C {devices/res.sym} -200 110 1 0 {name=R3
 value=1G
 footprint=1206
@@ -307,3 +308,20 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ff
 
 "}
+C {devices/code_shown.sym} -60 350 0 0 {name="Extracted devices"
+only_toplevel=false
+spice_ignore=0
+value="
+.include ../../../../ota/output/extraction/layout_clean/ota_clean.spice
+**  iref vin_n vin_p vdd vss vout   ota_clean
+*x1 iref ref   vin_p vdd GND op_out ota_clean
+
+.include ../../../../ota/output/extraction/layout_pex/ota_pex.spice
+*  vin_n vin_p vdd iref vout   vss ota_pex
+x1 ref   vin_p vdd iref op_out GND ota_pex
+
+.nodeset v(op_out)=0
+"}
+C {devices/lab_pin.sym} -40 -240 2 0 {name=l8 sig_type=std_logic lab=vdd}
+C {devices/lab_pin.sym} -60 -110 2 0 {name=l9 sig_type=std_logic lab=iref}
+C {devices/lab_pin.sym} -170 -210 2 0 {name=l10 sig_type=std_logic lab=vin_p}
