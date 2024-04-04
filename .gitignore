@@ -170,3 +170,4 @@ cython_debug/
 **/cace/*.spice
 **/cace/*.sym
 **/netlist/*
+**/PROBLEMS_SLACK/*

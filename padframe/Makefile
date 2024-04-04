@@ -32,6 +32,7 @@ _FIRST_TOP_MODULE_DIR=$(word 1, $(MODULE_SOURCE_DIR))
 # Tool configuration files
 
 PDK=gf180mcuD
+PYTHON=python
 
 ## XSCHEM
 XSCHEM_RCFILE=$(realpath $(MODULE_CONFIG_FILES)/xschemrc)
@@ -175,7 +176,7 @@ CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.sim)) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.nodes))
 
-FULL_CLEANABLE:= $(CLEANABLE) \
+FULL_CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/output))
 
 # Logs
@@ -199,6 +200,13 @@ include $(_IC_MAKEFILE)/extra_be_checks.mk
 
 # Some variables are created on included makefiles
 MAKE=make TOP=$(TOP) TEST=$(TEST) GND_NAME=$(GND_NAME)
+
+PDK_IO_SPICE:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice
+PDK_IO_BB_SPICE:=$(MODULE_SOURCE_DIR)/spice/$(basename $(notdir $(PDK_IO_SPICE)))_bb.spice
+PDK_IO_GDS:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds
+
+PDK_SC_SPICE:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/spice/gf180mcu_fd_sc_mcu7t5v0.spice
+PDK_SC_GDS:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds
 
 
 .PHONY: print_vars
@@ -316,127 +324,6 @@ lvs:
 pex:
 	$(MAKE) magic-pex-extraction
 
-IO_GDS:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds
-IO_SPICE:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice
-GDS_IO_CELLS:= \
-	gf180mcu_fd_io__asig_5p0 \
-	gf180mcu_fd_io__bi_24t \
-	gf180mcu_fd_io__bi_t \
-	gf180mcu_fd_io__brk2 \
-	gf180mcu_fd_io__brk5 \
-	gf180mcu_fd_io__cor \
-	gf180mcu_fd_io__dvdd \
-	gf180mcu_fd_io__dvss \
-	gf180mcu_fd_io__fill1 \
-	gf180mcu_fd_io__fill5 \
-	gf180mcu_fd_io__fill10 \
-	gf180mcu_fd_io__fillnc \
-	gf180mcu_fd_io__in_c \
-	gf180mcu_fd_io__in_s
-
-
-klayout-io:
-	$(KLAYOUT) -e -t $(IO_GDS)
-
-
-extract-lvs-pads:
-	$(MAKE) TOP=dummy create-schematic
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__asig_5p0_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_t magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__bi_t_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_24t magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__bi_24t_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk2 magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__brk2_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk5 magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__brk5_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__cor magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__cor_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvdd magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__dvdd_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvss magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__dvss_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill1 magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fill1_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill5 magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fill5_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill10 magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fill10_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fillnc magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__fillnc_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_c magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__in_c_clean.spice
-	
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_s magic-lvs-extraction
-	mv ./dummy/output/extraction/layout_clean/dummy_clean.spice  ./spice/gf180mcu_fd_io__in_s_clean.spice
-
-
-extract-pex-pads:
-	$(MAKE) TOP=dummy create-schematic
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__asig_5p0 magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_t magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__bi_24t magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk2 magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__brk5 magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__cor magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvdd magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__dvss magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill1 magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill5 magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fill10 magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__fillnc magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_c magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-
-	$(MAKE) TOP=dummy GDS=$(IO_GDS) SCH_NETLIST_NOPREFIX=$(IO_SPICE) GDS_CELL=gf180mcu_fd_io__in_s magic-pex-extraction
-	mv ./dummy/output/extraction/layout_pex/*.spice    ./spice/
-	
-
-klayout-cell-extraction:
-	$(KLAYOUT) -zz \
-		-r $(_IC_MAKEFILE)/scripts/top-cell-extractor.py \
-		-rd layout=$(GDS) \
-		-rd output_dir=$(GDS_DIR)
-
 
 # Conclusion: Neiter pad has drc problems
 .PHONY: klayout-gf180mcu-drc-view
@@ -446,7 +333,7 @@ gf180mcu-drc-view:
 	$(MAKE) TOP=gf180mcu_fd_io__bi_t     klayout-drc-view
 	$(MAKE) TOP=gf180mcu_fd_io__brk2     klayout-drc-view
 	$(MAKE) TOP=gf180mcu_fd_io__brk5     klayout-drc-view
-	$(MAKE) TOP=gf180mcu_fd_io__cor      klayout-drc-view	
+	$(MAKE) TOP=gf180mcu_fd_io__cor      klayout-drc-view
 	$(MAKE) TOP=gf180mcu_fd_io__dvdd     klayout-drc-view
 	$(MAKE) TOP=gf180mcu_fd_io__dvss     klayout-drc-view
 	$(MAKE) TOP=gf180mcu_fd_io__fill1    klayout-drc-view
@@ -510,19 +397,152 @@ gf180mcu-pex-extraction:
 	$(MAKE) TOP=gf180mcu_fd_io__in_c     magic-pex-extraction
 	$(MAKE) TOP=gf180mcu_fd_io__in_s     magic-pex-extraction
 
+define netgen_lvs =
+	make \
+		TOP=$(1) \
+		SCH_NETLIST_PREFIX=$(PDK_IO_SPICE) \
+		SCH_NETLIST_NOPREFIX=$(PDK_IO_SPICE) \
+		LEF=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/lef/$(1).lef \
+		netgen-lvs-magic
+endef
+# && mv $(MODULE_SOURCE_DIR)/$(1)/output/reports/lvs_magic_comp.out reports/$(1)_netgen_lvs.log \ 
+# && mv $(MODULE_SOURCE_DIR)/$(1)/output/extraction/layout_clean/$(1)_clean.spice reports/$(1)_clean.spice
 
-.PHONY: klayout-gf180mcu-lvs
+define netgen_analyze =
+	echo $(1) && \
+	grep "Device classes" $(wildcard report/$(1)_netgen_lvs.log) && \
+	grep "Final result:"  $(wildcard report/$(1)_netgen_lvs.log)
+
+endef
+
+
+PADS= \
+	gf180mcu_fd_io__asig_5p0 \
+	gf180mcu_fd_io__bi_24t \
+	gf180mcu_fd_io__bi_t \
+	gf180mcu_fd_io__brk2 \
+	gf180mcu_fd_io__brk5 \
+	gf180mcu_fd_io__cor \
+	gf180mcu_fd_io__dvdd \
+	gf180mcu_fd_io__dvss \
+	gf180mcu_fd_io__fill1 \
+	gf180mcu_fd_io__fill5 \
+	gf180mcu_fd_io__fill10 \
+	gf180mcu_fd_io__fillnc \
+	gf180mcu_fd_io__in_c \
+	gf180mcu_fd_io__in_s
+
+PDK_IO_LEF:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/lef/$(TOP).lef
+
+SHARED_GDS_DIR=$(MODULE_SOURCE_DIR)/magic_output
+
+# $(foreach pad,$(PADS),make GDS_DIR=$(SHARED_GDS_DIR) TOP=$(pad) SCH_NETLIST_PREFIX=$(PDK_IO_SPICE) SCH_NETLIST_NOPREFIX=$(PDK_IO_SPICE) netgen-lvs-magic; )
+.PHONY: gf180mcu-lvs
+#$(foreach pad,$(PADS),$(call netgen_lvs,$(pad)))
+
+# asig_5p0  Final result: Circuits match uniquely.
+# bi_24t    Final result: Circuits match uniquely. Property errors were found.
+# bi_t      Final result: Circuits match uniquely. Property errors were found.
+# brk2      Final result: Verify:  cell has no elements and/or nodes.  Not checked.
+# brk5      Final result: Verify:  cell has no elements and/or nodes.  Not checked.
+# cor       Final result: Circuits match uniquely.
+# dvdd      Final result: Circuits match uniquely.
+# dvss      Final result: Circuits match uniquely.
+# fill1     Final result: Verify:  cell has no elements and/or nodes.  Not checked.
+# fill5     Final result: Circuits match uniquely.
+# fill10    Final result: Circuits match uniquely.
+# fillnc    Final result: Verify:  cell has no elements and/or nodes.  Not checked.
+# in_c      Final result: Circuits match uniquely. Property errors were found.
+# in_s      Final result: Circuits match uniquely. Property errors were found.
+
 gf180mcu-lvs:
-	$(call ERROR_MESSAGE, gf180mcu LVS is not working right now)
-	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__bi_t     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__brk2     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__brk5     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__dvdd     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__dvss     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__fill1    SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__fill5    SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__fill10   SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
-	$(MAKE) TOP=gf180mcu_fd_io__in_c     SCH_NETLIST_NOPREFIX=$(IO_SPICE) SCH_NETLIST_PREFIX=$(IO_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__in_s     SCH_NETLIST_NOPREFIX=$(IO_SPICE) klayout-lvs-only
+	mkdir -p reports/
+	$(foreach pad,$(PADS),$(call netgen_lvs,$(pad));)
+
+
+gf180mcu-lvs-analyze:
+	$(foreach pad,$(PADS),$(call netgen_analyze,$(pad)))
+
+
+gf180mcu-extract-sc:
+	make GDS=$(PDK_SC_GDS) GDS_DIR=. klayout-extract-topcells
+
+
+gf180mcu-extract-io:
+	make GDS=$(PDK_IO_GDS) GDS_DIR=. klayout-extract-topcells
+
+
+gf180mcu-klayout-io:
+	$(KLAYOUT) -e -t $(PDK_IO_GDS)
+
+
+gf180mcu-klayout-sc:
+	$(KLAYOUT) -e -t $(PDK_SC_GDS)
+
+
+gf180mcu-io-bb:
+	cp $(PDK_IO_SPICE) $(PDK_IO_BB_SPICE)
+
+	# Delete pasive elements
+	sed -i "/^[D*]/d" $(PDK_IO_BB_SPICE)
+
+	# Delete subckt instance declaration
+	sed -i "/[ ]cap_nmos_06v0[ ]/d" $(PDK_IO_BB_SPICE)
+	sed -i "/[ ]ppolyf_u[ ]/d" $(PDK_IO_BB_SPICE)
+
+	# Delete 1 line after subckt instance declaration
+	sed -i "/[ ]nfet_06v0_dss[ ]/{N;d;}" $(PDK_IO_BB_SPICE)
+	sed -i "/[ ]pfet_06v0_dss[ ]/{N;d;}" $(PDK_IO_BB_SPICE)
+
+	# Delete 2 lines after subckt instance declaration
+	sed -i "/[ ]nfet_06v0[ ]/{N;N;d;}" $(PDK_IO_BB_SPICE)
+	sed -i "/[ ]pfet_06v0[ ]/{N;N;d;}" $(PDK_IO_BB_SPICE)
+
+	# Delete empty lines
+	sed -i "/^$$/d" $(PDK_IO_BB_SPICE)
+
+
+gf180mcu-io-bb-lvs: gf180mcu-io-bb
+	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__bi_t     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__brk2     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__brk5     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__cor      SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__dvdd     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__dvss     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__fill1    SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__fill5    SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__fill10   SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__fillnc   SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__in_c     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+	$(MAKE) TOP=gf180mcu_fd_io__in_s     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__asig_5p0/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__asig_5p0/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_24t/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_24t/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_t/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_t/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk2/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk2/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk5/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk5/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__cor/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__cor/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvdd/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvdd/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvss/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvss/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill1/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill1/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill5/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill5/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill10/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill10/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fillnc/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fillnc/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_c/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_c/output/reports/lvs_magic_comp.out)
+	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_s/output/reports/lvs_magic_comp.out)
+	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_s/output/reports/lvs_magic_comp.out)

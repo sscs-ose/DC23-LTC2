@@ -1,5 +1,5 @@
 ---
-name: PADRING_LTC2_V1
+name: PADRING_LTC2_V2
 
 aliases:
   asig:   gf180mcu_fd_io__asig_5p0
@@ -33,7 +33,7 @@ sections:
   - fill10
   - brk5
 
-  emtpy:
+  empty:
   - fill5
   - fill5
   - fill5
@@ -50,9 +50,9 @@ sections:
   - fill5
   - fill5
 
-  spacing_emtpy:
+  spacing_empty:
   - spacing
-  - emtpy
+  - empty
 
   spacing_clock_in:
   - spacing
@@ -74,16 +74,8 @@ sections:
   - spacing
   - analog
 
-  brk_analog:
-  - brk
-  - analog
-
   spacing_vdd:
   - spacing
-  - vdd
-
-  brk_vdd:
-  - brk
   - vdd
 
   spacing_vddx:
@@ -94,49 +86,65 @@ sections:
   - spacing
   - vss
 
+  brk_empty:
+  - brk
+  - empty
+
+  brk_vss:
+  - brk
+  - vss
+
+  brk_vdd:
+  - brk
+  - vdd
+
+  brk_analog:
+  - brk
+  - analog
+
   mon_section:
+  - brk_analog
   - spacing_analog
-  - spacing_analog
+
   - spacing_vss
+
   - spacing_digital_in
   - spacing_digital_in
   - spacing_digital_out
 
   pll_section:
   - spacing_digital_in
+
   - spacing_vdd
+
   - spacing_clock_out
   - spacing_clock_in
-  - spacing_digital_in
-  - spacing_digital_in
 
-  adc_out_section:
-  - spacing_vdd
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_vss
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_vdd
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_digital_out
-  - spacing_digital_out
+  - spacing_analog
+  - spacing_digital_in
 
   dac_in_section:
-  - spacing_digital_in
-  - spacing_digital_in
-  - spacing_digital_in
+  - brk_vss
+
+  - spacing_analog
+  - spacing_analog
+
   - spacing_vss
+
   - spacing_digital_in
   - spacing_digital_in
   - spacing_digital_in
   - spacing_digital_in
+
   - spacing_vss
+
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+
+  - spacing_vss
+
   - spacing_digital_in
   - spacing_digital_in
   - spacing_digital_in
@@ -163,16 +171,17 @@ sides:
   - mon_section
   - pll_section
   - spacing_vss
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
+
+  - brk_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
 
   right:
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
 
   - brk_vdd
   - spacing_vss
@@ -182,33 +191,47 @@ sides:
   - spacing_vss
   - ldo_2_section
 
-  - brk_vdd
-  - spacing_vss
-  - spacing_analog
-  - spacing_analog
-  - spacing_vss
-  - spacing_digital_out
-  - spacing_digital_in
+  - brk_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
 
   top:
-  - spacing_clock_in
-  - adc_out_section
-  - spacing_vss
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
 
   left:
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_emtpy
-  - spacing_vss
-  - spacing_analog
-  - spacing_analog
-  - spacing_vss
-  - spacing_digital_in
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
   - dac_in_section
