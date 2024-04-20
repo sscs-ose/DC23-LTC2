@@ -1,4 +1,4 @@
-v {xschem version=3.4.4 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -176,18 +176,12 @@ N 800 -30 820 -30 {
 lab=vdd}
 N 760 -190 760 -180 {
 lab=cm}
-N 760 -190 810 -190 {
-lab=cm}
-N 810 -190 810 -110 {
-lab=cm}
 N 760 -110 810 -110 {
-lab=cm}
+lab=#net4}
 N 760 -120 760 -110 {
-lab=cm}
+lab=#net4}
 N 800 -150 810 -150 {
-lab=cm}
-N 710 -150 760 -150 {
-lab=vss}
+lab=#net4}
 N 770 330 790 330 {
 lab=vss}
 N 770 290 770 330 {
@@ -220,6 +214,11 @@ N 810 130 810 170 {
 lab=vdd}
 N 800 130 810 130 {
 lab=vdd}
+N 810 -150 810 -110 {
+lab=#net4}
+N 750 -150 760 -150 {}
+N 750 -150 750 -110 {}
+N 740 -110 760 -110 {}
 C {symbols/nfet_03v3.sym} -140 0 0 0 {name=M2
 L=1u
 W=10u
@@ -348,7 +347,7 @@ L=10e-6
 model=ppolyf_u_1k
 spiceprefix=X
 m=1}
-C {symbols/cap_mim_2f0fF.sym} 420 0 3 0 {name=C1
+C {symbols/cap_mim_2f0fF.sym} 420 0 1 0 {name=C1
 W=22e-6
 L=22e-6
 model=cap_mim_2f0_m4m5_noshield
@@ -398,8 +397,8 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {devices/lab_pin.sym} 810 -110 2 0 {name=p13 sig_type=std_logic lab=cm}
-C {devices/lab_pin.sym} 710 -150 0 0 {name=p14 sig_type=std_logic lab=vss}
+C {devices/lab_pin.sym} 760 -190 2 0 {name=p13 sig_type=std_logic lab=cm}
+C {devices/lab_pin.sym} 740 -110 0 0 {name=p14 sig_type=std_logic lab=vss}
 C {devices/lab_pin.sym} 0 90 2 0 {name=p15 sig_type=std_logic lab=cm}
 C {symbols/ppolyf_u.sym} 790 290 0 0 {name=RDota_res
 W=2U
