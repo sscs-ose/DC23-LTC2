@@ -130,7 +130,7 @@
  <l2ndb-marker-line-width>-1</l2ndb-marker-line-width>
  <l2ndb-marker-use-original-colors>false</l2ndb-marker-use-original-colors>
  <l2ndb-marker-vertex-size>-1</l2ndb-marker-vertex-size>
- <l2ndb-max-shapes-highlighted>10000</l2ndb-max-shapes-highlighted>
+ <l2ndb-max-shapes-highlighted>100000</l2ndb-max-shapes-highlighted>
  <l2ndb-show-all>true</l2ndb-show-all>
  <l2ndb-window-dim>1</l2ndb-window-dim>
  <l2ndb-window-mode>dont-change</l2ndb-window-mode>
@@ -143,10 +143,10 @@
  <lef-import-spec/>
  <line-style-palette>0 1 2 3</line-style-palette>
  <macro-editor-active-macro/>
- <macro-editor-console-interpreter/>
+ <macro-editor-console-interpreter>python</macro-editor-console-interpreter>
  <macro-editor-console-mru/>
  <macro-editor-current-macro/>
- <macro-editor-debugging-enabled>true</macro-editor-debugging-enabled>
+ <macro-editor-debugging-enabled>false</macro-editor-debugging-enabled>
  <macro-editor-file-watcher-enabled>true</macro-editor-file-watcher-enabled>
  <macro-editor-font-family>FreeMono</macro-editor-font-family>
  <macro-editor-font-size>9</macro-editor-font-size>
@@ -178,7 +178,7 @@
  <nt-marker-intensity>50</nt-marker-intensity>
  <nt-marker-line-width>-1</nt-marker-line-width>
  <nt-marker-vertex-size>-1</nt-marker-vertex-size>
- <nt-max-shapes-highlighted>10000</nt-max-shapes-highlighted>
+ <nt-max-shapes-highlighted>100000</nt-max-shapes-highlighted>
  <nt-window-dim>1</nt-window-dim>
  <nt-window-mode>dont-change</nt-window-mode>
  <pan-distance>0.15</pan-distance>
@@ -190,13 +190,13 @@
  <rdb-marker-halo>-1</rdb-marker-halo>
  <rdb-marker-line-width>-1</rdb-marker-line-width>
  <rdb-marker-vertex-size>-1</rdb-marker-vertex-size>
- <rdb-max-marker-count>1000</rdb-max-marker-count>
+ <rdb-max-marker-count>100000</rdb-max-marker-count>
  <rdb-window-dim>1</rdb-window-dim>
  <rdb-window-mode>fit-marker</rdb-window-mode>
  <rdb-window-state-v2/>
  <reader-options-show-always>false</reader-options-show-always>
  <ruler-color>auto</ruler-color>
- <ruler-grid-snap>false</ruler-grid-snap>
+ <ruler-grid-snap>true</ruler-grid-snap>
  <ruler-halo>true</ruler-halo>
  <ruler-obj-snap>true</ruler-obj-snap>
  <ruler-snap-mode>any</ruler-snap-mode>
@@ -250,7 +250,7 @@
  <tip-window-hidden>hide-empty-layers=4,hide-empty-layers=0,editor-mode=4,editor-mode=0</tip-window-hidden>
  <tracking-cursor-color>auto</tracking-cursor-color>
  <tracking-cursor-enabled>true</tracking-cursor-enabled>
- <window-geometry>AdnQywADAAAAAAAAAAAAAAAAB38AAAQPAAACiwAAACcAAAWqAAACfgAAAAACAAAAB4AAAAAGAAAAGwAAB3kAAAQJ</window-geometry>
+  <window-geometry>AdnQywADAAAAAAAAAAAAAAAAB38AAAQPAAACiwAAACcAAAWqAAACfgAAAAACAAAAB4AAAAAGAAAAGwAAB3kAAAQJ</window-geometry>
  <window-state>AAAA/wAAAAD9AAAAAwAAAAAAAACoAAAB9vwCAAAAA/sAAAAqAG4AYQB2AGkAZwBhAHQAbwByAF8AZABvAGMAawBfAHcAaQBkAGcAZQB0AAAAAAD/////AAAAjAD////7AAAAHABoAHAAXwBkAG8AYwBrAF8AdwBpAGQAZwBlAHQBAAAATAAAAfYAAAATAP////sAAAAgAGwAaQBiAHMAXwBkAG8AYwBrAF8AdwBpAGQAZwBlAHQAAAAA5QAAAbwAAAATAP///wAAAAEAAACUAAAB9vwCAAAAA/sAAAAqAGIAbwBvAGsAbQBhAHIAawBzAF8AZABvAGMAawBfAHcAaQBkAGcAZQB0AAAAAAD/////AAAAEwD////7AAAAHABsAHAAXwBkAG8AYwBrAF8AdwBpAGQAZwBlAHQBAAAATAAAAfYAAAATAP////sAAAAcAGwAdABfAGQAbwBjAGsAXwB3AGkAZABnAGUAdAAAAAIiAAAAfwAAABMA////AAAAAgAABUoAAACW/AEAAAAB+wAAABwAZQBvAF8AZABvAGMAawBfAHcAaQBkAGcAZQB0AAAAAAAAAAVKAAAAOgD///8AAAHYAAAB9gAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAABAAAADgB0AG8AbwBsAGIAYQByAQAAAAD/////AAAAAAAAAAA=</window-state>
  <xor-anotb>false</xor-anotb>
  <xor-axorb>true</xor-axorb>

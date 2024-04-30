@@ -86,13 +86,13 @@ spiceprefix=X
 C {symbols/ppolyf_u.sym} 640 -210 0 0 {name=R1
 W=1e-6
 L=164e-6
-model=ppolyf_u_2k
+model=ppolyf_u_1k
 spiceprefix=X
 m=1}
 C {symbols/ppolyf_u.sym} 640 -110 0 0 {name=R2
 W=1e-6
 L=100e-6
-model=ppolyf_u_2k
+model=ppolyf_u_1k
 spiceprefix=X
 m=1}
 C {devices/iopin.sym} 730 -260 0 0 {name=p2 lab=out}

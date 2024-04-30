@@ -1,4 +1,4 @@
-v {xschem version=3.4.4 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
@@ -9,15 +9,9 @@ T {Cap Off-chip
 Electrolitic Capacitor} 870 -200 0 0 0.4 0.4 {}
 N 0 -120 0 -100 {
 lab=GND}
-N 0 -280 0 -180 {
-lab=iref}
-N 0 -280 30 -280 {
-lab=iref}
 N -110 -110 -110 -90 {
 lab=GND}
-N -110 -310 30 -310 {
-lab=ref}
-N -110 -310 -110 -170 {
+N -110 -330 30 -330 {
 lab=ref}
 N 410 -310 500 -310 {
 lab=op_out}
@@ -49,9 +43,7 @@ N 640 -70 640 -50 {
 lab=pos}
 N 640 80 640 110 {
 lab=GND}
-N 80 -340 80 -20 {
-lab=vin_p}
-N 80 -340 210 -340 {
+N 80 -290 210 -290 {
 lab=vin_p}
 N 480 -510 480 -490 {
 lab=vin}
@@ -71,7 +63,7 @@ N 740 -490 740 -410 {
 lab=vin}
 N 640 -490 740 -490 {
 lab=vin}
-N 30 -310 210 -310 {
+N 30 -330 210 -330 {
 lab=ref}
 N 500 -20 640 -20 {
 lab=pos}
@@ -79,10 +71,6 @@ N 80 -20 130 -20 {
 lab=vin_p}
 N 190 -20 500 -20 {
 lab=pos}
-N 110 -280 210 -280 {
-lab=iref}
-N 30 -280 110 -280 {
-lab=iref}
 N 790 -270 810 -270 {
 lab=out}
 N 320 -130 320 110 {
@@ -95,14 +83,8 @@ N 320 -410 320 -380 {
 lab=vdd}
 N 320 -240 340 -270 {
 lab=GND}
-N 210 -280 300 -250 {
-lab=iref}
 N 320 -380 320 -360 {
 lab=vdd}
-N 210 -340 260 -290 {
-lab=vin_p}
-N 210 -310 260 -330 {
-lab=ref}
 N 400 -310 410 -310 {
 lab=op_out}
 N 810 -170 810 -150 {
@@ -111,13 +93,25 @@ N 810 -90 810 -70 {
 lab=GND}
 N 810 -270 810 -230 {
 lab=out}
+N 210 -290 260 -290 {
+lab=vin_p}
+N 80 -290 80 -20 {
+lab=vin_p}
+N 210 -330 260 -330 {
+lab=ref}
+N 0 -250 300 -250 {
+lab=#net4}
+N -110 -330 -110 -180 {
+lab=ref}
+N 0 -250 0 -180 {
+lab=#net4}
 C {devices/isource.sym} 0 -150 2 0 {name=I1 value=10u
 }
 C {devices/gnd.sym} 0 -100 0 0 {name=l10 lab=GND}
 C {devices/gnd.sym} 480 130 0 0 {name=l1 lab=GND}
 C {devices/gnd.sym} -110 -90 0 0 {name=l2 lab=GND}
 C {devices/vsource.sym} -110 -140 0 0 {name=V1 value=1.25}
-C {devices/lab_pin.sym} -40 -310 1 0 {name=l3 sig_type=std_logic lab=ref}
+C {devices/lab_pin.sym} -40 -330 1 0 {name=l3 sig_type=std_logic lab=ref}
 C {devices/lab_pin.sym} 480 -510 2 0 {name=l4 sig_type=std_logic lab=vin}
 C {devices/lab_pin.sym} 505 -310 1 0 {name=l12 sig_type=std_logic lab=op_out
 
@@ -318,8 +312,8 @@ value="
 
 "}
 C {devices/lab_pin.sym} 320 -380 2 0 {name=l6 sig_type=std_logic lab=vdd}
-C {devices/lab_pin.sym} 150 -340 2 0 {name=l9 sig_type=std_logic lab=vin_p}
-C {devices/lab_pin.sym} 150 -280 2 0 {name=l11 sig_type=std_logic lab=iref}
+C {devices/lab_pin.sym} 150 -290 2 0 {name=l9 sig_type=std_logic lab=vin_p}
+C {devices/lab_pin.sym} 160 -250 2 0 {name=l11 sig_type=std_logic lab=iref}
 C {devices/code_shown.sym} 270 210 0 0 {name="Extracted devices"
 only_toplevel=false
 spice_ignore=1

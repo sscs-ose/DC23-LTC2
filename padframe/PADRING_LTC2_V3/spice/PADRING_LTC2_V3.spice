@@ -1,0 +1,29 @@
+* NGSPICE file created from PADRING_LTC2_V3_clean.ext - technology: gf180mcuD
+
+.include bottom.spice
+.include right.spice
+.include top.spice
+.include left.spice
+
+.subckt PADRING_LTC2_V3
+X_right_0
++ bottom_DVDD bottom_VDD 0 0
++ right_DVDD  right_VDD  0 0 0
++ DELETE_padring_side_right
+
+X_top_0
++ right_DVDD  right_VDD  0  0
++ 0           0          0  0
++ DELETE_padring_side_top
+
+X_bottom_0
++ left_VDD     left_VDD    0 0
++ bottom_DVDD  bottom_VDD  0 0 0
++ DELETE_padring_side_bottom
+
+X_left_0
++ right_DVDD  right_VDD 0 0
++ left_VDD    left_VDD  0 0
++ DELETE_padring_side_left
+
+.ends

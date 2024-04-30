@@ -177,11 +177,11 @@ lab=vdd}
 N 760 -190 760 -180 {
 lab=cm}
 N 760 -110 810 -110 {
-lab=#net4}
+lab=vss}
 N 760 -120 760 -110 {
-lab=#net4}
+lab=vss}
 N 800 -150 810 -150 {
-lab=#net4}
+lab=vss}
 N 770 330 790 330 {
 lab=vss}
 N 770 290 770 330 {
@@ -215,10 +215,13 @@ lab=vdd}
 N 800 130 810 130 {
 lab=vdd}
 N 810 -150 810 -110 {
-lab=#net4}
-N 750 -150 760 -150 {}
-N 750 -150 750 -110 {}
-N 740 -110 760 -110 {}
+lab=vss}
+N 750 -150 760 -150 {
+lab=vss}
+N 750 -150 750 -110 {
+lab=vss}
+N 740 -110 760 -110 {
+lab=vss}
 C {symbols/nfet_03v3.sym} -140 0 0 0 {name=M2
 L=1u
 W=10u
@@ -347,7 +350,7 @@ L=10e-6
 model=ppolyf_u_1k
 spiceprefix=X
 m=1}
-C {symbols/cap_mim_2f0fF.sym} 420 0 1 0 {name=C1
+C {symbols/cap_mim_2f0fF.sym} 420 0 3 0 {name=C1
 W=22e-6
 L=22e-6
 model=cap_mim_2f0_m4m5_noshield

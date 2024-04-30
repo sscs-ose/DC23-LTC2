@@ -201,7 +201,7 @@ include $(_IC_MAKEFILE)/extra_be_checks.mk
 include $(_IC_MAKEFILE)/cace.mk
 
 # Some variables are created on included makefiles
-MAKE=make TOP=$(TOP) TEST=$(TEST) GND_NAME=$(GND_NAME)
+MAKE=make TOP=$(TOP) TEST=$(TEST) GND_NAME=$(GND_NAME) MAGIC_FORCE_FLAT=$(MAGIC_FORCE_FLAT)
 
 
 .PHONY: print_vars
@@ -294,27 +294,3 @@ endif
 create-module:
 	$(MAKE) create-schematic
 	$(MAKE) create-layout
-
-
-.PHONY: extensive-test
-extensive-test:
-	$(MAKE) klayout-drc-only     |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) klayout-lvs-only     |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) netgen-lvs-klayout   |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) netgen-lvs-magic     |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) magic-pex-extraction |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-
-
-.PHONY: drc
-drc:
-	$(MAKE) klayout-drc
-
-
-lvs:
-	$(MAKE) klayout-lvs-only   |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_lvs_$(TOP).log
-	$(MAKE) netgen-lvs-magic   |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_lvs_$(TOP).log
-	$(MAKE) netgen-lvs-klayout |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_lvs_$(TOP).log
-
-
-pex:
-	$(MAKE) magic-pex-extraction

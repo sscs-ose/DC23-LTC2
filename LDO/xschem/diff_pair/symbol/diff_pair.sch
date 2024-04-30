@@ -27,17 +27,22 @@ N 20 0 20 100 {
 lab=vss}
 N 230 40 230 50 {
 lab=cm}
-N 230 40 280 40 {
-lab=cm}
-N 280 40 280 120 {
-lab=cm}
 N 230 120 280 120 {
-lab=cm}
+lab=vss}
 N 230 110 230 120 {
-lab=cm}
+lab=vss}
 N 270 80 280 80 {
-lab=cm}
-N 180 80 230 80 {}
+lab=vss}
+N 280 80 280 120 {
+lab=vss}
+N 220 80 220 120 {
+lab=vss}
+N 220 120 230 120 {
+lab=vss}
+N 220 80 230 80 {
+lab=vss}
+N 210 120 220 120 {
+lab=vss}
 C {symbols/nfet_03v3.sym} -140 0 0 0 {name=M2
 L=1u
 W=10u
@@ -72,7 +77,7 @@ spiceprefix=X
 C {devices/iopin.sym} -120 -60 3 0 {name=p10 lab=vin1}
 C {devices/iopin.sym} 120 -60 3 0 {name=p11 lab=vin2}
 C {devices/iopin.sym} -20 100 1 0 {name=p1 lab=cm}
-C {symbols/nfet_03v3.sym} 250 80 0 1 {name=M3
+C {symbols/nfet_03v3.sym} 250 80 0 1 {name=MD
 L=1u
 W=10u
 nf=1
@@ -86,5 +91,5 @@ sa=0 sb=0 sd=0
 model=nfet_03v3
 spiceprefix=X
 }
-C {devices/lab_pin.sym} 280 120 2 0 {name=p2 sig_type=std_logic lab=cm}
-C {devices/lab_pin.sym} 180 80 0 0 {name=p3 sig_type=std_logic lab=vss}
+C {devices/lab_pin.sym} 230 40 2 0 {name=p2 sig_type=std_logic lab=cm}
+C {devices/lab_pin.sym} 210 120 0 0 {name=p3 sig_type=std_logic lab=vss}
