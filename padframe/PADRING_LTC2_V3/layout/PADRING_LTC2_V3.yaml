@@ -1,0 +1,237 @@
+---
+name: PADRING_LTC2_V3
+
+aliases:
+  asig:   gf180mcu_fd_io__asig_5p0
+  bi_t:   gf180mcu_fd_io__bi_t
+  brk5:   gf180mcu_fd_io__brk5
+  cor:    gf180mcu_fd_io__cor
+  dvdd:   gf180mcu_fd_io__dvdd
+  dvss:   gf180mcu_fd_io__dvss
+  fill10: gf180mcu_fd_io__fill10
+  fill5:  gf180mcu_fd_io__fill5
+  in_c:   gf180mcu_fd_io__in_c
+  clock_in:    gf180mcu_fd_io__in_c
+  clock_out:   gf180mcu_fd_io__bi_t
+  digital_in:  gf180mcu_fd_io__in_c
+  digital_out: gf180mcu_fd_io__bi_t
+  analog:    gf180mcu_fd_io__asig_5p0
+  reference: gf180mcu_fd_io__asig_5p0
+  vdd:  gf180mcu_fd_io__dvdd
+  vddx: gf180mcu_fd_io__dvdd
+  vss:  gf180mcu_fd_io__dvss
+
+
+sections:
+  spacing:
+  - fill10
+  - fill10
+  - fill5
+
+  brk:
+  - fill10
+  - fill10
+  - brk5
+
+  empty:
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+  - fill5
+
+  spacing_empty:
+  - spacing
+  - empty
+
+  spacing_clock_in:
+  - spacing
+  - clock_in
+
+  spacing_clock_out:
+  - spacing
+  - clock_out
+
+  spacing_digital_in:
+  - spacing
+  - digital_in
+
+  spacing_digital_out:
+  - spacing
+  - digital_out
+
+  spacing_analog:
+  - spacing
+  - analog
+
+  spacing_vdd:
+  - spacing
+  - vdd
+
+  spacing_vddx:
+  - spacing
+  - vddx
+
+  spacing_vss:
+  - spacing
+  - vss
+
+  brk_empty:
+  - brk
+  - empty
+
+  brk_vss:
+  - brk
+  - vss
+
+  brk_vdd:
+  - brk
+  - vdd
+
+  brk_analog:
+  - brk
+  - analog
+
+  mon_section:
+  - brk_analog
+  - spacing_analog
+
+  - spacing_vss
+
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_out
+
+  pll_section:
+  - spacing_digital_in
+
+  - spacing_vdd
+
+  - spacing_clock_out
+  - spacing_clock_in
+
+  - spacing_analog
+  - spacing_digital_in
+
+  dac_in_section:
+  - brk_vss
+
+  - spacing_analog
+  - spacing_analog
+
+  - spacing_vss
+
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+
+  - spacing_vss
+
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+
+  - spacing_vss
+
+  - spacing_digital_in
+  - spacing_digital_in
+  - spacing_digital_in
+
+  ldo_1_section:
+  - spacing_analog
+  - spacing_analog
+  - spacing_analog
+
+  ldo_2_section:
+  - spacing_analog
+  - spacing_analog
+  - spacing_analog
+  - spacing_analog
+  - spacing_analog
+
+
+sides:
+  bottom:
+  - spacing_vdd
+  - spacing_clock_in
+  - spacing_digital_in
+  - spacing_vss
+  - mon_section
+  - pll_section
+  - spacing_vss
+
+  - brk_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  right:
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - brk_vdd
+  - spacing_vss
+  - ldo_1_section
+
+  - brk_vdd
+  - spacing_vss
+  - ldo_2_section
+
+  - brk_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  top:
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - spacing_empty
+  - spacing_empty
+
+  left:
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+  - spacing_empty
+
+  - dac_in_section

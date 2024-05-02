@@ -1,163 +1,133 @@
-v {xschem version=3.4.4 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
 V {}
 S {}
 E {}
+B 2 660 -210 1460 190 {flags=graph
+y1=-1.4442148
+y2=6.136986
+ypos1=0
+ypos2=2
+divy=5
+subdivy=4
+unity=1
+x1=0.001
+x2=6
+divx=5
+subdivx=4
+xlabmag=1.0
+ylabmag=1.0
+
+
+
+unitx=1
+logx=0
+logy=0
+
+
+
+
+digital=0
+rainbow=1
+dataset=0
+rawfile=$netlist_dir/rawspice.raw
+sim_type=dc
+
+color="4 7"
+node="v-sweep
+out"}
+B 2 660 200 1460 600 {flags=graph
+y1=0
+y2=2.7
+ypos1=0
+ypos2=2
+divy=5
+subdivy=4
+unity=1
+x1=0.001
+x2=6
+divx=5
+subdivx=4
+xlabmag=1.0
+ylabmag=1.0
+
+
+
+unitx=1
+logx=0
+logy=0
+
+
+
+
+digital=0
+rainbow=1
+dataset=0
+rawfile=$netlist_dir/rawspice.raw
+sim_type=dc
+
+color="4 7"
+node="\\"v-sweep out -\\"
+\\"0 v-sweep *\\""}
 T {Cap Off-chip
-Electrolitic Capacitor} 870 -200 0 0 0.4 0.4 {}
-N 0 -120 0 -100 {
-lab=GND}
-N 0 -280 0 -180 {
-lab=iref}
-N 0 -280 30 -280 {
-lab=iref}
-N -110 -110 -110 -90 {
-lab=GND}
-N -110 -310 30 -310 {
-lab=ref}
-N -110 -310 -110 -170 {
-lab=ref}
-N 410 -310 500 -310 {
-lab=op_out}
-N 640 -280 640 -260 { lab=#net1}
-N 640 -30 640 -10 { lab=pos}
-N 640 -310 740 -310 { lab=vin}
-N 640 -50 640 -40 { lab=pos}
-N 640 -40 640 -30 { lab=pos}
-N 500 -310 600 -310 { lab=op_out}
-N 640 -410 640 -340 {
-lab=vin}
-N 740 -410 740 -310 {
-lab=vin}
-N 640 -260 640 -230 {
-lab=#net1}
-N 640 -170 640 -130 {
-lab=#net2}
-N 640 -10 640 20 {
-lab=pos}
-N 640 -490 640 -410 {
-lab=vin}
-N 320 -490 635 -490 {
-lab=vin}
-N 635 -490 640 -490 {
-lab=vin}
-N 640 -270 730 -270 {
-lab=#net1}
-N 640 -70 640 -50 {
-lab=pos}
-N 640 80 640 110 {
-lab=GND}
-N 80 -340 80 -20 {
-lab=vin_p}
-N 80 -340 210 -340 {
-lab=vin_p}
-N 480 -510 480 -490 {
-lab=vin}
-N 580 -200 620 -200 {
-lab=GND}
-N 580 50 620 50 {
-lab=GND}
-N 320 110 640 110 {
-lab=GND}
-N 480 110 480 130 {
-lab=GND}
-N 580 -200 580 50 {
-lab=GND}
-N 580 50 580 110 {
-lab=GND}
-N 740 -490 740 -410 {
-lab=vin}
-N 640 -490 740 -490 {
-lab=vin}
-N 30 -310 210 -310 {
-lab=ref}
-N 500 -20 640 -20 {
-lab=pos}
-N 80 -20 130 -20 {
-lab=vin_p}
-N 190 -20 500 -20 {
-lab=pos}
-N 110 -280 210 -280 {
-lab=iref}
-N 30 -280 110 -280 {
-lab=iref}
-N 790 -270 810 -270 {
-lab=out}
-N 320 -130 320 110 {
-lab=GND}
-N 320 -240 320 -130 {
-lab=GND}
-N 320 -490 320 -470 {
-lab=vin}
-N 320 -410 320 -380 {
-lab=vdd}
-N 320 -240 340 -270 {
-lab=GND}
-N 210 -280 300 -250 {
-lab=iref}
-N 320 -380 320 -360 {
-lab=vdd}
-N 210 -340 260 -290 {
-lab=vin_p}
-N 210 -310 260 -330 {
-lab=ref}
-N 400 -310 410 -310 {
-lab=op_out}
-N 810 -170 810 -150 {
-lab=#net3}
-N 810 -90 810 -70 {
-lab=GND}
-N 810 -270 810 -230 {
-lab=out}
-C {devices/isource.sym} 0 -150 2 0 {name=I1 value=10u
-}
-C {devices/gnd.sym} 0 -100 0 0 {name=l10 lab=GND}
-C {devices/gnd.sym} 480 130 0 0 {name=l1 lab=GND}
-C {devices/gnd.sym} -110 -90 0 0 {name=l2 lab=GND}
-C {devices/vsource.sym} -110 -140 0 0 {name=V1 value=1.25}
-C {devices/lab_pin.sym} -40 -310 1 0 {name=l3 sig_type=std_logic lab=ref}
-C {devices/lab_pin.sym} 480 -510 2 0 {name=l4 sig_type=std_logic lab=vin}
-C {devices/lab_pin.sym} 505 -310 1 0 {name=l12 sig_type=std_logic lab=op_out
+Electrolitic Capacitor} 310 -170 0 0 0.4 0.4 {}
+T {Template usage:
 
-}
-C {symbols/pfet_03v3.sym} 620 -310 0 0 {name=M1
-L=0.5u
-W=4.38u
-nf=1
-m=1984
-ad="'int((nf+1)/2) * W/nf * 0.18u'"
-pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
-as="'int((nf+2)/2) * W/nf * 0.18u'"
-ps="'2*int((nf+2)/2) * (W/nf + 0.18u)'"
-nrd="'0.18u / W'" nrs="'0.18u / W'"
-sa=0 sb=0 sd=0
-model=pfet_03v3
-spiceprefix=X
-}
-C {symbols/ppolyf_u.sym} 640 -200 0 0 {name=R1
-W=1e-6
-L=164e-6
-model=ppolyf_u_2k
-spiceprefix=X
-m=1}
-C {symbols/ppolyf_u.sym} 640 50 0 0 {name=R2
-W=1e-6
-L=100e-6
-model=ppolyf_u_2k
-spiceprefix=X
-m=1}
-C {devices/vsource.sym} 640 -100 0 0 {name=v4 value=0}
-C {devices/iopin.sym} 810 -270 0 0 {name=p2 lab=out}
-C {devices/lab_pin.sym} 495 -20 1 0 {name=l5 sig_type=std_logic lab=pos
+1. Each simulation should have in the title:
+- Type of simulation (tran, dc, etc)
+- Name of the simulation (Purpose, something like that)
+2. Each simulation of set of simulations should be contained on the same control block.
+3. Use Shift-S to change element processing order.
+4. Graphs should use the dataset index in the same order of element processing} 860 -480 0 0 0.4 0.4 {}
+T {Graph Configuration:
+Each graph has 3 configurations BEFORE plotting:
 
+1. Set rawfile
+2. Signals in Graph indicates the type of simulation (dc, tran)
+3. Set dataset index} 1710 -430 0 0 0.4 0.4 {}
+N -160 -60 -160 -40 {
+lab=GND}
+N -160 -220 -160 -120 {
+lab=iref}
+N -160 -220 -130 -220 {
+lab=iref}
+N -270 -50 -270 -30 {
+lab=GND}
+N -270 -260 -130 -260 {
+lab=ref}
+N -270 -250 -270 -110 {
+lab=ref}
+N 20 -330 20 -310 {
+lab=vin}
+N 230 -240 250 -240 {
+lab=out}
+N 250 -140 250 -120 {
+lab=#net1}
+N 250 -60 250 -40 {
+lab=GND}
+N 250 -240 250 -200 {
+lab=out}
+N -270 -260 -270 -250 {
+lab=ref}
+N 340 20 340 60 {
+lab=DVDD}
+N 410 20 410 60 {
+lab=DVSS}
+N 340 -10 340 20 {
+lab=DVDD}
+N 410 -10 410 20 {
+lab=DVSS}
+C {devices/isource.sym} -160 -90 2 0 {name=I1 value=10u
 }
-C {devices/vsource.sym} 160 -20 3 0 {name=vt value=0}
-C {devices/vsource.sym} 760 -270 3 0 {name=v2 value=0}
-C {devices/vsource.sym} 320 -440 0 0 {name=v5 value=0}
-C {symbol/ota.sym} 320 -310 0 0 {name=x1
-spice_ignore=1}
+C {devices/gnd.sym} -160 -40 0 0 {name=l10 lab=GND}
+C {devices/gnd.sym} -270 -30 0 0 {name=l2 lab=GND}
+C {devices/vsource.sym} -270 -80 0 0 {name=V1 value=1.25}
+C {devices/lab_pin.sym} -200 -260 1 0 {name=l3 sig_type=std_logic lab=ref}
+C {devices/lab_pin.sym} 20 -330 2 0 {name=l4 sig_type=std_logic lab=vin}
+C {devices/iopin.sym} 250 -240 0 0 {name=p2 lab=out}
+C {devices/vsource.sym} 200 -240 3 0 {name=v2 value=0}
 C {devices/code_shown.sym} -921.25 -581.875 0 0 {name=NGSPICE1
 only_toplevel=true
 spice_ignore=false
@@ -195,9 +165,9 @@ Vs vin 0 5
 
 *supply_sweep
 .control
-reseet
+save vin out
 alter IL 0
-dc Vs 6 0 -0.1
+dc Vs 6 0 -0.001
 plot v(vin) v(out)
 meas DC vldo_sup_4_6 FIND v(out) AT=4.6
 meas DC vldo_nom FIND v(out) AT=5
@@ -207,19 +177,20 @@ print line_reg
 meas DC vin WHEN v(out)=3.2982
 let dropout = vin-3.2982
 print dropout
+
+write
 .endc
 "}
-C {devices/capa.sym} 810 -120 0 0 {name=C1
+C {devices/capa.sym} 250 -90 0 0 {name=C1
 m=1
 value=10u
 footprint=1206
 device="ceramic capacitor"}
-C {devices/res.sym} 810 -200 2 0 {name=R4
+C {devices/res.sym} 250 -170 2 0 {name=R4
 value=2
 footprint=1206
 device=resistor
 m=1}
-C {devices/gnd.sym} 810 -70 0 0 {name=l7 lab=GND}
 C {devices/code.sym} -131.25 -531.875 0 0 {name=MODELS_TT
 only_toplevel=true
 place=header
@@ -229,10 +200,13 @@ value="
 .include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice typical
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_typical
-
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice diode_typical
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice bjt_typical
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice moscap_typical
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
 
+.include $env(PDK_ROOT)/$env(PDK)/libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice
 "}
 C {devices/code.sym} -11.25 -531.875 0 0 {name=MODELS_SS
 only_toplevel=true
@@ -247,6 +221,7 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ss
 
+.include $env(PDK_ROOT)/$env(PDK)/libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice
 "}
 C {devices/code.sym} 108.75 -531.875 0 0 {name=MODELS_FF
 only_toplevel=true
@@ -261,19 +236,90 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ff
 
+.include $env(PDK_ROOT)/$env(PDK)/libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice
 "}
-C {devices/lab_pin.sym} 320 -380 2 0 {name=l6 sig_type=std_logic lab=vdd}
-C {devices/lab_pin.sym} 150 -340 2 0 {name=l9 sig_type=std_logic lab=vin_p}
-C {devices/lab_pin.sym} 150 -280 2 0 {name=l11 sig_type=std_logic lab=iref}
-C {devices/code_shown.sym} 270 210 0 0 {name="Extracted devices"
+C {devices/lab_pin.sym} -160 -190 2 0 {name=l11 sig_type=std_logic lab=iref}
+C {devices/code_shown.sym} -290 60 0 0 {name="Extracted devices"
 only_toplevel=false
 spice_ignore=0
 value="
-.include ../../../../ota/output/extraction/layout_clean/ota_clean.spice
-*  iref vin_n vin_p vdd vss vout ota_clean
-x1 iref ref   vin_p vdd GND op_out ota_clean
+.include ../../../spice/ldo_clean.spice
+.include ../../../spice/ldo_pex.spice
 
-.include ../../../../ota/output/extraction/layout_pex/ota_pex.spice
-**  vin_n vin_p vdd iref vout   vss ota_pex
-*x1 ref   vin_p vdd iref op_out GND ota_pex
+Xvdd DVDD DVSS VSS gf180mcu_fd_io__dvdd
+Xvss DVDD DVSS VDD gf180mcu_fd_io__dvss
+
+Xiref iref DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
+Xref  ref  DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
+Xout  out  DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
+
+*** vdd ref iref out vss ldo_*
+x1 vin ref iref out GND ldo_clean
+*x1 vin ref iref out GND ldo_pex
 "}
+C {symbol/ldo.sym} 20 -240 0 0 {name=x2
+spice_ignore=1}
+C {devices/vsource.sym} 340 90 0 0 {name=V3 value=3.3}
+C {devices/vsource.sym} 410 90 0 0 {name=V4 value=0}
+C {devices/gnd.sym} 410 120 0 0 {name=l5 lab=GND}
+C {devices/gnd.sym} 340 120 0 0 {name=l6 lab=GND}
+C {devices/lab_pin.sym} 340 30 2 0 {name=l8 sig_type=std_logic lab=DVDD}
+C {devices/lab_pin.sym} 410 30 2 0 {name=l9 sig_type=std_logic lab=DVSS}
+C {devices/lab_pin.sym} 340 10 2 0 {name=l12 sig_type=std_logic lab=VDD}
+C {devices/lab_pin.sym} 410 10 2 0 {name=l13 sig_type=std_logic lab=VSS}
+C {devices/lab_pin.sym} 20 -170 2 0 {name=l1 sig_type=std_logic lab=VSS}
+C {devices/gnd.sym} 250 -40 0 0 {name=l14 lab=GND}
+C {devices/launcher.sym} 570 -310 0 0 {name=h2
+descr="Load TRAN"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath tran
+"
+}
+C {devices/launcher.sym} 570 -410 0 0 {name=h5
+descr="Load ALL 3.4.5+"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+
+puts $filepath
+
+xschem raw clear
+xschem raw read $filepath tran
+xschem redraw
+xschem raw read $filepath dc
+xschem redraw
+"}
+C {devices/launcher.sym} 570 -350 0 0 {name=h1
+descr="Load DC"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath dc
+"
+}
+C {devices/code_shown.sym} 520 -560 0 0 {name="Setup testbench"
+only_toplevel=false
+place=header
+format="tcleval( @value )"
+value="
+.control
+write
+set appendwrite
+.endc
+
+"}
+C {devices/launcher.sym} 570 -270 0 0 {name=h3
+descr="Load AC"
+tclcommand="
+set filepath $\{netlist_dir\}/rawspice.raw
+puts $filepath
+
+xschem raw_clear
+xschem raw_read $filepath ac
+"
+}

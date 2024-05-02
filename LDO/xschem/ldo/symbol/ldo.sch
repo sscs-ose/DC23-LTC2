@@ -10,10 +10,10 @@ lab=vdd}
 N 910 -560 1000 -560 {
 lab=op_out}
 N 1140 -530 1140 -510 { lab=out}
-N 1140 -280 1140 -260 { lab=#net1}
+N 1140 -280 1140 -260 { lab=feedback}
 N 1140 -560 1240 -560 { lab=vdd}
-N 1140 -300 1140 -290 { lab=#net1}
-N 1140 -290 1140 -280 { lab=#net1}
+N 1140 -300 1140 -290 { lab=feedback}
+N 1140 -290 1140 -280 { lab=feedback}
 N 1000 -560 1100 -560 { lab=op_out}
 N 1140 -660 1140 -590 {
 lab=vdd}
@@ -22,9 +22,9 @@ lab=vdd}
 N 1140 -510 1140 -480 {
 lab=out}
 N 1140 -420 1140 -380 {
-lab=#net1}
+lab=feedback}
 N 1140 -260 1140 -230 {
-lab=#net1}
+lab=feedback}
 N 1140 -740 1140 -660 {
 lab=vdd}
 N 820 -740 820 -680 {
@@ -36,7 +36,7 @@ lab=vdd}
 N 1140 -520 1230 -520 {
 lab=out}
 N 1140 -320 1140 -300 {
-lab=#net1}
+lab=feedback}
 N 1140 -170 1140 -140 {
 lab=vss}
 N 980 -760 980 -740 {
@@ -70,15 +70,15 @@ lab=iref}
 N 720 -580 760 -580 {
 lab=ref}
 N 660 -540 760 -540 {
-lab=#net1}
+lab=feedback}
 N 660 -270 1140 -270 {
-lab=#net1}
+lab=feedback}
 N 660 -540 660 -270 {
-lab=#net1}
+lab=feedback}
 N 900 -560 910 -560 {
 lab=op_out}
 N 1140 -380 1140 -320 {
-lab=#net1}
+lab=feedback}
 N 1290 -170 1310 -170 {
 lab=vss}
 N 1290 -210 1290 -170 {
@@ -141,3 +141,4 @@ model=ppolyf_u_1k
 spiceprefix=X
 m=1}
 C {devices/lab_pin.sym} 1270 -210 0 0 {name=p11 sig_type=std_logic lab=vss}
+C {devices/lab_pin.sym} 660 -430 0 0 {name=p12 sig_type=std_logic lab=feedback}

@@ -479,70 +479,63 @@ gf180mcu-klayout-io:
 gf180mcu-klayout-sc:
 	$(KLAYOUT) -e -t $(PDK_SC_GDS)
 
+# When extracting io and stdcell, the internal content of each device should be flat
+# not have subcells
 
-gf180mcu-io-bb:
-	cp $(PDK_IO_SPICE) $(PDK_IO_BB_SPICE)
+TOP_DUT=gf180mcu_fd_io__asig_5p0
+TOP_DUT=gf180mcu_fd_io__bi_24t
+TOP_DUT=gf180mcu_fd_io__bi_t
+TOP_DUT=gf180mcu_fd_io__brk2
+TOP_DUT=gf180mcu_fd_io__brk5
+TOP_DUT=gf180mcu_fd_io__cor
+TOP_DUT=gf180mcu_fd_io__dvdd
+TOP_DUT=gf180mcu_fd_io__dvss
+TOP_DUT=gf180mcu_fd_io__fill1
+TOP_DUT=gf180mcu_fd_io__fill5
+TOP_DUT=gf180mcu_fd_io__fill10
+TOP_DUT=gf180mcu_fd_io__fillnc
+TOP_DUT=gf180mcu_fd_io__in_c
+TOP_DUT=gf180mcu_fd_io__in_s
 
-	# Delete pasive elements
-	sed -i "/^[D*]/d" $(PDK_IO_BB_SPICE)
+verify-extraction:
+	make TOP=$(TOP_DUT) \
+		SCH_NETLIST_PREFIX=$(PDK_IO_SPICE) \
+		SCH_NETLIST_NOPREFIX=$(PDK_IO_SPICE) \
+		netgen-lvs-magic-2
 
-	# Delete subckt instance declaration
-	sed -i "/[ ]cap_nmos_06v0[ ]/d" $(PDK_IO_BB_SPICE)
-	sed -i "/[ ]ppolyf_u[ ]/d" $(PDK_IO_BB_SPICE)
+# Padring procedure:
+# - Start from a lvs clean spice, that means, the same extracted netlist
+# - Clean the re-generated spices
+#     - Remove all the subckt that has the same port list as the pdk pad spice
+#     - add a prefix to each generated and modified io pad (FALSE_gf180mcu_fd_io__asig_5p0)
+#     - Separate and store the important subcells on different files.
+#     - For each subckt, group by cell type.
+#     - Change the names of power nets. (tail_*, head_*, dvdd_1_*)
 
-	# Delete 1 line after subckt instance declaration
-	sed -i "/[ ]nfet_06v0_dss[ ]/{N;d;}" $(PDK_IO_BB_SPICE)
-	sed -i "/[ ]pfet_06v0_dss[ ]/{N;d;}" $(PDK_IO_BB_SPICE)
-
-	# Delete 2 lines after subckt instance declaration
-	sed -i "/[ ]nfet_06v0[ ]/{N;N;d;}" $(PDK_IO_BB_SPICE)
-	sed -i "/[ ]pfet_06v0[ ]/{N;N;d;}" $(PDK_IO_BB_SPICE)
-
-	# Delete empty lines
-	sed -i "/^$$/d" $(PDK_IO_BB_SPICE)
+## - Separate the cells by power domain, rename nets to make them understandable
+## - Replace 
 
 
-gf180mcu-io-bb-lvs: gf180mcu-io-bb
-	$(MAKE) TOP=gf180mcu_fd_io__asig_5p0 SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__bi_24t   SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__bi_t     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__brk2     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__brk5     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__cor      SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__dvdd     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__dvss     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__fill1    SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__fill5    SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__fill10   SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__fillnc   SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__in_c     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
-	$(MAKE) TOP=gf180mcu_fd_io__in_s     SCH_NETLIST_PREFIX=$(PDK_IO_BB_SPICE) netgen-lvs-magic
+# Match uniquely
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__fill5 NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__fill5
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__fill10 NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__fill10
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__dvdd NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__dvdd
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__dvss NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__dvss
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__cor NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__cor
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__asig_5p0 NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__asig_5p0
 
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__asig_5p0/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__asig_5p0/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_24t/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_24t/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_t/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__bi_t/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk2/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk2/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk5/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__brk5/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__cor/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__cor/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvdd/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvdd/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvss/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__dvss/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill1/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill1/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill5/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill5/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill10/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fill10/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fillnc/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__fillnc/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_c/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_c/output/reports/lvs_magic_comp.out)
-	@grep "Device classes" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_s/output/reports/lvs_magic_comp.out)
-	@grep "Final result:" $(wildcard $(MODULE_SOURCE_DIR)/gf180mcu_fd_io__in_s/output/reports/lvs_magic_comp.out)
+# Top level failed pin matching
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__bi_t NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__bi_t
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__in_c NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__in_c
+
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=padring_side_right NETGEN_SCHEMATIC_CELL=DELETE_padring_side_right
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=padring_side_top NETGEN_SCHEMATIC_CELL=DELETE_padring_side_top
+
+# Mismatch
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=padring_side_left NETGEN_SCHEMATIC_CELL=DELETE_padring_side_left
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=padring_side_bottom NETGEN_SCHEMATIC_CELL=DELETE_padring_side_bottom
+
+lvs-padring:
+	$(MAKE) TOP=PADRING_LTC2_V3 netgen-lvs-magic-2 \
+		SCH_NETLIST_PREFIX=PADRING_LTC2_V3/spice/PADRING_LTC2_V3.spice \
+		$(LVS_PADRING_CELL)
