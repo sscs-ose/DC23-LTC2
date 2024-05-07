@@ -76,10 +76,6 @@ KLAYOUT_DRC=python $(KLAYOUT_HOME)/drc/run_drc.py \
 all: drc
 
 
-clean:
-	rm -rf $(CLEANABLE)
-
-
 dependencies:
 ifeq (,$(GDS))
 	$(call ERROR_MESSAGE, GDS variable not defined)
@@ -148,19 +144,35 @@ endif
 .PHONY: drc
 drc: dependencies
 	rm $(ALL_LYRDB) || true
-	$(MAKE) drc-beol drc-feol drc-density drc-antenna drc-offgrid
+	$(MAKE) drc-offgrid drc-density drc-antenna drc-beol drc-feol
 	$(MAKE) drc-view
 
 
 .PHONY: drc-full
 drc-full: dependencies
 	rm $(ALL_LYRDB) || true
-	$(MAKE) DRC_FLAT=Y drc-beol drc-feol drc-density drc-antenna
 	$(MAKE) drc-offgrid
+	$(MAKE) DRC_FLAT=Y drc-density drc-antenna drc-beol drc-feol
 	$(MAKE) drc-view
 
 
 .PHONY: drc-raw
 drc-raw: dependencies
 	$(KLAYOUT_DRC) --antenna --density || true
+	$(MAKE) drc-view
+
+drc-testing: dependencies
+	rm $(ALL_LYRDB) || true
+
+	# Don't know
+	$(MAKE) DRC_FLAT=Y drc-antenna
+
+	# Fasts
+	$(MAKE) drc-offgrid
+	$(MAKE) DRC_FLAT=Y drc-density
+
+	# Slow
+	$(MAKE) DRC_FLAT=Y drc-beol
+	$(MAKE) DRC_FLAT=Y drc-feol
+
 	$(MAKE) drc-view
