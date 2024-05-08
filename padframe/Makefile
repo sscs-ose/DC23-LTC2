@@ -482,26 +482,27 @@ gf180mcu-klayout-sc:
 # When extracting io and stdcell, the internal content of each device should be flat
 # not have subcells
 
-TOP_DUT=gf180mcu_fd_io__asig_5p0
-TOP_DUT=gf180mcu_fd_io__bi_24t
-TOP_DUT=gf180mcu_fd_io__bi_t
-TOP_DUT=gf180mcu_fd_io__brk2
-TOP_DUT=gf180mcu_fd_io__brk5
-TOP_DUT=gf180mcu_fd_io__cor
-TOP_DUT=gf180mcu_fd_io__dvdd
-TOP_DUT=gf180mcu_fd_io__dvss
-TOP_DUT=gf180mcu_fd_io__fill1
-TOP_DUT=gf180mcu_fd_io__fill5
-TOP_DUT=gf180mcu_fd_io__fill10
-TOP_DUT=gf180mcu_fd_io__fillnc
-TOP_DUT=gf180mcu_fd_io__in_c
-TOP_DUT=gf180mcu_fd_io__in_s
 
-verify-extraction:
-	make TOP=$(TOP_DUT) \
+# TOP=gf180mcu_fd_io__asig_5p0  # Circuits match uniquely.
+# TOP=gf180mcu_fd_io__cor       # Circuits match uniquely.
+# TOP=gf180mcu_fd_io__dvdd      # Circuits match uniquely.
+# TOP=gf180mcu_fd_io__dvss      # Circuits match uniquely.
+# TOP=gf180mcu_fd_io__fill5     # Circuits match uniquely.
+# TOP=gf180mcu_fd_io__fill10    # Circuits match uniquely.
+# TOP=gf180mcu_fd_io__brk2      # contains no devices.
+# TOP=gf180mcu_fd_io__brk5      # contains no devices.
+# TOP=gf180mcu_fd_io__fill1     # contains no devices.
+# TOP=gf180mcu_fd_io__fillnc    # contains no devices.
+# TOP=gf180mcu_fd_io__bi_24t    # Circuits match uniquely. Property errors were found.
+# TOP=gf180mcu_fd_io__bi_t      # Circuits match uniquely. Property errors were found.
+# TOP=gf180mcu_fd_io__in_c      # Circuits match uniquely. Property errors were found.
+# TOP=gf180mcu_fd_io__in_s      # Circuits match uniquely. Property errors were found.
+
+verify-pad-extraction:
+	$(MAKE) \
 		SCH_NETLIST_PREFIX=$(PDK_IO_SPICE) \
 		SCH_NETLIST_NOPREFIX=$(PDK_IO_SPICE) \
-		netgen-lvs-magic-2
+		netgen-lvs-script
 
 # Padring procedure:
 # - Start from a lvs clean spice, that means, the same extracted netlist
@@ -519,6 +520,7 @@ verify-extraction:
 # Match uniquely
 # LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__fill5 NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__fill5
 # LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__fill10 NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__fill10
+# LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__fill10 NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__fillnc
 # LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__dvdd NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__dvdd
 # LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__dvss NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__dvss
 # LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=gf180mcu_fd_io__cor NETGEN_SCHEMATIC_CELL=gf180mcu_fd_io__cor
@@ -536,6 +538,13 @@ verify-extraction:
 # LVS_PADRING_CELL=NETGEN_LAYOUT_CELL=padring_side_bottom NETGEN_SCHEMATIC_CELL=DELETE_padring_side_bottom
 
 lvs-padring:
-	$(MAKE) TOP=PADRING_LTC2_V3 netgen-lvs-magic-2 \
+	$(MAKE) TOP=PADRING_LTC2_V3 netgen-lvs-script \
 		SCH_NETLIST_PREFIX=PADRING_LTC2_V3/spice/PADRING_LTC2_V3.spice \
 		$(LVS_PADRING_CELL)
+
+
+lvs-with-spice:
+	$(MAKE) \
+		SCH_NETLIST_PREFIX=$(MODULE_DIR)/spice/$(TOP).spice \
+		SCH_NETLIST_NOPREFIX=$(MODULE_DIR)/spice/$(TOP).spice \
+		netgen-lvs-script

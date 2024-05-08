@@ -129,7 +129,7 @@ sections:
   - spacing_analog
   - spacing_analog
 
-  - spacing_vss
+  - spacing_vdd
 
   - spacing_digital_in
   - spacing_digital_in
