@@ -5,7 +5,8 @@ include base.mk
 PDK=gf180mcuD
 
 # Relative or absolute path to gds
-GDS=
+TOP=
+GDS=$(TOP)
 
 # Cell to be evaluated on gds
 CELL=
@@ -144,8 +145,23 @@ endif
 .PHONY: drc
 drc: dependencies
 	rm $(ALL_LYRDB) || true
-	$(MAKE) drc-offgrid drc-density drc-antenna drc-beol drc-feol
-	$(MAKE) drc-view
+	$(MAKE) DRC_FLAT=Y drc-offgrid  # 
+	$(MAKE) DRC_FLAT=N drc-offgrid  # 
+	$(MAKE) DRC_FLAT=Y drc-density  # 
+	$(MAKE) DRC_FLAT=N drc-density  # 
+	$(MAKE) drc-antenna             # 
+	$(MAKE) drc-beol                # 
+	$(MAKE) drc-feol                # 
+	$(MAKE) drc-view                # 
+
+
+PHONY: layout-drc-evaluation
+layout-drc-evaluation:
+	make TOP=chile/TOP_CHILE_LDO.gds       drc #
+	make TOP=chile/TOP_CHILE_OPEN_LDO.gds  drc #
+	make TOP=korea/TOP_KOREA.gds           drc #
+	make TOP=japan/TOP_JAPAN.gds           drc #
+	make TOP=final/LTC2.gds                drc #
 
 
 .PHONY: drc-full
@@ -161,6 +177,8 @@ drc-raw: dependencies
 	$(KLAYOUT_DRC) --antenna --density || true
 	$(MAKE) drc-view
 
+
+.PHONY: drc-testing
 drc-testing: dependencies
 	rm $(ALL_LYRDB) || true
 
