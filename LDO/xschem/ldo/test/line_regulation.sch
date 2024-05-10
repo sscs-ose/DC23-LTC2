@@ -1,4 +1,4 @@
-v {xschem version=3.4.5 file_version=1.2
+v {xschem version=3.4.4 file_version=1.2
 }
 G {}
 K {}
@@ -6,15 +6,15 @@ V {}
 S {}
 E {}
 B 2 660 -210 1460 190 {flags=graph
-y1=-1.4442148
-y2=6.136986
+y1=-0.0191302
+y2=6.02919
 ypos1=0
 ypos2=2
 divy=5
 subdivy=4
 unity=1
-x1=0.001
-x2=6
+x1=-0.15338
+x2=6.94688
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -46,8 +46,8 @@ ypos2=2
 divy=5
 subdivy=4
 unity=1
-x1=0.001
-x2=6
+x1=-0.15338
+x2=6.94688
 divx=5
 subdivx=4
 xlabmag=1.0
@@ -112,13 +112,13 @@ lab=out}
 N -270 -260 -270 -250 {
 lab=ref}
 N 340 20 340 60 {
-lab=DVDD}
+lab=VDD}
 N 410 20 410 60 {
-lab=DVSS}
+lab=VSS}
 N 340 -10 340 20 {
-lab=DVDD}
+lab=VDD}
 N 410 -10 410 20 {
-lab=DVSS}
+lab=VSS}
 C {devices/isource.sym} -160 -90 2 0 {name=I1 value=10u
 }
 C {devices/gnd.sym} -160 -40 0 0 {name=l10 lab=GND}
@@ -161,7 +161,7 @@ IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
 Vs vin 0 5
 
 .nodeset v(out)=0
-.nodeset v(x1.pos)=0
+.nodeset v(x2.feedback)=0
 
 *supply_sweep
 .control
@@ -246,16 +246,27 @@ value="
 .include ../../../spice/ldo_clean.spice
 .include ../../../spice/ldo_pex.spice
 
-Xvdd DVDD DVSS VSS gf180mcu_fd_io__dvdd
-Xvss DVDD DVSS VDD gf180mcu_fd_io__dvss
+*Xvdd DVDD DVSS VSS gf180mcu_fd_io__dvdd
+*Xvss DVDD DVSS VDD gf180mcu_fd_io__dvss
 
-Xiref iref DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
-Xref  ref  DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
-Xout  out  DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
+*Xiref iref DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
+*Xref  ref  DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
+*Xout  out  DVDD DVSS VDD VSS gf180mcu_fd_io__asig_5p0
 
-*** vdd ref iref out vss ldo_*
-x1 vin ref iref out GND ldo_clean
-*x1 vin ref iref out GND ldo_pex
+
+
+*** writing format= xdevice vdd ref iref out vss ldo_*
+
+*** for using this SPICE extracted netlists, you may change spice_ignore
+*** value to 1 in the LDO symbol (this way you will bypass the prelayout LDO)
+
+*** for clean layout simulation
+
+*x2 vin ref iref out GND ldo_clean
+
+*** for parasitic extraction simulation
+
+x2 vin ref iref out GND ldo_pex
 "}
 C {symbol/ldo.sym} 20 -240 0 0 {name=x2
 spice_ignore=1}
@@ -263,8 +274,8 @@ C {devices/vsource.sym} 340 90 0 0 {name=V3 value=3.3}
 C {devices/vsource.sym} 410 90 0 0 {name=V4 value=0}
 C {devices/gnd.sym} 410 120 0 0 {name=l5 lab=GND}
 C {devices/gnd.sym} 340 120 0 0 {name=l6 lab=GND}
-C {devices/lab_pin.sym} 340 30 2 0 {name=l8 sig_type=std_logic lab=DVDD}
-C {devices/lab_pin.sym} 410 30 2 0 {name=l9 sig_type=std_logic lab=DVSS}
+C {devices/lab_pin.sym} 400 230 2 0 {name=l8 sig_type=std_logic lab=DVDD}
+C {devices/lab_pin.sym} 470 230 2 0 {name=l9 sig_type=std_logic lab=DVSS}
 C {devices/lab_pin.sym} 340 10 2 0 {name=l12 sig_type=std_logic lab=VDD}
 C {devices/lab_pin.sym} 410 10 2 0 {name=l13 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 20 -170 2 0 {name=l1 sig_type=std_logic lab=VSS}

@@ -177,7 +177,7 @@ CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.nodes)) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/extfiles))
 
-FULL_CLEANABLE:= $(CLEANABLE) \
+FULL_CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/output))
 
 # Logs
