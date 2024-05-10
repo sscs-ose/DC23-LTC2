@@ -296,18 +296,69 @@ create-module:
 	$(MAKE) create-layout
 
 
-lvs-with-klayout-deep:
+drc-with-klayout-deep:
 	# OTA COMPONENTS
-	make TOP=cm_nmos              GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
-	make TOP=cm_pmos              GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
-	make TOP=out_pmos             GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
-	make TOP=diff_pair            GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
-	make TOP=ota_res              GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
+	make TOP=cm_nmos              GND_NAME=vss DRC_FLAT=N  klayout-drc # 
+	make TOP=cm_pmos              GND_NAME=vss DRC_FLAT=N  klayout-drc # 
+	make TOP=out_pmos             GND_NAME=vss DRC_FLAT=N  klayout-drc # 
+	make TOP=diff_pair            GND_NAME=vss DRC_FLAT=N  klayout-drc # 
+	make TOP=ota_res              GND_NAME=vss DRC_FLAT=N  klayout-drc # 
 
 	# LDO
-	make TOP=ota                  GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
-	make TOP=resistor             GND_NAME=B   LVS_FLAT=N  klayout-lvs-only # Match
-	make TOP=waffle_1984          GND_NAME=S   LVS_FLAT=N  klayout-lvs-only # Match
+	make TOP=ota                  GND_NAME=vss DRC_FLAT=N  klayout-drc # 
+	make TOP=resistor             GND_NAME=B   DRC_FLAT=N  klayout-drc # 
+	make TOP=waffle_1984          GND_NAME=S   DRC_FLAT=N  klayout-drc # 
+	make TOP=ldo                  GND_NAME=vss DRC_FLAT=N  klayout-drc # Density/195
+	make TOP=open_ldo             GND_NAME=vss DRC_FLAT=N  klayout-drc # Density/198
+
+	# INTEGRATION
+	make TOP=TOP_CHILE_LDO        GND_NAME=vss DRC_FLAT=N  klayout-drc # Density/695
+	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss DRC_FLAT=N  klayout-drc # Density/711
+
+
+drc-with-klayout-flat:
+	$(call ERROR_MESSAGE,FLAT is not recommended)
+	# OTA COMPONENTS
+	make TOP=cm_nmos              GND_NAME=vss klayout-drc-full # 
+	make TOP=cm_pmos              GND_NAME=vss klayout-drc-full # 
+	make TOP=out_pmos             GND_NAME=vss klayout-drc-full # 
+	make TOP=diff_pair            GND_NAME=vss klayout-drc-full # 
+	make TOP=ota_res              GND_NAME=vss klayout-drc-full # 
+
+	# LDO
+	make TOP=ota                  GND_NAME=vss klayout-drc-full # 
+	make TOP=resistor             GND_NAME=B   klayout-drc-full # 
+	make TOP=waffle_1984          GND_NAME=S   klayout-drc-full # 
+	make TOP=ldo                  GND_NAME=vss klayout-drc-full # Density/1164
+	make TOP=open_ldo             GND_NAME=vss klayout-drc-full # Density/1166
+
+	# INTEGRATION
+	make full-clean && \
+	make TOP=TOP_CHILE_LDO        GND_NAME=vss DRC_FLAT=Y  \
+		klayout-drc-offgrid \
+		klayout-drc-density \
+		klayout-drc-antenna && \
+	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss DRC_FLAT=Y  \
+		klayout-drc-offgrid \
+		klayout-drc-density \
+		klayout-drc-antenna
+
+	make TOP=TOP_CHILE_LDO       klayout-drc-view # Density/70
+	make TOP=TOP_CHILE_OPEN_LDO  klayout-drc-view # Density/72
+
+
+lvs-with-klayout-deep:
+	# OTA COMPONENTS
+	make TOP=cm_nmos              GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # 
+	make TOP=cm_pmos              GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # 
+	make TOP=out_pmos             GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # 
+	make TOP=diff_pair            GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # 
+	make TOP=ota_res              GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # 
+
+	# LDO
+	make TOP=ota                  GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # 
+	make TOP=resistor             GND_NAME=B   LVS_FLAT=N  klayout-lvs-only # 
+	make TOP=waffle_1984          GND_NAME=S   LVS_FLAT=N  klayout-lvs-only # 
 	make TOP=ldo                  GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
 	make TOP=open_ldo             GND_NAME=vss LVS_FLAT=N  klayout-lvs-only # Match
 
@@ -317,74 +368,75 @@ lvs-with-klayout-deep:
 
 
 lvs-with-klayout-flat:
+	$(call ERROR_MESSAGE,FLAT is not recommended)
 	# OTA COMPONENTS
-	make TOP=cm_nmos              GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Match
-	make TOP=cm_pmos              GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Match
-	make TOP=out_pmos             GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Match
+	make TOP=cm_nmos              GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=cm_pmos              GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=out_pmos             GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
 	# diff_pair: Source is connected to cm, not vss. Difficult
-	make TOP=diff_pair            GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Match
-	make TOP=ota_res              GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Match
+	make TOP=diff_pair            GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=ota_res              GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
 	# LDO
-	make TOP=ota                  GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Dont Match
-	make TOP=resistor             GND_NAME=B   LVS_FLAT=Y  klayout-lvs-only # Match
-	make TOP=waffle_1984          GND_NAME=S   LVS_FLAT=Y  klayout-lvs-only # Match
-	make TOP=ldo                  GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Dont Match
-	make TOP=open_ldo             GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Dont Match
+	make TOP=ota                  GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=resistor             GND_NAME=B   LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=waffle_1984          GND_NAME=S   LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=ldo                  GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=open_ldo             GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
 	# INTEGRATION
-	make TOP=TOP_CHILE_LDO        GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Dont Match
-	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only # Dont Match
+	make TOP=TOP_CHILE_LDO        GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
+	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss LVS_FLAT=Y  klayout-lvs-only #
 
 
 extraction-with-magic:
 	# OTA COMPONENTS
-	make TOP=cm_nmos              GND_NAME=vss  magic-lvs-extraction # Good
-	make TOP=cm_pmos              GND_NAME=vss  magic-lvs-extraction # Good
-	make TOP=out_pmos             GND_NAME=vss  magic-lvs-extraction # Good
-	make TOP=diff_pair            GND_NAME=vss  magic-lvs-extraction # Good
-	make TOP=ota_res              GND_NAME=vss  magic-lvs-extraction # Good
+	make TOP=cm_nmos              GND_NAME=vss  magic-lvs-extraction #
+	make TOP=cm_pmos              GND_NAME=vss  magic-lvs-extraction #
+	make TOP=out_pmos             GND_NAME=vss  magic-lvs-extraction #
+	make TOP=diff_pair            GND_NAME=vss  magic-lvs-extraction #
+	make TOP=ota_res              GND_NAME=vss  magic-lvs-extraction #
 	# LDO
-	make TOP=ota                  GND_NAME=vss  magic-lvs-extraction # Good
-	make TOP=resistor             GND_NAME=B    magic-lvs-extraction # Good
-	make TOP=waffle_1984          GND_NAME=S    magic-lvs-extraction # BAAAAD It's too wrong
-	make TOP=ldo                  GND_NAME=vss  magic-lvs-extraction # 
-	make TOP=open_ldo             GND_NAME=vss  magic-lvs-extraction # 
+	make TOP=ota                  GND_NAME=vss  magic-lvs-extraction #
+	make TOP=resistor             GND_NAME=B    magic-lvs-extraction #
+	make TOP=waffle_1984          GND_NAME=S    magic-lvs-extraction #
+	make TOP=ldo                  GND_NAME=vss  magic-lvs-extraction #
+	make TOP=open_ldo             GND_NAME=vss  magic-lvs-extraction #
 	# INTEGRATION
-	make TOP=TOP_CHILE_LDO        GND_NAME=vss  magic-lvs-extraction # 
-	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss  magic-lvs-extraction # 
+	make TOP=TOP_CHILE_LDO        GND_NAME=vss  magic-lvs-extraction #
+	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss  magic-lvs-extraction #
 
 
 lvs-with-magic:
 	# OTA COMPONENTS
-	make TOP=cm_nmos              GND_NAME=vss  netgen-lvs-script # Match Uniquely
-	make TOP=cm_pmos              GND_NAME=vss  netgen-lvs-script # Match Uniquely
-	make TOP=out_pmos             GND_NAME=vss  netgen-lvs-script # Match Uniquely
-	make TOP=diff_pair            GND_NAME=vss  netgen-lvs-script # Networks match locally but not globally.
-	make TOP=ota_res              GND_NAME=vss  netgen-lvs-script # Match Uniquely
+	make TOP=cm_nmos              GND_NAME=vss  netgen-lvs-script #
+	make TOP=cm_pmos              GND_NAME=vss  netgen-lvs-script #
+	make TOP=out_pmos             GND_NAME=vss  netgen-lvs-script #
+	make TOP=diff_pair            GND_NAME=vss  netgen-lvs-script #
+	make TOP=ota_res              GND_NAME=vss  netgen-lvs-script #
 	# LDO
 	# Caps have inverted polarity on klayout and xschem
-	make TOP=ota                  GND_NAME=vss  netgen-lvs-script # Match Uniquely
-	make TOP=resistor             GND_NAME=B    netgen-lvs-script # Match Uniquely
-	make TOP=waffle_1984          GND_NAME=S    netgen-lvs-script # Match Uniquely
-	make TOP=ldo                  GND_NAME=vss  netgen-lvs-script # Match Uniquely
-	make TOP=open_ldo             GND_NAME=vss  netgen-lvs-script # 
+	make TOP=ota                  GND_NAME=vss  netgen-lvs-script #
+	make TOP=resistor             GND_NAME=B    netgen-lvs-script #
+	make TOP=waffle_1984          GND_NAME=S    netgen-lvs-script #
+	make TOP=ldo                  GND_NAME=vss  netgen-lvs-script #
+	make TOP=open_ldo             GND_NAME=vss  netgen-lvs-script #
 	# INTEGRATION
-	make TOP=TOP_CHILE_LDO        GND_NAME=vss  netgen-lvs-script # Match Uniquely
-	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss  netgen-lvs-script # 
+	make TOP=TOP_CHILE_LDO        GND_NAME=vss  netgen-lvs-script #
+	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss  netgen-lvs-script #
 
 
 comparison-klayout-magic-extraction:
 	# OTA COMPONENTS
-	make TOP=cm_nmos              GND_NAME=vss  netgen-compare-magic-klayout # Netlist match
-	make TOP=cm_pmos              GND_NAME=vss  netgen-compare-magic-klayout # Netlist match
-	make TOP=out_pmos             GND_NAME=vss  netgen-compare-magic-klayout # Netlist match
-	make TOP=diff_pair            GND_NAME=vss  netgen-compare-magic-klayout # Netlist match
-	make TOP=ota_res              GND_NAME=vss  netgen-compare-magic-klayout # Netlist match
+	make TOP=cm_nmos              GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=cm_pmos              GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=out_pmos             GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=diff_pair            GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=ota_res              GND_NAME=vss  netgen-compare-magic-klayout #
 	# LDO
-	make TOP=ota                  GND_NAME=vss  netgen-compare-magic-klayout # Netlist match
-	make TOP=resistor             GND_NAME=B    netgen-compare-magic-klayout # Netlist match
-	make TOP=waffle_1984          GND_NAME=S    netgen-compare-magic-klayout # Netlist match
-	make TOP=ldo                  GND_NAME=vss  netgen-compare-magic-klayout # ERROR
-	make TOP=open_ldo             GND_NAME=vss  netgen-compare-magic-klayout # ERROR
+	make TOP=ota                  GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=resistor             GND_NAME=B    netgen-compare-magic-klayout #
+	make TOP=waffle_1984          GND_NAME=S    netgen-compare-magic-klayout #
+	make TOP=ldo                  GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=open_ldo             GND_NAME=vss  netgen-compare-magic-klayout #
 	# INTEGRATION
-	make TOP=TOP_CHILE_LDO        GND_NAME=vss  netgen-compare-magic-klayout # ERROR
-	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss  netgen-compare-magic-klayout # ERROR
+	make TOP=TOP_CHILE_LDO        GND_NAME=vss  netgen-compare-magic-klayout #
+	make TOP=TOP_CHILE_OPEN_LDO   GND_NAME=vss  netgen-compare-magic-klayout #
