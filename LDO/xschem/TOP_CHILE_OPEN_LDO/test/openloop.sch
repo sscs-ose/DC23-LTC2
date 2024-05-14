@@ -59,7 +59,7 @@ m=1
 value=1
 footprint=1206
 device="ceramic capacitor"}
-C {devices/gnd.sym} -430 0 0 0 {name=l5 lab=GND}
+C {devices/gnd.sym} -430 30 0 0 {name=l5 lab=GND}
 C {devices/code.sym} -491.25 -411.875 0 0 {name=MODELS_TT
 only_toplevel=true
 place=header
@@ -150,11 +150,12 @@ value="
 "}
 C {devices/code_shown.sym} -330 120 0 0 {name="Extracted devices"
 only_toplevel=false
-spice_ignore=0
+spice_ignore=1
 value="
+*.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.cleaned.spice
 *.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.spice
-*.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.edited.spice
-.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.cleaned.spice
+.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.edited.spice
+
 
 *****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO_pex
 x2     iref vin_p GND feedback ref out vdd TOP_CHILE_OPEN_LDO_pex
@@ -168,3 +169,17 @@ C {devices/gnd.sym} 80 -100 0 0 {name=l14 lab=GND}
 C {devices/lab_pin.sym} 30 -80 2 0 {name=l15 sig_type=std_logic lab=ref}
 C {devices/lab_pin.sym} -310 -190 0 0 {name=p1 sig_type=std_logic lab=vin_p}
 C {devices/lab_pin.sym} -300 -140 3 0 {name=p3 sig_type=std_logic lab=feedback}
+C {devices/lab_pin.sym} -430 0 2 0 {name=l1 sig_type=std_logic lab=vin}
+C {devices/code_shown.sym} -340 310 0 0 {name=Clean devices
+only_toplevel=false
+spice_ignore=0
+value="
+*.include ../../../spice/TOP_CHILE_OPEN_LDO_clean.spice
+
+*****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO_clean
+*x2     iref vin_p GND feedback ref out vdd TOP_CHILE_OPEN_LDO_clean
+
+.include ../../../spice/TOP_CHILE_OPEN_LDO.cir
+*****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO
+x2     iref vin_p GND feedback ref out vdd TOP_CHILE_OPEN_LDO
+"}
