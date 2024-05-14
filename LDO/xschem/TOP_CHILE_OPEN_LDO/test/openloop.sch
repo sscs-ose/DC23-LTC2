@@ -6,13 +6,13 @@ V {}
 S {}
 E {}
 N -520 130 -520 150 {
-lab=vin}
+lab=GND}
 N -620 130 -620 150 {
 lab=GND}
 N 30 -160 120 -160 {
-lab=#net1}
-N 180 -160 200 -160 {
 lab=out}
+N 180 -160 200 -160 {
+lab=#net1}
 N -430 -140 -430 -130 {
 lab=vin_p}
 N -430 -70 -430 -60 {
@@ -20,7 +20,7 @@ lab=#net2}
 N 200 -40 200 -20 {
 lab=#net3}
 N 200 -160 200 -100 {
-lab=out}
+lab=#net1}
 N 200 40 200 60 {
 lab=GND}
 N 30 -100 80 -100 {
@@ -46,7 +46,7 @@ C {devices/isource.sym} -520 100 2 0 {name=I1 value=10u
 C {devices/gnd.sym} -620 150 0 0 {name=l2 lab=GND}
 C {devices/vsource.sym} -620 100 0 0 {name=V1 value=1.25}
 C {devices/lab_pin.sym} -620 50 2 0 {name=l3 sig_type=std_logic lab=ref}
-C {devices/iopin.sym} 200 -160 0 0 {name=p2 lab=out}
+C {devices/iopin.sym} 100 -160 3 0 {name=p2 lab=out}
 C {devices/vsource.sym} -430 -30 0 0 {name=vt value=0}
 C {devices/vsource.sym} 150 -160 3 0 {name=v2 value=0}
 C {devices/res.sym} -370 -140 1 0 {name=R3
@@ -59,7 +59,7 @@ m=1
 value=1
 footprint=1206
 device="ceramic capacitor"}
-C {devices/gnd.sym} -430 30 0 0 {name=l5 lab=GND}
+C {devices/gnd.sym} -430 0 0 0 {name=l5 lab=GND}
 C {devices/code.sym} -491.25 -411.875 0 0 {name=MODELS_TT
 only_toplevel=true
 place=header
@@ -92,8 +92,8 @@ R10 out 0 \{R\}
 Vs vin 0 5
 
 .nodeset v(out)=0
-.nodeset v(x2.pos)=0
 .nodeset v(feedback)=1.25
+.nodeset v(vin_p)=1.25
 
 *Stability_Analysis (openloop)
 .control
@@ -108,7 +108,7 @@ meas ac cut_freq FIND frequency WHEN vdb(out)=0
 
 .endc
 "}
-C {devices/lab_pin.sym} -520 150 3 0 {name=l6 sig_type=std_logic lab=vin}
+C {devices/lab_pin.sym} -470 140 3 0 {name=l6 sig_type=std_logic lab=vin}
 C {devices/capa.sym} 200 10 0 0 {name=C1
 m=1
 value=10u
@@ -148,17 +148,16 @@ value="
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ff
 
 "}
-C {devices/code_shown.sym} -330 120 0 0 {name="Extracted devices"
+C {devices/code_shown.sym} -330 120 0 0 {name="Magic pex extraction"
 only_toplevel=false
-spice_ignore=1
+spice_ignore=0
 value="
+.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.spice
+*.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.edited.spice
 *.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.cleaned.spice
-*.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.spice
-.include ../../../spice/TOP_CHILE_OPEN_LDO_pex.edited.spice
-
 
 *****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO_pex
-x2     iref vin_p GND feedback ref out vdd TOP_CHILE_OPEN_LDO_pex
+x2     iref vin_p GND feedback ref out vin TOP_CHILE_OPEN_LDO_pex
 "}
 C {devices/lab_pin.sym} -520 50 2 0 {name=l9 sig_type=std_logic lab=iref}
 C {symbol/TOP_CHILE_OPEN_LDO.sym} -120 -120 0 0 {name=x2
@@ -169,17 +168,20 @@ C {devices/gnd.sym} 80 -100 0 0 {name=l14 lab=GND}
 C {devices/lab_pin.sym} 30 -80 2 0 {name=l15 sig_type=std_logic lab=ref}
 C {devices/lab_pin.sym} -310 -190 0 0 {name=p1 sig_type=std_logic lab=vin_p}
 C {devices/lab_pin.sym} -300 -140 3 0 {name=p3 sig_type=std_logic lab=feedback}
-C {devices/lab_pin.sym} -430 0 2 0 {name=l1 sig_type=std_logic lab=vin}
-C {devices/code_shown.sym} -340 310 0 0 {name=Clean devices
+C {devices/code_shown.sym} -330 310 0 0 {name="Magic clean extraction"
 only_toplevel=false
-spice_ignore=0
+spice_ignore=1
 value="
-*.include ../../../spice/TOP_CHILE_OPEN_LDO_clean.spice
-
-*****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO_clean
-*x2     iref vin_p GND feedback ref out vdd TOP_CHILE_OPEN_LDO_clean
-
-.include ../../../spice/TOP_CHILE_OPEN_LDO.cir
-*****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO
-x2     iref vin_p GND feedback ref out vdd TOP_CHILE_OPEN_LDO
+.include ../../../spice/TOP_CHILE_OPEN_LDO_clean.spice
+ ****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO_clean
+x2     iref vin_p GND feedback ref out vin TOP_CHILE_OPEN_LDO_clean
 "}
+C {devices/code_shown.sym} -340 420 0 0 {name="Klayout clean extraction"
+only_toplevel=false
+spice_ignore=1
+value="
+.include ../../../spice/TOP_CHILE_OPEN_LDO.cir
+ ****  iref vin_p vss feedback ref out vdd TOP_CHILE_OPEN_LDO
+x2     iref vin_p GND feedback ref out vin TOP_CHILE_OPEN_LDO
+"}
+C {devices/gnd.sym} -520 150 0 0 {name=l1 lab=GND}

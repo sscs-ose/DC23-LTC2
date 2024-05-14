@@ -476,6 +476,61 @@ extraction-with-magic:
 	make TOP=TOP_CHILE_OPEN_LDO                       GND_NAME=vss  klayout-lvs-only                  # Congratulations! Netlists match.
 
 
+PEX_EDITED=$(basename $(LAYOUT_NETLIST_PEX))_edited.spice
+compare-magic-pex-extraction-with-netgen:
+ifeq (,$(wildcard $(LAYOUT_NETLIST_PEX)))
+	$(call ERROR_MESSAGE, There's no pex results)
+endif
+	echo $(basename $(LAYOUT_NETLIST_PEX))
+	cp $(LAYOUT_NETLIST_PEX) $(PEX_EDITED)
+
+	# This works because magic extracts everything from the pdk with X.
+	# Things with C or R are parasitics
+	sed -i "/^C/d" $(PEX_EDITED)
+	sed -i "/^R/d" $(PEX_EDITED)
+
+	make \
+		NETGEN_LAYOUT_SPICE=$(PEX_EDITED) \
+		NETGEN_LAYOUT_CELL=$(GDS_CELL)_pex \
+		NETGEN_SCHEMATIC_SPICE=$(LAYOUT_NETLIST_MAGIC) \
+		NETGEN_SCHEMATIC_CELL=$(GDS_CELL)_clean \
+		netgen-lvs-script
+
+
+compare-magic-pex-extraction-with-klayout:
+ifeq (,$(wildcard $(LAYOUT_NETLIST_PEX)))
+	$(call ERROR_MESSAGE, There's no pex results)
+endif
+	echo $(basename $(LAYOUT_NETLIST_PEX))
+	cp $(LAYOUT_NETLIST_PEX) $(PEX_EDITED)
+
+	# This works because magic extracts everything from the pdk with X.
+	# Things with C or R are parasitics
+	sed -i "/^C/d" $(PEX_EDITED)
+	sed -i "/^R/d" $(PEX_EDITED)
+	sed -i "/.subckt/s/_pex / /" $(PEX_EDITED)
+	head $(PEX_EDITED)
+	make \
+		GND_NAME=vss \
+		LAYOUT_NETLIST_MAGIC=$(PEX_EDITED) \
+		klayout-compare-magic-extraction
+
+
 generate-pex-netlists:
+	make TOP=open_ldo  GND_NAME=0 MAGIC_FORCE_FLAT=Y magic-lvs-extraction subckt-count # 1
+	make TOP=open_ldo                                magic-pex-extraction
+	make TOP=open_ldo                                compare-magic-pex-extraction-with-netgen   # Circuits match uniquely
+	make TOP=open_ldo                                compare-magic-pex-extraction-with-klayout  # Congratulations! Netlists match.
+
+
 	make TOP=TOP_CHILE_LDO       GND_NAME=vss magic-pex-extraction
-	make TOP=TOP_CHILE_OPEN_LDO  GND_NAME=vss magic-pex-extraction
+
+
+	make TOP=TOP_CHILE_OPEN_LDO  GND_NAME=0 MAGIC_FORCE_FLAT=Y magic-lvs-extraction subckt-count # 1
+	make TOP=TOP_CHILE_OPEN_LDO                                magic-pex-extraction
+	make TOP=TOP_CHILE_OPEN_LDO                                compare-magic-pex-extraction-with-netgen  # Circuits match uniquely
+	make TOP=TOP_CHILE_OPEN_LDO                                compare-magic-pex-extraction-with-klayout # Congratulations! Netlists match.
+
+
+
+

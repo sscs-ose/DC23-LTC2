@@ -1,213 +1,66 @@
-v {xschem version=3.4.4 file_version=1.2
+v {xschem version=3.4.5 file_version=1.2
 }
 G {}
 K {}
 V {}
 S {}
 E {}
-N 80 0 170 0 {
-lab=vout}
-N 170 90 170 120 {
-lab=vss}
-N 20 40 20 50 {
-lab=vss}
-N 0 -60 -0 -50 {
-lab=vdd}
-N -100 20 -100 60 {
-lab=vcm}
-N -100 120 -100 150 {
-lab=vss}
-N -190 -20 -150 -20 {
-lab=vin}
-N -170 -140 -100 -140 {
-lab=#net1}
-N -40 -140 170 -140 {
-lab=#net2}
-N -150 -20 -90 -20 {
-lab=vin}
-N -260 -140 -170 -140 {
-lab=#net1}
-N -270 -140 -260 -140 {
-lab=#net1}
-N -270 -140 -270 -20 {
-lab=#net1}
-N -270 -20 -250 -20 {
-lab=#net1}
-N -290 -20 -270 -20 {
-lab=#net1}
-N -20 140 -20 150 {
-lab=vdd}
-N -380 -20 -350 -20 {
-lab=vcm}
-N -340 160 -340 180 {
-lab=#net3}
-N -340 240 -340 260 {
-lab=vcm}
-N -340 80 -340 100 {
-lab=vin}
-N -480 230 -480 260 {
-lab=vss}
-N -480 140 -480 170 {
-lab=vdd}
-N -560 230 -560 260 {
+N -520 130 -520 150 {
 lab=GND}
-N -560 140 -560 170 {
-lab=vss}
-N 170 -140 170 -100 {
+N -620 130 -620 150 {
+lab=GND}
+N 30 -160 120 -160 {
+lab=out}
+N 180 -160 200 -160 {
+lab=#net1}
+N -430 -140 -430 -130 {
+lab=vin_p}
+N -430 -70 -430 -60 {
 lab=#net2}
-N 170 -40 170 -0 {
-lab=vout}
-N 170 0 170 30 {
-lab=vout}
-N -20 60 -20 80 {
+N 200 -40 200 -20 {
+lab=#net3}
+N 200 -160 200 -100 {
+lab=#net1}
+N 200 40 200 60 {
+lab=GND}
+N 30 -100 80 -100 {
+lab=GND}
+N -340 -140 -270 -140 {
+lab=feedback}
+N -450 -140 -400 -140 {
+lab=vin_p}
+N -450 -200 -450 -140 {
+lab=vin_p}
+N -450 -200 -310 -200 {
+lab=vin_p}
+N -310 -200 -310 -160 {
+lab=vin_p}
+N -310 -160 -270 -160 {
+lab=vin_p}
+N -620 30 -620 70 {
+lab=ref}
+N -520 30 -520 70 {
 lab=iref}
-N -100 20 -90 20 {
-lab=vcm}
-N -90 -20 -60 -20 {
-lab=vin}
-N -90 20 -60 20 {
-lab=vcm}
-C {devices/code_shown.sym} -1420 -280 0 0 {name=SIMULATION only_toplevel=false 
-place=header
-value="
-* Circuit Parameters
-.param iref = 10u
-.param vdd  = 5
-.param vss  = 0.0
-.param vcm  = 1.25
-.param vac  = 60m
-.param w857 = 5u
-.param l857 = 1u
-.param m857 = 1
-.param wpar = 10u
-.param lpar = 1u
-.param mpar = 1
-.param w34  = 10u
-.param l34  = 1u
-.param m34  = 1
-.param w6   = 100u
-.param l6   = 1u
-.param m6   = 1
-
-.param m5   = 1
-.param m7   = 5
-
-* OP Parameters & Signals to save
-.save all
-
-*Simulation
-.control
-  set color0 = white
-  
-  ac dec 100 1 10G
-  setplot ac1
-  meas ac GBW when vdb(vout)=0
-  meas ac DCG find vdb(vout) at=1
-  meas ac PM find vp(vout) when vdb(vout)=0
-  print PM*180/PI
-  meas ac GM find vdb(vout) when vp(vout)=0
-  plot vdb(vout) \{vp(vout)*180/PI\}
-  write tb_opamp_openloop_ac1.raw
-
-  reset
-  op
-  setplot op1
-  unset filetype
-  write tb_opamp_openloop.raw
-
-print @m.x1.xm8.m0[vgs]-@m.x1.xm8.m0[vth]
-print @m.x1.xm8.m0[vds]
-print @m.x1.xm8.m0[id]
-print **************
-print @m.x1.xm7.m0[vgs]-@m.x1.xm7.m0[vth]
-print @m.x1.xm7.m0[vds]
-print @m.x1.xm7.m0[id]
-print **************
-print @m.x1.xm6.m0[vgs]-@m.x1.xm6.m0[vth]
-print @m.x1.xm6.m0[vds]
-print @m.x1.xm6.m0[gm]
-print @m.x1.xm6.m0[gm]/@m.x1.xm6.m0[id]
-print **************
-print @m.x1.xm5.m0[vgs]-@m.x1.xm5.m0[vth]
-print @m.x1.xm5.m0[vds]
-print @m.x1.xm5.m0[id]
-print **************
-print @m.x1.xm1.m0[vgs]-@m.x1.xm1.m0[vth]
-print @m.x1.xm1.m0[vds]
-print @m.x1.xm1.m0[id]
-print @m.x1.xm1.m0[gm]
-print @m.x1.xm1.m0[gm]/@m.x1.xm1.m0[id]
-print **************
-print @m.x1.xm2.m0[vgs]-@m.x1.xm2.m0[vth]
-print @m.x1.xm2.m0[vds]
-print @m.x1.xm2.m0[id]
-print @m.x1.xm2.m0[gm]
-print @m.x1.xm2.m0[gm]/@m.x1.xm2.m0[id]
-print **************
-print @m.x1.xm3.m0[vgs]-@m.x1.xm3.m0[vth]
-print @m.x1.xm3.m0[vds]
-print @m.x1.xm3.m0[id]
-print **************
-print @m.x1.xm4.m0[vgs]-@m.x1.xm4.m0[vth]
-print @m.x1.xm4.m0[vds]
-print @m.x1.xm4.m0[id]
-
-print v(vout)
-print v(vin)
-
-.endc
-
-.end
-"}
-C {devices/isource.sym} -20 110 2 0 {name=I0 value="DC \{iref\}"}
-C {devices/vsource.sym} -340 210 0 0 {name=V1 value="sin(0 \{vac\} 1Meg) dc 0 ac 1" savecurrent=false}
-C {devices/capa.sym} 170 60 0 0 {name=C1
-m=1
-value=1p
-footprint=1206
-device="ceramic capacitor"}
-C {devices/lab_pin.sym} 170 120 0 0 {name=p1 sig_type=std_logic lab=vss}
-C {devices/lab_pin.sym} 20 50 3 0 {name=p2 sig_type=std_logic lab=vss}
-C {devices/lab_pin.sym} 0 -60 1 0 {name=p3 sig_type=std_logic lab=vdd}
-C {devices/vsource.sym} -480 200 0 0 {name=V2 value="DC \{vdd\}" savecurrent=false}
-C {devices/res.sym} -220 -20 1 0 {name=R2
+C {devices/isource.sym} -520 100 2 0 {name=I1 value=10u
+}
+C {devices/gnd.sym} -620 150 0 0 {name=l2 lab=GND}
+C {devices/vsource.sym} -620 100 0 0 {name=V1 value=1.25}
+C {devices/lab_pin.sym} -620 50 2 0 {name=l3 sig_type=std_logic lab=ref}
+C {devices/iopin.sym} 100 -160 3 0 {name=p2 lab=out}
+C {devices/vsource.sym} -430 -30 0 0 {name=vt value=0}
+C {devices/vsource.sym} 150 -160 3 0 {name=v2 value=0}
+C {devices/res.sym} -370 -140 1 0 {name=R3
 value=1G
 footprint=1206
 device=resistor
 m=1}
-C {devices/res.sym} -320 -20 1 0 {name=R3
-value=500
-footprint=1206
-device=resistor
-m=1}
-C {devices/lab_pin.sym} -100 150 0 0 {name=p4 sig_type=std_logic lab=vss}
-C {devices/vsource.sym} -100 90 0 0 {name=V3 value="DC \{vcm\}" savecurrent=false}
-C {devices/res.sym} -70 -140 3 0 {name=R4
-value=5k
-footprint=1206
-device=resistor
-m=1}
-C {devices/lab_pin.sym} -380 -20 0 0 {name=p7 sig_type=std_logic lab=vcm}
-C {devices/capa.sym} -340 130 0 0 {name=C3
+C {devices/capa.sym} -430 -100 0 0 {name=C2
 m=1
 value=1
 footprint=1206
 device="ceramic capacitor"}
-C {devices/lab_pin.sym} -340 260 0 0 {name=p8 sig_type=std_logic lab=vcm}
-C {devices/lab_pin.sym} -340 80 0 0 {name=p9 sig_type=std_logic lab=vin}
-C {devices/lab_pin.sym} -100 -20 0 0 {name=p10 sig_type=std_logic lab=vin}
-C {devices/lab_pin.sym} -480 260 0 0 {name=p11 sig_type=std_logic lab=vss}
-C {devices/lab_pin.sym} -480 140 0 0 {name=p12 sig_type=std_logic lab=vdd}
-C {devices/vsource.sym} -560 200 0 0 {name=V4 value="DC \{vss\}" savecurrent=false}
-C {devices/lab_pin.sym} -560 140 0 0 {name=p14 sig_type=std_logic lab=vss}
-C {devices/gnd.sym} -560 260 0 0 {name=l1 lab=GND}
-C {devices/lab_pin.sym} 170 0 2 0 {name=p13 sig_type=std_logic lab=vout}
-C {symbol/ota.sym} 0 0 0 0 {name=x1
-spice_ignore=1}
-C {devices/lab_pin.sym} -90 20 0 0 {name=p15 sig_type=std_logic lab=vcm}
-C {devices/vsource.sym} 170 -70 2 0 {name=V5 value=1.75 savecurrent=false}
-C {devices/lab_pin.sym} -20 150 0 0 {name=p5 sig_type=std_logic lab=vdd}
-C {devices/code.sym} -621.25 -321.875 0 0 {name=MODELS_TT
+C {devices/gnd.sym} -430 0 0 0 {name=l5 lab=GND}
+C {devices/code.sym} -491.25 -411.875 0 0 {name=MODELS_TT
 only_toplevel=true
 place=header
 spice_ignore=0
@@ -215,11 +68,59 @@ format="tcleval( @value )"
 value="
 .include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice typical
-.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
-.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_typical
+
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_typical
 "}
-C {devices/code.sym} -501.25 -321.875 0 0 {name=MODELS_SS
+C {devices/code_shown.sym} -1131.25 -441.875 0 0 {name=NGSPICE
+only_toplevel=true
+spice_ignore=false
+value="
+.param R=66k
+*.param R=33
+R10 out 0 \{R\}
+*IL out 0 PWL(0 0.1m 10u 0.1m 20u 10m 30u 10m)
+*CL out 0 10u
+
+.param iref = 10u
+.param vdd  = 5
+.param vss  = 0.0
+.param vcm  = 1.25
+.param vac  = 60m
+
+Vs vin 0 5
+
+.nodeset v(out)=0
+.nodeset v(feedback)=1.25
+.nodeset v(vin_p)=1.25
+
+*Stability_Analysis (openloop)
+.control
+reset
+alter Vs AC=0
+alter Vt AC=1
+ac dec 100 1 1G
+let phase_val = 180/PI*cph(out)
+plot phase_val vdb(out)
+meas ac pm       FIND phase_val WHEN vdb(out)=0
+meas ac cut_freq FIND frequency WHEN vdb(out)=0
+
+.endc
+"}
+C {devices/lab_pin.sym} -470 140 3 0 {name=l6 sig_type=std_logic lab=vin}
+C {devices/capa.sym} 200 10 0 0 {name=C1
+m=1
+value=10u
+footprint=1206
+device="ceramic capacitor"}
+C {devices/res.sym} 200 -70 2 0 {name=R4
+value=2
+footprint=1206
+device=resistor
+m=1}
+C {devices/gnd.sym} 200 60 0 0 {name=l7 lab=GND}
+C {devices/code.sym} -371.25 -411.875 0 0 {name=MODELS_SS
 only_toplevel=true
 place=header
 spice_ignore=1
@@ -227,11 +128,13 @@ format="tcleval( @value )"
 value="
 .include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice ss
-.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
-.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_ss
+
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ss
+
 "}
-C {devices/code.sym} -381.25 -321.875 0 0 {name=MODELS_FF
+C {devices/code.sym} -251.25 -411.875 0 0 {name=MODELS_FF
 only_toplevel=true
 place=header
 spice_ignore=1
@@ -239,24 +142,44 @@ format="tcleval( @value )"
 value="
 .include $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/design.ngspice
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice ff
-.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_statistical
-.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice res_ff
+
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice/sm141064.ngspice mimcap_ff
+
 "}
-C {devices/code_shown.sym} -800 390 0 0 {name="Extracted devices"
+C {devices/lab_pin.sym} -520 50 2 0 {name=l9 sig_type=std_logic lab=iref}
+C {symbol/open_ldo.sym} -120 -120 0 0 {name=x2
+spice_ignore=0}
+C {devices/lab_pin.sym} 30 -140 2 0 {name=l11 sig_type=std_logic lab=iref}
+C {devices/lab_pin.sym} 30 -120 2 0 {name=l13 sig_type=std_logic lab=vin}
+C {devices/gnd.sym} 80 -100 0 0 {name=l14 lab=GND}
+C {devices/lab_pin.sym} 30 -80 2 0 {name=l15 sig_type=std_logic lab=ref}
+C {devices/lab_pin.sym} -310 -190 0 0 {name=p1 sig_type=std_logic lab=vin_p}
+C {devices/lab_pin.sym} -300 -140 3 0 {name=p3 sig_type=std_logic lab=feedback}
+C {devices/code_shown.sym} -330 120 0 0 {name="Magic pex extraction"
 only_toplevel=false
-spice_ignore=0
+spice_ignore=1
 value="
+.include ../../../spice/open_ldo_pex.spice
 
-.include ../../../spice/ota_pex.spice
-
-*** writing format= xdevice vin_n vin_p vdd iref vss vout ota_*
-
-*** for using this SPICE extracted netlists, you may change spice_ignore
-*** value to 1 in the OTA symbol (this way you will bypass the prelayout OTA)
-
-*** for parasitic extraction simulation
-
-x1 vin vcm vdd iref vss vout ota_pex
+*****  out iref vin_p feedback ref vss vdd open_ldo_pex
+x2     out iref vin_p feedback ref GND vin open_ldo_pex
 "}
-C {devices/lab_pin.sym} -20 70 0 0 {name=p6 sig_type=std_logic lab=iref}
+C {devices/code_shown.sym} -360 270 0 0 {name="Magic clean extraction"
+only_toplevel=false
+spice_ignore=1
+value="
+.include ../../../spice/open_ldo_clean.spice
+*****  out iref vin_p feedback ref vss vdd open_ldo_clean
+x2     out iref vin_p feedback ref GND vin open_ldo_clean
+"}
+C {devices/code_shown.sym} -340 420 0 0 {name="Klayout clean extraction"
+only_toplevel=false
+spice_ignore=1
+value="
+.include ../../../spice/open_ldo.cir
+*****  iout iref vin_p feedback ref vss vdd open_ldo
+x2     out iref vin_p feedback ref GND vin open_ldo
+"}
+C {devices/gnd.sym} -520 150 0 0 {name=l1 lab=GND}

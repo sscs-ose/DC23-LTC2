@@ -1,5 +1,6 @@
-* NGSPICE file created from open_ldo_clean.ext - technology: gf180mcuD
-.subckt open_ldo_clean out iref vin_p feedback ref vss vdd
+* NGSPICE file created from open_ldo_pex.ext - technology: gf180mcuD
+
+.subckt open_ldo_pex out iref vin_p feedback ref vss vdd
 X0 out ota_0.vout vdd vdd pfet_03v3 ad=3.8988p pd=13.77u as=4.814p ps=13.61u w=4.38u l=0.5u
 X1 out ota_0.vout vdd vdd pfet_03v3 ad=3.8988p pd=13.77u as=6.322p ps=16.92u w=4.38u l=0.5u
 X2 out ota_0.vout vdd vdd pfet_03v3 ad=5.163599p pd=17.56u as=6.322p ps=16.92u w=4.38u l=0.5u
@@ -2049,5 +2050,89 @@ X2045 vdd ota_0.vout out vdd pfet_03v3 ad=6.322p pd=16.92u as=5.163599p ps=17.56
 X2046 vdd ota_0.vout out vdd pfet_03v3 ad=6.322p pd=16.92u as=5.163599p ps=17.56u w=4.38u l=0.5u
 X2047 vdd ota_0.vout out vdd pfet_03v3 ad=6.322p pd=16.92u as=5.163599p ps=17.56u w=4.38u l=0.5u
 X2048 vdd ota_0.vout out vdd pfet_03v3 ad=6.322p pd=16.92u as=5.163599p ps=17.56u w=4.38u l=0.5u
+C0 ota_0.vout iref 1.62237f
+C1 ref a_31108_n1180# 2.366f
+C2 a_33541_n2038# a_30505_n7588# 1.10962f
+C3 vin_p a_31108_n1180# 0.967832f
+C4 ref iref 0.162002f
+C5 vdd a_30505_n7588# 9.13877f
+C6 a_29974_8420# a_29974_9020# 0.864964f
+C7 ota_0.vout vdd 1.76596p
+C8 a_34102_14420# out 0.120238f
+C9 feedback m1_35032_7810# 0.137209f
+C10 a_34102_14420# a_34102_12020# 0.14109f
+C11 a_34102_10220# a_34102_9620# 0.802011f
+C12 ref a_33541_n2038# 1.05237f
+C13 a_29974_13220# a_29974_10820# 0.14109f
+C14 a_29905_n7588# vdd 0.270515f
+C15 vin_p a_33541_n2038# 0.389594f
+C16 ota_0.vout a_30505_n7588# 3.13106f
+C17 a_29974_11420# a_29974_10820# 0.864964f
+C18 a_29974_8420# a_29974_7220# 0.120932f
+C19 a_31108_n1180# iref 0.215656f
+C20 a_29974_15620# a_29974_13220# 0.120932f
+C21 a_34102_12620# a_34102_12020# 0.802011f
+C22 a_34102_7820# feedback 0.600659f
+C23 a_29905_n7588# a_30505_n7588# 0.332743f
+C24 a_29905_n7588# ota_0.vout 2.737f
+C25 vdd out 2.32064p
+C26 a_33541_n2038# a_31108_n1180# 0.216749f
+C27 a_34102_7820# a_34102_9620# 0.14109f
+C28 vin_p a_30505_n7588# 1.10184f
+C29 a_34102_12020# a_34102_9620# 0.14109f
+C30 a_29974_13820# a_29974_13220# 0.864964f
+C31 ref vin_p 0.314996f
+C32 ota_0.vout out 1.31651p
+C33 a_31108_n1180# a_30505_n7588# 0.434752f
+C34 vdd a_33541_n2038# 3.02748f
+C35 a_29974_8420# a_29974_10820# 0.14109f
+C36 vin_p vss 6.93966f
+C37 ref vss 3.40229f
+C38 iref vss 10.052701f
+C39 feedback vss 6.8447f
+C40 out vss 0.134321p
+C41 vdd vss 4.80146p
+C42 m1_35032_6610# vss 0.222777f $ **FLOATING
+C43 m1_34632_6610# vss 0.290611f $ **FLOATING
+C44 m1_29300_6610# vss 0.26928f $ **FLOATING
+C45 m1_28900_6610# vss 0.25079f $ **FLOATING
+C46 m1_35032_7810# vss 0.177465f $ **FLOATING
+C47 m1_35032_9010# vss 0.205536f $ **FLOATING
+C48 m1_35032_9610# vss 0.205536f $ **FLOATING
+C49 m1_35032_11410# vss 0.205536f $ **FLOATING
+C50 m1_28900_8410# vss 0.205536f $ **FLOATING
+C51 m1_28900_10210# vss 0.205536f $ **FLOATING
+C52 m1_35032_12010# vss 0.205536f $ **FLOATING
+C53 m1_35032_13810# vss 0.205536f $ **FLOATING
+C54 m1_28900_10810# vss 0.205536f $ **FLOATING
+C55 m1_28900_12610# vss 0.205536f $ **FLOATING
+C56 m1_35032_14410# vss 0.269682f $ **FLOATING
+C57 m1_35032_15610# vss 0.267473f $ **FLOATING
+C58 m1_28900_13210# vss 0.205536f $ **FLOATING
+C59 m1_28900_15010# vss 0.205536f $ **FLOATING
+C60 m1_35032_16810# vss 0.245969f $ **FLOATING
+C61 m1_34632_16810# vss 0.289052f $ **FLOATING
+C62 m1_29300_16810# vss 0.26928f $ **FLOATING
+C63 m1_28900_16810# vss 0.25079f $ **FLOATING
+C64 a_29905_n7588# vss 3.66122f
+C65 a_29905_n6460# vss 1.30142f
+C66 a_30505_n7588# vss 4.70165f
+C67 a_33541_n2038# vss 2.39286f
+C68 a_31108_n1180# vss 3.68453f
+C69 ota_0.vout vss 0.131526p
+C70 a_29974_7220# vss 1.84618f
+C71 a_34102_7820# vss 2.16602f
+C72 a_29974_9020# vss 1.55313f
+C73 a_29974_8420# vss 1.94188f
+C74 a_34102_10220# vss 1.80662f
+C75 a_34102_9620# vss 2.46883f
+C76 a_29974_11420# vss 1.55691f
+C77 a_29974_10820# vss 1.92754f
+C78 a_34102_12620# vss 1.81178f
+C79 a_34102_12020# vss 2.46883f
+C80 a_29974_13820# vss 1.55313f
+C81 a_29974_13220# vss 1.94188f
+C82 a_34102_14420# vss 2.67952f
+C83 a_29974_15620# vss 1.84618f
 .ends
 
