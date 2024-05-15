@@ -172,3 +172,5 @@ cython_debug/
 **/cace/*.sym
 **/netlist/*
 **/PROBLEMS_SLACK/*
+
+**/drc_results

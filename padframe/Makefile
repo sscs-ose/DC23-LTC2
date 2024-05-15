@@ -66,7 +66,6 @@ KLAYOUT_REPORT_PREFIX=drc_efabless_$(GDS_NAME)_$(KLAYOUT_DRC_RUN_MODE)
 KLAYOUT_DRC=python $(KLAYOUT_HOME)/drc/run_drc.py \
 	--variant=D \
 	--run_mode=$(KLAYOUT_DRC_RUN_MODE) \
-	--verbose \
 	--thr=$(NPROCS) \
 	--run_dir=$(REPORT_DIR) \
 	--topcell=$(CELL) \
@@ -145,52 +144,38 @@ endif
 .PHONY: drc
 drc: dependencies
 	rm $(ALL_LYRDB) || true
-	$(MAKE) DRC_FLAT=Y drc-offgrid  # 
-	$(MAKE) DRC_FLAT=N drc-offgrid  # 
-	$(MAKE) DRC_FLAT=Y drc-density  # 
-	$(MAKE) DRC_FLAT=N drc-density  # 
-	$(MAKE) drc-antenna             # 
-	$(MAKE) drc-beol                # 
-	$(MAKE) drc-feol                # 
-	$(MAKE) drc-view                # 
+	$(MAKE) drc-offgrid
+	$(MAKE) drc-density
+	$(MAKE) DRC_FLAT=Y drc-offgrid
+	$(MAKE) DRC_FLAT=Y drc-density
+	$(MAKE) drc-antenna
+	$(MAKE) drc-beol
+	$(MAKE) drc-feol
+	$(MAKE) drc-view
 
 
-PHONY: layout-drc-evaluation
-layout-drc-evaluation:
-	make TOP=chile/TOP_CHILE_LDO.gds       drc #
-	make TOP=chile/TOP_CHILE_OPEN_LDO.gds  drc #
-	make TOP=korea/TOP_KOREA.gds           drc #
-	make TOP=japan/TOP_JAPAN.gds           drc #
-	make TOP=final/LTC2.gds                drc #
-
-
-.PHONY: drc-full
-drc-full: dependencies
+.PHONY: drc-flat
+drc-flat: dependencies
 	rm $(ALL_LYRDB) || true
 	$(MAKE) drc-offgrid
 	$(MAKE) DRC_FLAT=Y drc-density drc-antenna drc-beol drc-feol
 	$(MAKE) drc-view
 
 
-.PHONY: drc-raw
-drc-raw: dependencies
-	$(KLAYOUT_DRC) --antenna --density || true
-	$(MAKE) drc-view
+PHONY: evaluation-drc-results
+evaluation-drc-results:
 
+	# Basic DRC run
+	make TOP=korea/TOP_KOREA.gds           drc # 
+	make TOP=japan/TOP_JAPAN.gds           drc # 
+	make TOP=chile/TOP_CHILE_LDO.gds       drc # 
+	make TOP=chile/TOP_CHILE_OPEN_LDO.gds  drc # 
+	make TOP=final/LTC2.gds                drc # 
 
-.PHONY: drc-testing
-drc-testing: dependencies
-	rm $(ALL_LYRDB) || true
-
-	# Don't know
-	$(MAKE) DRC_FLAT=Y drc-antenna
-
-	# Fasts
-	$(MAKE) drc-offgrid
-	$(MAKE) DRC_FLAT=Y drc-density
-
-	# Slow
-	$(MAKE) DRC_FLAT=Y drc-beol
-	$(MAKE) DRC_FLAT=Y drc-feol
-
-	$(MAKE) drc-view
+	# Flat ANTENNA check
+	make full-clean
+	make TOP=korea/TOP_KOREA.gds           DRC_FLAT=Y drc-antenna drc-view #
+	make TOP=japan/TOP_JAPAN.gds           DRC_FLAT=Y drc-antenna drc-view #
+	make TOP=chile/TOP_CHILE_LDO.gds       DRC_FLAT=Y drc-antenna drc-view #
+	make TOP=chile/TOP_CHILE_OPEN_LDO.gds  DRC_FLAT=Y drc-antenna drc-view #
+	make TOP=final/LTC2.gds                DRC_FLAT=Y drc-antenna drc-view #
