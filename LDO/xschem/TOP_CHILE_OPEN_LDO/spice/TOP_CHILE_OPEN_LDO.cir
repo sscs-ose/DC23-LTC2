@@ -1,26 +1,24 @@
-* Extracted by KLayout with GF180MCU LVS runset on : 14/05/2024 02:04
+* Extracted by KLayout with GF180MCU LVS runset on : 15/05/2024 03:46
 
-.SUBCKT TOP_CHILE_OPEN_LDO iref vin_p vss feedback ref out vdd
-XM1991 14437 vss vss vss nfet_03v3 L=1U W=10U AS=4.375P AD=4.35P PS=16.75U PD=16.74U
-XM1992 14429 ref 14437 vss nfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
-XM1994 diff_vout vin_p 14437 vss nfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
-XM2004 vss vss vss vss nfet_03v3 L=1U W=25U AS=9.125P AD=9.125P PS=39.8U PD=39.8U
-XM2007 iref iref vss vss nfet_03v3 L=1U W=5U AS=1.3P AD=1.3P PS=6.04U PD=6.04U
-XM2013 op_out iref vss vss nfet_03v3 L=1U W=25U AS=6.5P AD=6.5P PS=30.2U PD=30.2U
-XM2015 14437 iref vss vss nfet_03v3 L=1U W=5U AS=1.3P AD=1.3P PS=6.04U PD=6.04U
+.SUBCKT TOP_CHILE_OPEN_LDO iref vin_p feedback vss ref out vdd
+XM1 vdd netI14390 out vdd pfet_03v3 L=0.5U M=1984 W=4.38U AS=5704.9428P AD=5700.9988P PS=17226.72U PD=17165.92U
 
-*XM1 vdd op_out out vdd pfet_03v3 L=0.5U W=8689.92U AS=5704.9428P AD=5700.9988P PS=17226.72U PD=17165.92U
-XM1 vdd op_out out vdd pfet_03v3 L=0.5U M=1984 W=4.38U AS=5704.9428P AD=5700.9988P PS=17226.72U PD=17165.92U
+XM1985 netI14394 vss vss vss nfet_03v3 L=1U W=10U AS=4.375P AD=4.35P PS=16.75U PD=16.74U
+XM1986 netI14393 ref netI14394 vss nfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM1988 netI14398 vin_p netI14394 vss nfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM1991 vdd vdd vdd vdd pfet_03v3 L=1U W=60U AS=27.3P AD=27.3P PS=93.64U PD=93.64U
+XM1992 netI14390 netI14398 vdd vdd pfet_03v3 L=1U W=100U AS=26P AD=26P PS=102.08U PD=102.08U
+XM1998 netI14398 netI14393 vdd vdd pfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM2000 netI14393 netI14393 vdd vdd pfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM2008 vss vss vss vss nfet_03v3 L=1U W=25U AS=9.125P AD=9.125P PS=39.8U PD=39.8U
+XM2009 netI14390 iref vss vss nfet_03v3 L=1U W=25U AS=6.5P AD=6.5P PS=30.2U PD=30.2U
+XM2019 netI14394 iref vss vss nfet_03v3 L=1U W=5U AS=1.3P AD=1.3P PS=6.04U PD=6.04U
+XM2027 iref iref vss vss nfet_03v3 L=1U W=5U AS=1.3P AD=1.3P PS=6.04U PD=6.04U
 
-XM1985 vdd vdd vdd vdd pfet_03v3 L=1U W=60U AS=27.3P AD=27.3P PS=93.64U PD=93.64U
-XM1986 op_out diff_vout vdd vdd pfet_03v3 L=1U W=100U AS=26P AD=26P PS=102.08U PD=102.08U
-XM1998 diff_vout 14429 vdd vdd pfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
-XM2000 14429 14429 vdd vdd pfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XC2003 netI14392 netI14390 cap_mim_2f0_m4m5_noshield c_length=22U c_width=22U
 
-XC2003 cap_in op_out cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
-
-XR2028  cap_in  diff_vout     vss  ppolyf_u_1k  r_length=10U   r_width=1U
-XR2030  vss    vss       vss  ppolyf_u_1k  r_length=8U    r_width=4U
-XR2039  out    feedback  vss  ppolyf_u_1k  r_length=200U  r_width=1U
-XR2042  vss    feedback  vss  ppolyf_u_1k  r_length=120U  r_width=1U
+XR2004 netI14392 netI14398 vss ppolyf_u_1k r_length=10U r_width=1U
+XR2006 vss vss vss ppolyf_u_1k r_length=8U r_width=4U
+XR2039 out feedback vss ppolyf_u_1k r_length=200U r_width=1U
+XR2042 vss feedback vss ppolyf_u_1k r_length=120U r_width=1U
 .ENDS TOP_CHILE_OPEN_LDO

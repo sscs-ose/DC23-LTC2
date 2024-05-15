@@ -1,0 +1,23 @@
+* Extracted by KLayout with GF180MCU LVS runset on : 15/05/2024 03:28
+
+.SUBCKT ldo iref out ref vss vdd
+XM1 vdd net16 out vdd pfet_03v3 L=0.5U M=1984 W=4.38U AS=5704.9428P AD=5700.9988P PS=17226.72U PD=17165.92U
+XM1985 netI10 vss vss vss nfet_03v3 L=1U W=10U AS=4.375P AD=4.35P PS=16.75U PD=16.74U
+XM1986 netI9 ref netI10 vss nfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM1988 netI14 net5 netI10 vss nfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM1991 vdd vdd vdd vdd pfet_03v3 L=1U W=60U AS=27.3P AD=27.3P PS=93.64U PD=93.64U
+XM1992 net16 netI14 vdd vdd pfet_03v3 L=1U W=100U AS=26P AD=26P PS=102.08U PD=102.08U
+XM1998 netI14 netI9 vdd vdd pfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM2000 netI9 netI9 vdd vdd pfet_03v3 L=1U W=10U AS=2.6P AD=2.6P PS=11.04U PD=11.04U
+XM2008 vss vss vss vss nfet_03v3 L=1U W=25U AS=9.125P AD=9.125P PS=39.8U PD=39.8U
+XM2009 net16 iref vss vss nfet_03v3 L=1U W=25U AS=6.5P AD=6.5P PS=30.2U PD=30.2U
+XM2019 netI10 iref vss vss nfet_03v3 L=1U W=5U AS=1.3P AD=1.3P PS=6.04U PD=6.04U
+XM2027 iref iref vss vss nfet_03v3 L=1U W=5U AS=1.3P AD=1.3P PS=6.04U PD=6.04U
+
+XC2003 netI8 net16 cap_mim_2f0_m4m5_noshield c_length=22u c_width=22u
+
+XR2004 netI8 netI14 vss  ppolyf_u_1k r_length=10U r_width=1U
+XR2006 vss vss vss  ppolyf_u_1k r_length=8U r_width=4U
+XR2039 out net5 vss  ppolyf_u_1k r_length=200U r_width=1U
+XR2042 vss net5 vss  ppolyf_u_1k r_length=120U r_width=1U
+.ENDS ldo
