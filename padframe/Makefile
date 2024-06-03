@@ -174,7 +174,9 @@ CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/output/reports/*.drc)) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.ext)) \
 	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.sim)) \
-	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.nodes))
+	$(foreach module,$(MODULES),$(wildcard $(module)/layout/*.nodes)) \
+	$(foreach module,$(MODULES),$(wildcard $(module)/layout/extfiles)) \
+	$(foreach module,$(MODULES),$(wildcard $(module)/report/*.log))
 
 FULL_CLEANABLE:= \
 	$(foreach module,$(MODULES),$(wildcard $(module)/output))
@@ -211,15 +213,15 @@ PDK_SC_GDS:=$(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_
 
 .PHONY: print_vars
 print_vars : \
-	print_MAKE \
-	print_TOP \
+	print_raw_MAKE \
+	print_raw_TOP \
 	print_MODULE_DIR \
 	print_SCH \
 	print_SYM \
 	print_TB \
 	print_GDS \
-	print_GDS_CELL \
-	print_TBS \
+	print_raw_GDS_CELL \
+	print_names_TBS \
 	print_SCH_NETLIST \
 	print_SCH_NETLIST_NOPREFIX \
 	print_SCH_NETLIST_PREFIX \
@@ -299,30 +301,6 @@ endif
 create-module:
 	$(MAKE) create-schematic
 	$(MAKE) create-layout
-
-
-.PHONY: extensive-test
-extensive-test:
-	$(MAKE) klayout-drc-only     |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) klayout-lvs-only     |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) netgen-lvs-klayout   |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) netgen-lvs-magic     |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-	$(MAKE) magic-pex-extraction |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_extensive_test_$(TOP).log
-
-
-.PHONY: drc
-drc:
-	$(MAKE) klayout-drc
-
-
-lvs:
-	$(MAKE) klayout-lvs-only   |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_lvs_$(TOP).log
-	$(MAKE) netgen-lvs-magic   |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_lvs_$(TOP).log
-	$(MAKE) netgen-lvs-klayout |& tee -a $(LOG_DIR)/$(TIMESTAMP_TIME)_lvs_$(TOP).log
-
-
-pex:
-	$(MAKE) magic-pex-extraction
 
 
 # Conclusion: Neiter pad has drc problems
@@ -548,3 +526,83 @@ lvs-with-spice:
 		SCH_NETLIST_PREFIX=$(MODULE_DIR)/spice/$(TOP).spice \
 		SCH_NETLIST_NOPREFIX=$(MODULE_DIR)/spice/$(TOP).spice \
 		netgen-lvs-script
+
+
+padring-extraction:
+	make TOP=PADRING_LTC2_V3 GND_NAME=DVSS LVS_FLAT=Y klayout-lvs-only
+
+## PADRING
+
+# ERROR: In /home/designer/.volare/gf180mcuD/libs.tech/klayout/lvs/gf180mcu.lvs: 'netlist': Errors encountered during netlist extraction:
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_top: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_right: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_bottom: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (879.84,0;879.84,350;955.16,350;955.16,0)
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (1679.84,0;1679.84,350;1755.16,350;1755.16,0)
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (2179.84,0;2179.84,350;2255.16,350;2255.16,0)
+# [must-connect] In cell padring_side_right: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (1279.84,0;1279.84,350;1355.16,350;1355.16,0)
+# [must-connect] In cell padring_side_right: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (779.84,0;779.84,350;855.16,350;855.16,0)
+# ...
+# (list shortened after 10 errrors, see log for all errors) in LayoutToNetlist::check_extraction_errors
+# ERROR: RuntimeError: 'netlist': Errors encountered during netlist extraction:
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_top: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_right: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_bottom: Must-connect nets DVSS of circuit gf180mcu_fd_io__cor are not connected, shape: (0,0;0,355.16;355.16,355.16;355.16,0)
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (879.84,0;879.84,350;955.16,350;955.16,0)
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (1679.84,0;1679.84,350;1755.16,350;1755.16,0)
+# [must-connect] In cell padring_side_left: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (2179.84,0;2179.84,350;2255.16,350;2255.16,0)
+# [must-connect] In cell padring_side_right: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (1279.84,0;1279.84,350;1355.16,350;1355.16,0)
+# [must-connect] In cell padring_side_right: Must-connect nets DVSS of circuit gf180mcu_fd_io__dvss are not connected, shape: (779.84,0;779.84,350;855.16,350;855.16,0)
+# ...
+# (list shortened after 10 errrors, see log for all errors) in LayoutToNetlist::check_extraction_errors in Executable::execute
+#   /home/designer/.volare/gf180mcuD/libs.tech/klayout/lvs/gf180mcu.lvs:358:in `execute'
+#   :/built-in-macros/lvs_interpreters.lym:31:in `instance_eval'
+#   :/built-in-macros/lvs_interpreters.lym:31:in `execute'
+# 2024-05-10 04:57:02 +0000: Memory Usage (765068K) : Starting GF180 LVS comparison section
+# Traceback (most recent call last):
+#   File "/home/designer/.volare/gf180mcuD/libs.tech/klayout/lvs/run_lvs.py", line 437, in <module>
+#     main(lvs_run_dir, arguments)
+#   File "/home/designer/.volare/gf180mcuD/libs.tech/klayout/lvs/run_lvs.py", line 401, in main
+#     res_db_files = run_check(lvs_rule_deck, layout_path, lvs_run_dir, switches)
+#                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#   File "/home/designer/.volare/gf180mcuD/libs.tech/klayout/lvs/run_lvs.py", line 354, in run_check
+#     check_call(run_str, shell=True)
+#   File "/usr/lib/python3.11/subprocess.py", line 413, in check_call
+#     raise CalledProcessError(retcode, cmd)
+# subprocess.CalledProcessError: Command 
+# klayout \
+	-b \
+	-r \
+	/home/designer/.volare/gf180mcuD/libs.tech/klayout/lvs/gf180mcu.lvs \
+	-rd thr=8 \
+	-rd run_mode=deep \
+	-rd metal_top=11K \
+	-rd mim_option=B \
+	-rd metal_level=5LM \
+	-rd poly_res=1k \
+	-rd mim_cap=2 \
+	-rd lvs_sub=DVSS \
+	-rd verbose=false \
+	-rd spice_net_names=true \
+	-rd spice_comments=false \
+	-rd scale=false \
+	-rd schematic_simplify=true \
+	-rd net_only=true \
+	-rd top_lvl_pins=true \
+	-rd combine=true \
+	-rd purge=true \
+	-rd purge_nets=true \
+	-rd topcell=PADRING_LTC2_V3 \
+	-rd input=/workspaces/Chipalooza2024_TempSensor_AC3E/PROBLEMS/test/DC23-LTC2-LDO/padframe/PADRING_LTC2_V3/layout/PADRING_LTC2_V3.gds \
+	-rd schematic=/workspaces/Chipalooza2024_TempSensor_AC3E/PROBLEMS/test/DC23-LTC2-LDO/padframe/PADRING_LTC2_V3/output/extraction/schematic/PADRING_LTC2_V3_noprefix.spice \
+	-rd report=/workspaces/Chipalooza2024_TempSensor_AC3E/PROBLEMS/test/DC23-LTC2-LDO/padframe/PADRING_LTC2_V3/output/reports/PADRING_LTC2_V3.lvsdb \
+	-rd target_netlist=/workspaces/Chipalooza2024_TempSensor_AC3E/PROBLEMS/test/DC23-LTC2-LDO/padframe/PADRING_LTC2_V3/output/reports/PADRING_LTC2_V3.cir
+	
+# returned non-zero exit status 1.
+
+
+
+klayout-lvs-over-configured-pads:
+	make TOP=bi_t_fast klayout-drc-flat && klayout-drc-view #
