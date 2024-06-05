@@ -15,6 +15,34 @@
 
 require 'etc'
 
+# Take the loaded layout and it's top cell to create the fill on
+ly = RBA::CellView::active.layout
+
+$poly_layer    = ly.layer(30, 0)
+$comp_layer    = ly.layer(22, 0)
+
+$m1_layer   = ly.layer(34, 0)
+$m2_layer   = ly.layer(36, 0)
+$m3_layer   = ly.layer(42, 0)
+$m4_layer   = ly.layer(46, 0)
+$m5_layer   = ly.layer(81, 0)
+
+$contact_layer = ly.layer(33, 0)
+$via1_layer    = ly.layer(35, 0)
+$via2_layer    = ly.layer(38, 0)
+$via3_layer    = ly.layer(40, 0)
+$via4_layer    = ly.layer(41, 0)
+
+
+$comp_dummy_layer = ly.layer(22, 4)
+$poly_dummy_layer = ly.layer(30, 4)
+$m1_dummy_layer   = ly.layer(34, 4)
+$m2_dummy_layer   = ly.layer(36, 4)
+$m3_dummy_layer   = ly.layer(42, 4)
+$m4_dummy_layer   = ly.layer(46, 4)
+$m5_dummy_layer   = ly.layer(81, 4)
+
+
 # TilingOperator will receive the regions to tile
 # Is driven single-threaded since tiling function isn't thread safe
 class TilingOperator < RBA::TileOutputReceiver
@@ -58,17 +86,37 @@ def create_fill_cell (fc_name, fc_layer, fc_width)
 end
 
 
-def create_tiling_processor(top_cell, user_space, layers, tile_size, fc, fc_width, fc_separation, distance, fc_origin)
+def create_cross_pattern_cell (fc_name, fc_layer)
+  fc_shape_vertical = RBA::DBox::new(
+    -1,
+    -2.5,
+    1,
+    2.5,
+  )
+
+  fc_shape_horizontal = RBA::DBox::new(
+    -2.5,
+    -1,
+    2.5,
+    1,
+  )
+
+  ly = RBA::CellView::active.layout
+  fc = ly.cell(fc_name)
+  if ! fc
+    fc = ly.create_cell(fc_name)
+    fc.shapes(fc_layer).insert(micron2dbu() * fc_shape_vertical)
+    fc.shapes(fc_layer).insert(micron2dbu() * fc_shape_horizontal)
+  end
+
+  fc
+end
+
+
+def create_tiling_processor(top_cell, user_space, layers, tile_size, fc, fc_box, distance, fc_origin)
   # prepare a tiling processor to compute the parts to put into the tiling algorithm
   # this can be tiled
   ly = RBA::CellView::active.layout
-
-  fc_box = RBA::DBox::new(
-    -(fc_width + fc_separation) / 2, 
-    -(fc_width + fc_separation) / 2, 
-    (fc_width + fc_separation) / 2, 
-    (fc_width + fc_separation) / 2
-  ) # Fill spacing
 
   tp = RBA::TilingProcessor::new
   tp.frame = user_space
@@ -117,45 +165,35 @@ def apply_tiling(tp)
   end
 end
 
-# Take the loaded layout and it's top cell to create the fill on
-ly = RBA::CellView::active.layout
 
-# This fails if there's more than 1 top_cell
-top_cell = ly.top_cell
+def density_filler(layer_information, layer_name, area)
+  ly = RBA::CellView::active.layout
+  top_cell = ly.top_cell
 
+  fc_creation = layer_information["m1_dummy"]["pattern_generator"]
+  layer = layer_information[layer_name]["layer"]
+  tile_size = 1000.0 # tile size in micron (?)
+  tile_size = 30 # ?
+  fc_origin = nil # Enhanced fill use
 
-# Relevant layers
-#################
+  fc = fc_creation.call("#{layer_name}_filler", layer)
 
-$poly_layer    = ly.layer(30, 0)
-$comp_layer    = ly.layer(22, 0)
+  tp = create_tiling_processor(
+    top_cell,
+    area,
+    layer_information[layer_name]["avoid_layers"],
+    tile_size,
+    fc,
+    fc.dbbox,
+    layer_information[layer_name]["distance_to_layers"],
+    fc_origin
+  )
+  apply_tiling(tp)
+end
 
-$m1_layer   = ly.layer(34, 0)
-$m2_layer   = ly.layer(36, 0)
-$m3_layer   = ly.layer(42, 0)
-$m4_layer   = ly.layer(46, 0)
-$m5_layer   = ly.layer(81, 0)
-
-$contact_layer = ly.layer(33, 0)
-$via1_layer    = ly.layer(35, 0)
-$via2_layer    = ly.layer(38, 0)
-$via3_layer    = ly.layer(40, 0)
-$via4_layer    = ly.layer(41, 0)
-
-
-$comp_dummy_layer = ly.layer(22, 4)
-$poly_dummy_layer = ly.layer(30, 4)
-$m1_dummy_layer   = ly.layer(34, 4)
-$m2_dummy_layer   = ly.layer(36, 4)
-$m3_dummy_layer   = ly.layer(42, 4)
-$m4_dummy_layer   = ly.layer(46, 4)
-$m5_dummy_layer   = ly.layer(81, 4)
-
-# Chip user space boundaries
-####################################
 
 padring_width=350
-$user_space = RBA::DBox::new(
+user_space = RBA::DBox::new(
   0 + padring_width, 
   0 + padring_width, 
   2910 - padring_width, 
@@ -163,67 +201,54 @@ $user_space = RBA::DBox::new(
 )
 
 
-# Poly Filler
-#################
+layer_information = {}
 
-def poly_filler
-  ly = RBA::CellView::active.layout
-  top_cell = ly.top_cell
-
-  tile_size = 1000.0 # tile size in micron (?)
-  fc_origin = nil # Enhanced fill use
-
-  # Perspective from the center to a corner
-  fc_distance_to_layers = 0.5
-  fc_width = 0.1
-  fc_separation = 0
-
-  fc = create_fill_cell("poly_dummy", $poly_dummy_layer, fc_width)
-
-  avoid_layers = {
+layer_information["poly_dummy"] = {
+  "layer"              => $poly_dummy_layer,
+  "distance_to_layers" => 10,
+  "pattern_generator"  => method(:create_cross_pattern_cell),
+  "avoid_layers"       => {
     "comp"    => $comp_layer,
     "poly"    => $poly_layer,
     "contact" => $contact_layer
   }
+}
 
-  tp = create_tiling_processor(top_cell, $user_space, avoid_layers, tile_size, fc, fc_width, fc_separation, fc_distance_to_layers, fc_origin)
-  apply_tiling(tp)
-end
+layer_information["comp_dummy"] = {
+  "layer"              => $comp_dummy_layer,
+  "distance_to_layers" => 10,
+  "pattern_generator"  => method(:create_cross_pattern_cell),
+  "avoid_layers"       => {
+    "comp"    => $comp_layer,
+    "poly"    => $poly_layer,
+    "contact" => $contact_layer
+  }
+}
 
-# def m1_filler
-#   ly = RBA::CellView::active.layout
-#   top_cell = ly.top_cell
+layer_information["m1_dummy"] = {
+  "layer"              => $m1_dummy_layer,
+  "distance_to_layers" => 0.5,
+  "pattern_generator"  => method(:create_cross_pattern_cell),
+  "avoid_layers"       => {
+    "contact" => $contact_layer,
+    "m1"      => $m1_layer,
+    "via1"    => $via1_layer
+  }
+}
 
-#   fill_cell = create_fill_cell("m1_dummy", $m1_dummy_layer)
-  
-#   avoid_layers = {
-#     "contact" => $contact_layer,
-#     "m1"      => $m1_layer,
-#     "via1"    => $via1_layer
-#   }
-  
-# end
+layer_information["m2_dummy"] = {
 
-# def m2_filler
-#   ly = RBA::CellView::active.layout
-#   top_cell = ly.top_cell
+  "layer"              => $m2_dummy_layer,
+  "distance_to_layers" => 0.5,
+  "pattern_generator"  => method(:create_cross_pattern_cell),
+  "avoid_layers"       => {
+    "via1"  => $via1_layer,
+    "m2"    => $m2_layer,
+    "via2"  => $via2_layer
+  }
+}
 
-#   distance = 3.0   # distance from layers
-#   tile_size = 1000.0 # tile size in micron (?)
-#   fc_origin = nil # Enhanced fill use
-#   fc_box = RBA::DBox::new(-2.0, -2.0, 2.0, 2.0) # Fill spacing
-
-#   fill_cell = create_fill_cell("m2_dummy", $m2_dummy_layer)
-  
-#   avoid_layers = {
-#     "via1"  => $via1_layer,
-#     "m2"    => $m2_layer,
-#     "via2"  => $via2_layer
-#   }
-
-# end
-  
-
-poly_filler
-# m1_filler
-# m2_filler
+density_filler(layer_information, "poly_dummy", user_space)
+density_filler(layer_information, "comp_dummy", user_space)
+density_filler(layer_information, "m1_dummy", user_space)
+density_filler(layer_information, "m2_dummy", user_space)
