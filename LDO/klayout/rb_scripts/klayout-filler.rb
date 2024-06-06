@@ -511,7 +511,8 @@ def apply_tiling(tp)
 end
 
 ##
-# Takes the description map and compiles a TilingProcessor
+# Takes the description map and tiles dummy layer
+# Internally uses a TilingProcessor to compute the valid region to put fillers
 
 def density_filler(layer_information, layer_name, area)
   ly = RBA::CellView::active.layout
@@ -540,85 +541,88 @@ def density_filler(layer_information, layer_name, area)
 end
 
 
-padring_width=350
-user_space = RBA::DBox::new(
-  0 + padring_width, 
-  0 + padring_width, 
-  2910 - padring_width, 
-  2910 - padring_width
-)
+def main_comp_poly_fill
+  padring_width=350
+  user_space = RBA::DBox::new(
+    0 + padring_width, 
+    0 + padring_width, 
+    2910 - padring_width, 
+    2910 - padring_width
+  )
 
-layer_information = {}
+  layer_information_poly_dummy = {
+    "layer"              => $poly_dummy_layer,
+    "distance_to_layers" => 10,
+    "pattern_generator"  => method(:create_cross_pattern_cell),
+    "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
+    "avoid_layers"       =>  {
+      "comp"     => {
+        "layer"    => $comp_layer,
+        "distance" => 1.0, # ?
+      },
+      "poly"     => {
+        "layer"    => $poly_layer,
+        "distance" => 1.0, # ?
+      },
+      "nwell"    => {
+        "layer"    => $nwell_layer,
+        "distance" => 1.0, # ?
+      },
+      "m1"       => {
+        "layer"    => $m1_layer,
+        "distance" => 1.0, # ?
+      },
+      "m2"       => {
+        "layer"    => $m2_layer,
+        "distance" => 1.0, # ?
+      },
+      "pmndmy"   => {
+        "layer"    => $pmndmy_layer,
+        "distance" => 1.0, # ?
+      },
+    }
+  }
 
-# layer_information["poly_dummy"] = {
-#   "layer"              => $poly_dummy_layer,
-#   "distance_to_layers" => 10,
-#   "pattern_generator"  => method(:create_cross_pattern_cell),
-#   "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
-#   "avoid_layers"       =>  {
-#     "comp"     => {
-#       "layer"    => $comp_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "poly"     => {
-#       "layer"    => $poly_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "nwell"    => {
-#       "layer"    => $nwell_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "m1"       => {
-#       "layer"    => $m1_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "m2"       => {
-#       "layer"    => $m2_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "pmndmy"   => {
-#       "layer"    => $pmndmy_layer,
-#       "distance" => 1.0, # ?
-#     },
-#   }
-# }
+  layer_information_comp_dummy = {
+    "layer"              => $comp_dummy_layer,
+    "distance_to_layers" => 10,
+    "pattern_generator"  => method(:create_cross_pattern_cell),
+    "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
+    "avoid_layers"       => {
+      "comp"     => {
+        "layer"    => $comp_layer,
+        "distance" => 1.0, # ?
+      },
+      "poly"     => {
+        "layer"    => $poly_layer,
+        "distance" => 1.0, # ?
+      },
+      "nwell"    => {
+        "layer"    => $nwell_layer,
+        "distance" => 1.0, # ?
+      },
+      "lvpwell"  => {
+        "layer"    => $lvpwell_layer,
+        "distance" => 1.0, # ?
+      },
+      "dualgate" => {
+        "layer"    => $dualgate_layer,
+        "distance" => 1.0, # ?
+      },
+      "res_mk"   => {
+        "layer"    => $res_mk_layer,
+        "distance" => 1.0, # ?
+      },
+      "ind_mk"   => {
+        "layer"    => $ind_mk_layer,
+        "distance" => 1.0, # ?
+      },
+    }
+  }
 
-# layer_information["comp_dummy"] = {
-#   "layer"              => $comp_dummy_layer,
-#   "distance_to_layers" => 10,
-#   "pattern_generator"  => method(:create_cross_pattern_cell),
-#   "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
-#   "avoid_layers"       => {
-#     "comp"     => {
-#       "layer"    => $comp_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "poly"     => {
-#       "layer"    => $poly_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "nwell"    => {
-#       "layer"    => $nwell_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "lvpwell"  => {
-#       "layer"    => $lvpwell_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "dualgate" => {
-#       "layer"    => $dualgate_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "res_mk"   => {
-#       "layer"    => $res_mk_layer,
-#       "distance" => 1.0, # ?
-#     },
-#     "ind_mk"   => {
-#       "layer"    => $ind_mk_layer,
-#       "distance" => 1.0, # ?
-#     },
-#   }
-# }
+  density_filler(layer_information["poly_dummy"], "poly_dummy", user_space)
+  density_filler(layer_information["comp_dummy"], "comp_dummy", user_space)
+end
 
 ##
 # Returns a map that fill metal1. Result can be modified to fill each metal
@@ -627,7 +631,7 @@ def metal_layer_info
   {
     "layer"              => $m1_dummy_layer,
     "distance_to_layers" => 5, # Deprecated: This should be specified per layer
-    "pattern_generator"  => method(:create_metal_filler_cell),
+    "pattern_generator"  => method(:create_metal_filler_cell), # DM.1
     "fc_origin"          => RBA::DPoint::new(0.0, 0.0), # On metals this should be shifted
     "fc_separation"      => RBA::DPoint::new(0.6, 0.6), # Deprecated, use row_step and column_step instead
     "fc_row_step"        => RBA::DVector::new(0.0, 1.2), # DM.{2, 10}
@@ -673,51 +677,63 @@ def metal_layer_info
   }
 end
 
-layer_information["m1_dummy"] = metal_layer_info
-layer_information["m2_dummy"] = metal_layer_info
-layer_information["m3_dummy"] = metal_layer_info
-layer_information["m4_dummy"] = metal_layer_info
-layer_information["m5_dummy"] = metal_layer_info
 
-layer_information["m2_dummy"]["layer"] = $m2_dummy_layer
-layer_information["m2_dummy"]["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  1.0
-layer_information["m2_dummy"]["avoid_layers"]["m_prev"]["layer"] = $m1_layer
-layer_information["m2_dummy"]["avoid_layers"]["m_cur"]["layer"]  = $m2_layer
-layer_information["m2_dummy"]["avoid_layers"]["m_next"]["layer"] = $m3_layer
+def main_metal_fill
+  padring_width=350
+  user_space = RBA::DBox::new(
+    0 + padring_width, 
+    0 + padring_width, 
+    2910 - padring_width, 
+    2910 - padring_width
+  )
+  layer_information_dm1 = metal_layer_info
+  layer_information_dm2 = metal_layer_info
+  layer_information_dm3 = metal_layer_info
+  layer_information_dm4 = metal_layer_info
+  layer_information_dm5 = metal_layer_info
 
-layer_information["m3_dummy"]["layer"] = $m3_dummy_layer
-layer_information["m3_dummy"]["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  2.0
-layer_information["m3_dummy"]["avoid_layers"]["m_prev"]["layer"] = $m2_layer
-layer_information["m3_dummy"]["avoid_layers"]["m_cur"]["layer"]  = $m3_layer
-layer_information["m3_dummy"]["avoid_layers"]["m_next"]["layer"] = $m4_layer
+  layer_information_dm2["layer"] = $m2_dummy_layer
+  layer_information_dm2["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  1.0
+  layer_information_dm2["avoid_layers"]["m_prev"]["layer"] = $m1_layer
+  layer_information_dm2["avoid_layers"]["m_cur"]["layer"]  = $m2_layer
+  layer_information_dm2["avoid_layers"]["m_next"]["layer"] = $m3_layer
 
-layer_information["m4_dummy"]["layer"] = $m4_dummy_layer
-layer_information["m4_dummy"]["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  3.0
-layer_information["m4_dummy"]["avoid_layers"]["m_prev"]["layer"] = $m3_layer
-layer_information["m4_dummy"]["avoid_layers"]["m_cur"]["layer"]  = $m4_layer
-layer_information["m4_dummy"]["avoid_layers"]["m_next"]["layer"] = $m5_layer
+  layer_information_dm3["layer"] = $m3_dummy_layer
+  layer_information_dm3["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  2.0
+  layer_information_dm3["avoid_layers"]["m_prev"]["layer"] = $m2_layer
+  layer_information_dm3["avoid_layers"]["m_cur"]["layer"]  = $m3_layer
+  layer_information_dm3["avoid_layers"]["m_next"]["layer"] = $m4_layer
 
-layer_information["m5_dummy"]["layer"] = $m5_dummy_layer
-layer_information["m5_dummy"]["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  4.0
-layer_information["m5_dummy"]["avoid_layers"]["m_prev"]["layer"] = $m4_layer
-layer_information["m5_dummy"]["avoid_layers"]["m_cur"]["layer"]  = $m5_layer
-layer_information["m5_dummy"]["avoid_layers"].delete("m_next")
-layer_information["m5_dummy"]["pattern_generator"] = method(:create_metal5_filler_cell)
-layer_information["m5_dummy"]["fc_separation"] = RBA::DPoint::new(1.0, 1.0)
+  layer_information_dm4["layer"] = $m4_dummy_layer
+  layer_information_dm4["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  3.0
+  layer_information_dm4["avoid_layers"]["m_prev"]["layer"] = $m3_layer
+  layer_information_dm4["avoid_layers"]["m_cur"]["layer"]  = $m4_layer
+  layer_information_dm4["avoid_layers"]["m_next"]["layer"] = $m5_layer
 
-# density_filler(layer_information["poly_dummy"], "poly_dummy", user_space)
-# density_filler(layer_information["comp_dummy"], "comp_dummy", user_space)
-density_filler(layer_information["m1_dummy"], "m1_dummy", user_space)
-density_filler(layer_information["m2_dummy"], "m2_dummy", user_space)
-density_filler(layer_information["m3_dummy"], "m3_dummy", user_space)
-density_filler(layer_information["m4_dummy"], "m4_dummy", user_space)
-density_filler(layer_information["m5_dummy"], "m5_dummy", user_space)
+  layer_information_dm5["layer"] = $m5_dummy_layer
+  layer_information_dm5["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  4.0
+  layer_information_dm5["avoid_layers"]["m_prev"]["layer"] = $m4_layer
+  layer_information_dm5["avoid_layers"]["m_cur"]["layer"]  = $m5_layer
+  layer_information_dm5["avoid_layers"].delete("m_next")
 
-# queue_command = []
-# queue_command.append 'var exclude = "hola"'
-# queue_command.append 'exclude = exclude + " amigos"'
-# queue_command.append 'exclude = exclude + " amigos"'
-# queue_command.append 'exclude = exclude + " amigos"'
+  density_filler(layer_information_dm1, "m1_dummy", user_space)
+  density_filler(layer_information_dm2, "m2_dummy", user_space)
+  density_filler(layer_information_dm3, "m3_dummy", user_space)
+  density_filler(layer_information_dm4, "m4_dummy", user_space)
+  density_filler(layer_information_dm5, "m5_dummy", user_space)
+end
 
-# puts queue_command.join("\n")
-# puts RBA::Expression.eval(queue_command.join(";"))
+
+def main_expression_test 
+    # queue_command = []
+    # queue_command.append 'var exclude = "hola"'
+    # queue_command.append 'exclude = exclude + " amigos"'
+    # queue_command.append 'exclude = exclude + " amigos"'
+    # queue_command.append 'exclude = exclude + " amigos"'
+    
+    # puts queue_command.join("\n")
+    # puts RBA::Expression.eval(queue_command.join(";"))
+end
+
+
+main_metal_fill
