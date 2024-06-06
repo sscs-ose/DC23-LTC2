@@ -548,26 +548,6 @@ user_space = RBA::DBox::new(
   2910 - padring_width
 )
 
-
-comp_avoid_layers = {
-  "comp"     => $comp_layer,
-  "poly"     => $poly_layer,
-  "nwell"    => $nwell_layer,
-  "lvpwell"  => $lvpwell_layer,
-  "dualgate" => $dualgate_layer,
-  "res_mk"   => $res_mk_layer,
-  "ind_mk"   => $ind_mk_layer,
-}
-
-poly_avoid_layers = {
-  "comp"     => $comp_layer,
-  "poly"     => $poly_layer,
-  "nwell"    => $nwell_layer,
-  "m1"       => $m1_layer,
-  "m2"       => $m2_layer,
-  "pmndmy"   => $pmndmy_layer,
-}
-
 layer_information = {}
 
 # layer_information["poly_dummy"] = {
@@ -575,7 +555,32 @@ layer_information = {}
 #   "distance_to_layers" => 10,
 #   "pattern_generator"  => method(:create_cross_pattern_cell),
 #   "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
-#   "avoid_layers"       => poly_avoid_layers
+#   "avoid_layers"       =>  {
+#     "comp"     => {
+#       "layer"    => $comp_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "poly"     => {
+#       "layer"    => $poly_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "nwell"    => {
+#       "layer"    => $nwell_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "m1"       => {
+#       "layer"    => $m1_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "m2"       => {
+#       "layer"    => $m2_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "pmndmy"   => {
+#       "layer"    => $pmndmy_layer,
+#       "distance" => 1.0, # ?
+#     },
+#   }
 # }
 
 # layer_information["comp_dummy"] = {
@@ -583,7 +588,36 @@ layer_information = {}
 #   "distance_to_layers" => 10,
 #   "pattern_generator"  => method(:create_cross_pattern_cell),
 #   "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
-#   "avoid_layers"       => comp_avoid_layers
+#   "avoid_layers"       => {
+#     "comp"     => {
+#       "layer"    => $comp_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "poly"     => {
+#       "layer"    => $poly_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "nwell"    => {
+#       "layer"    => $nwell_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "lvpwell"  => {
+#       "layer"    => $lvpwell_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "dualgate" => {
+#       "layer"    => $dualgate_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "res_mk"   => {
+#       "layer"    => $res_mk_layer,
+#       "distance" => 1.0, # ?
+#     },
+#     "ind_mk"   => {
+#       "layer"    => $ind_mk_layer,
+#       "distance" => 1.0, # ?
+#     },
+#   }
 # }
 
 ##
@@ -592,10 +626,10 @@ layer_information = {}
 def metal_layer_info
   {
     "layer"              => $m1_dummy_layer,
-    "distance_to_layers" => 5, # Deprecated: 
+    "distance_to_layers" => 5, # Deprecated: This should be specified per layer
     "pattern_generator"  => method(:create_metal_filler_cell),
     "fc_origin"          => RBA::DPoint::new(0.0, 0.0), # On metals this should be shifted
-    "fc_separation"      => RBA::DPoint::new(0.6, 0.6), # This should not be used, use row_step and column_step instead
+    "fc_separation"      => RBA::DPoint::new(0.6, 0.6), # Deprecated, use row_step and column_step instead
     "fc_row_step"        => RBA::DVector::new(0.0, 1.2), # DM.{2, 10}
     "fc_column_step"     => RBA::DVector::new(1.2, 0.5), # DM.{2, 10}
     "avoid_layers"       => {
