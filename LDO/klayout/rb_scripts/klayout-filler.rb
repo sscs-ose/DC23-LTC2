@@ -109,6 +109,35 @@ https://gf180mcu-pdk.readthedocs.io/en/latest/physical_verification/design_manua
 ## COMP
 #######
 
+
+| DCF | Description
+| 1a  | Area between active polygons with spacing greater than 20 should have dummy comp filler.
+| 1b  | Min global density: 25%
+| 1c  | Staggered array of dummy 5x5 um
+| 1d  | Maximum global density: 70%
+| 2a  | Adjacent placement space between dummy comp: 3
+| 2b  |
+| 3   | Stagger both X and Y
+| 4   | Space between dcomp and comp: 3.5
+| 5   | 
+| 6a  |
+| 6b  |
+| 6c  |
+| 6d  |
+| 7a  |
+| 7b  |
+| 7c  |
+| 7d  |
+| 8a  |
+| 8b  |
+| 9   |
+| 10  |
+| 11a |
+| 11b |
+| 12  |
+| 13  |
+
+
 ### Drawing consideration rules
 ###############################
 
@@ -280,7 +309,7 @@ $dnwell_layer   = ly.layer(12, 0)
 $lvpwell_layer  = ly.layer(204, 0)
 $dualgate_layer = ly.layer(55, 0)
 $poly_layer     = ly.layer(30, 0)
-$ndmy           = ly.layer(111, 5)
+$ndmy_layer     = ly.layer(111, 5)
 $pmndmy_layer   = ly.layer(152, 5)
 $res_mk_layer   = ly.layer(110, 5)
 $ind_mk_layer   = ly.layer(151, 5)
@@ -361,42 +390,6 @@ def micron2dbu()
 end
 
 
-def create_fill_cell (fc_name, fc_layer, fc_width)
-  fc_shape = RBA::DBox::new(
-    -(fc_width)/2, 
-    -(fc_width)/2, 
-    (fc_width)/2, 
-    (fc_width)/2
-  )
-  
-  ly = RBA::CellView::active.layout
-  fc = ly.cell(fc_name)
-  if ! fc
-    fc = ly.create_cell(fc_name)
-    fc_shape_in_dbu = micron2dbu() * fc_shape
-    fc.shapes(fc_layer).insert(fc_shape_in_dbu)
-  end
-
-  fc
-end
-
-
-def create_cross_pattern_cell (fc_name, fc_layer)
-  fc_shape_vertical   = RBA::DBox::new( -1, -2.5, 1, 2.5, )
-  fc_shape_horizontal = RBA::DBox::new( -2.5, -1, 2.5, 1)
-
-  ly = RBA::CellView::active.layout
-  fc = ly.cell(fc_name)
-  if ! fc
-    fc = ly.create_cell(fc_name)
-    fc.shapes(fc_layer).insert(micron2dbu() * fc_shape_vertical)
-    fc.shapes(fc_layer).insert(micron2dbu() * fc_shape_horizontal)
-  end
-
-  fc
-end
-
-
 def create_box_cell (fc_name, fc_layer, half_width)
   ly = RBA::CellView::active.layout
   
@@ -411,13 +404,18 @@ def create_box_cell (fc_name, fc_layer, half_width)
 end
 
 
-def create_metal_filler_cell (fc_name, fc_layer)
+def create_comp_filler_pattern (fc_name, fc_layer)
+  create_box_cell fc_name, fc_layer, 2.5
+end
+
+
+def create_poly_filler_pattern (fc_name, fc_layer)
   create_box_cell fc_name, fc_layer, 1.0
 end
 
 
-def create_metal5_filler_cell (fc_name, fc_layer)
-  create_box_cell fc_name, fc_layer, 1.5
+def create_metal_filler_cell (fc_name, fc_layer)
+  create_box_cell fc_name, fc_layer, 1.0
 end
 
 
@@ -425,9 +423,12 @@ end
 # Uses the information provided to instantiate a TilingProcessor that gathers
 # the valid region that we can use to fill with dummy layers
 
-def create_tiling_processor(top_cell, user_space, layers, tile_size, fc, fc_box, distance, fc_origin)
+def create_tiling_processor(top_cell, user_space, layers, tile_size, fc, fc_box, fc_origin)
   # prepare a tiling processor to compute the parts to put into the tiling algorithm
   ly = RBA::CellView::active.layout
+
+  column_step = layers["fc_column_step"]
+  row_step =    layers["fc_row_step"]
 
   puts "Creating Tiling Processor for #{fc.name}"
 
@@ -441,57 +442,36 @@ def create_tiling_processor(top_cell, user_space, layers, tile_size, fc, fc_box,
   # Information is considered during computations.
   tp.tile_border(50.0, 50.0)
 
+  #  output(channel_id, object_to_output,     clip_required?)
+  tp.output("to_fill", TilingOperator::new(
+    ly,
+    top_cell,
+    fc.cell_index,
+    micron2dbu() * fc_box,
+    row_step,
+    column_step,
+    fc_origin && (micron2dbu() * fc_origin))
+  )
+
+  # see https://www.klayout.de/doc/about/expressions.html
   queue_command = []
+  queue_command.append 'var exclude = Region.new'
 
-  # TODO: Remove the exclude_string logic
-  #queue_command.append 'var exclude = Region.new()'
-
-  exclude_string = ""
   layers.each do |layer_name, layer_content |
     layer_index = layer_content["layer"]
     distance_to_layer = layer_content["distance"]
 
-    # Bind shapes to a variable
-    ###########################
-    #  input(variable,   ly, cell_index,          layerInfo)
     tp.input(layer_name, ly, top_cell.cell_index, layer_index)
 
-    # Expand elements according to drc rules (not sure which command should be used)
-    queue_command.append "#{layer_name} = #{layer_name}.sized(#{distance_to_layer/ly.dbu})"
-    #queue_command.append "#{layer_name} = #{layer_name}.sized($(#{distance_to_layer}/_dbu()))"
-    #queue_command.append "#{layer_name} = #{layer_name}.sized(#{distance_to_layer} um)"
-    #queue_command.append "#{layer_name} = #{layer_name} + #{distance_to_layer} um"
+    queue_command.append "exclude = exclude + #{layer_name}.sized(#{distance_to_layer/ly.dbu})"
 
-    if exclude_string != ""
-      exclude_string = exclude_string + " + "
-    end
-    exclude_string = exclude_string + "#{layer_name}"
   end
-
-  tp.var("dist", distance / ly.dbu)
-
-  fc_box_in_dbu = micron2dbu() * fc_box
-  fc_origin_in_dbu = fc_origin && (micron2dbu() * fc_origin)
-
-  #  output(channel_id, object_to_output,     clip_required?)
-  column_step = RBA::DVector::new(0.0, 1.2)
-  row_step =    RBA::DVector::new(1.2, 0.0)
-
-  # Can we define the row and column here?
-  #tp.output("to_fill", TilingOperator::new(ly, top_cell, fc.cell_index, fc_box_in_dbu, fc_origin_in_dbu))
-  tp.output("to_fill", TilingOperator::new(ly, top_cell, fc.cell_index, fc_box_in_dbu, row_step, column_step, fc_origin_in_dbu))
-
-  # perform the computations inside the tiling processor through "expression" syntax
-  # see https://www.klayout.de/doc-qt4/about/expressions.html
-  # see https://www.klayout.de/doc/about/expressions.html
-
-  # Makes processor to merge all the regions and send result to the
-  # output receiver, which draws stuff
-  queue_command.append "var exclude = #{exclude_string}"
-  queue_command.append "var fill_region = _tile & _frame - exclude.sized(dist)"
+  
+  queue_command.append "var fill_region = _tile & _frame - exclude"
   queue_command.append "_output(to_fill, fill_region)"
 
   puts queue_command.join("\n")
+  puts "\n"
   tp.queue(queue_command.join(";"))
 
   tp
@@ -514,10 +494,11 @@ end
 # Takes the description map and tiles dummy layer
 # Internally uses a TilingProcessor to compute the valid region to put fillers
 
-def density_filler(layer_information, layer_name, area)
+def density_filler(layer_information, area)
   ly = RBA::CellView::active.layout
   top_cell = ly.top_cell
 
+  layer_name = layer_information["name"]
   fc_creation = layer_information["pattern_generator"]
   layer = layer_information["layer"]
   tile_size = 1000.0 # tile size in micron (?)
@@ -534,7 +515,6 @@ def density_filler(layer_information, layer_name, area)
     tile_size,
     fc,
     fc.dbbox.enlarged(fc_separation),
-    layer_information["distance_to_layers"], # This should not be used
     fc_origin
   )
   apply_tiling(tp)
@@ -550,78 +530,88 @@ def main_comp_poly_fill
     2910 - padring_width
   )
 
-  layer_information_poly_dummy = {
-    "layer"              => $poly_dummy_layer,
-    "distance_to_layers" => 10,
-    "pattern_generator"  => method(:create_cross_pattern_cell),
-    "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
-    "avoid_layers"       =>  {
-      "comp"     => {
-        "layer"    => $comp_layer,
-        "distance" => 1.0, # ?
-      },
-      "poly"     => {
-        "layer"    => $poly_layer,
-        "distance" => 1.0, # ?
-      },
-      "nwell"    => {
-        "layer"    => $nwell_layer,
-        "distance" => 1.0, # ?
-      },
-      "m1"       => {
-        "layer"    => $m1_layer,
-        "distance" => 1.0, # ?
-      },
-      "m2"       => {
-        "layer"    => $m2_layer,
-        "distance" => 1.0, # ?
-      },
-      "pmndmy"   => {
-        "layer"    => $pmndmy_layer,
-        "distance" => 1.0, # ?
-      },
-    }
-  }
-
   layer_information_comp_dummy = {
+    "name"               => "comp_dummy",
     "layer"              => $comp_dummy_layer,
-    "distance_to_layers" => 10,
-    "pattern_generator"  => method(:create_cross_pattern_cell),
+    "pattern_generator"  => method(:create_comp_filler_pattern),
     "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
+    "fc_separation"      => RBA::DPoint::new(1.5, 1.5), # Deprecated, use row_step and column_step instead
     "avoid_layers"       => {
       "comp"     => {
         "layer"    => $comp_layer,
-        "distance" => 1.0, # ?
+        "distance" => 3.5, # DCF.4
       },
       "poly"     => {
         "layer"    => $poly_layer,
-        "distance" => 1.0, # ?
+        "distance" => 1.5, # DCF.5
       },
       "nwell"    => {
         "layer"    => $nwell_layer,
-        "distance" => 1.0, # ?
+        "distance" => 1.3, # DCF.6a
+      },
+      "dnwell"    => {
+        "layer"    => $dnwell_layer,
+        "distance" => 4, # DCF.6b
       },
       "lvpwell"  => {
         "layer"    => $lvpwell_layer,
-        "distance" => 1.0, # ?
+        "distance" => 1.3, # DCF.6c
       },
       "dualgate" => {
         "layer"    => $dualgate_layer,
-        "distance" => 1.0, # ?
+        "distance" => 1.3, # DCF.6.d
       },
       "res_mk"   => {
         "layer"    => $res_mk_layer,
-        "distance" => 1.0, # ?
+        "distance" => 3.5, # DCF.8a
+      },
+      "ndmy"   => {
+        "layer"    => $ndmy_layer,
+        "distance" => 3.5, # DCF.11a
       },
       "ind_mk"   => {
         "layer"    => $ind_mk_layer,
-        "distance" => 1.0, # ?
+        "distance" => 3.0, # DCF.12
       },
     }
   }
 
-  density_filler(layer_information["poly_dummy"], "poly_dummy", user_space)
-  density_filler(layer_information["comp_dummy"], "comp_dummy", user_space)
+  # layer_information_poly_dummy = {
+  #   "name"               => "poly_dummy",
+  #   "layer"              => $poly_dummy_layer,
+  #   "pattern_generator"  => method(:create_poly_filler_pattern),
+  #   "fc_origin"          => RBA::DPoint::new(0.0, 0.0),
+  #   "avoid_layers"       =>  {
+  #     "comp"     => {
+  #       "layer"    => $comp_layer,
+  #       "distance" => 1.0, # ?
+  #     },
+  #     "poly"     => {
+  #       "layer"    => $poly_layer,
+  #       "distance" => 1.0, # ?
+  #     },
+  #     "nwell"    => {
+  #       "layer"    => $nwell_layer,
+  #       "distance" => 1.0, # ?
+  #     },
+  #     "m1"       => {
+  #       "layer"    => $m1_layer,
+  #       "distance" => 1.0, # ?
+  #     },
+  #     "m2"       => {
+  #       "layer"    => $m2_layer,
+  #       "distance" => 1.0, # ?
+  #     },
+  #     "pmndmy"   => {
+  #       "layer"    => $pmndmy_layer,
+  #       "distance" => 1.0, # ?
+  #     },
+  #   }
+  # }
+
+  density_filler(layer_information_comp_dummy, user_space)
+
+  #density_filler(layer_information_poly_dummy, user_space)
 end
 
 ##
@@ -629,8 +619,8 @@ end
 
 def metal_layer_info
   {
+    "name"               => "m1_dummy",
     "layer"              => $m1_dummy_layer,
-    "distance_to_layers" => 5, # Deprecated: This should be specified per layer
     "pattern_generator"  => method(:create_metal_filler_cell), # DM.1
     "fc_origin"          => RBA::DPoint::new(0.0, 0.0), # On metals this should be shifted
     "fc_separation"      => RBA::DPoint::new(0.6, 0.6), # Deprecated, use row_step and column_step instead
@@ -692,35 +682,39 @@ def main_metal_fill
   layer_information_dm4 = metal_layer_info
   layer_information_dm5 = metal_layer_info
 
+  layer_information_dm2["name"] = "m2_dummy"
   layer_information_dm2["layer"] = $m2_dummy_layer
   layer_information_dm2["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  1.0
   layer_information_dm2["avoid_layers"]["m_prev"]["layer"] = $m1_layer
   layer_information_dm2["avoid_layers"]["m_cur"]["layer"]  = $m2_layer
   layer_information_dm2["avoid_layers"]["m_next"]["layer"] = $m3_layer
 
+  layer_information_dm3["name"] = "m3_dummy"
   layer_information_dm3["layer"] = $m3_dummy_layer
   layer_information_dm3["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  2.0
   layer_information_dm3["avoid_layers"]["m_prev"]["layer"] = $m2_layer
   layer_information_dm3["avoid_layers"]["m_cur"]["layer"]  = $m3_layer
   layer_information_dm3["avoid_layers"]["m_next"]["layer"] = $m4_layer
 
+  layer_information_dm4["name"] = "m4_dummy"
   layer_information_dm4["layer"] = $m4_dummy_layer
   layer_information_dm4["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  3.0
   layer_information_dm4["avoid_layers"]["m_prev"]["layer"] = $m3_layer
   layer_information_dm4["avoid_layers"]["m_cur"]["layer"]  = $m4_layer
   layer_information_dm4["avoid_layers"]["m_next"]["layer"] = $m5_layer
 
+  layer_information_dm5["name"] = "m5_dummy"
   layer_information_dm5["layer"] = $m5_dummy_layer
   layer_information_dm5["fc_origin"] += RBA::DPoint::new(0.5, 0.5) *  4.0
   layer_information_dm5["avoid_layers"]["m_prev"]["layer"] = $m4_layer
   layer_information_dm5["avoid_layers"]["m_cur"]["layer"]  = $m5_layer
   layer_information_dm5["avoid_layers"].delete("m_next")
 
-  density_filler(layer_information_dm1, "m1_dummy", user_space)
-  density_filler(layer_information_dm2, "m2_dummy", user_space)
-  density_filler(layer_information_dm3, "m3_dummy", user_space)
-  density_filler(layer_information_dm4, "m4_dummy", user_space)
-  density_filler(layer_information_dm5, "m5_dummy", user_space)
+  density_filler(layer_information_dm1, user_space)
+  density_filler(layer_information_dm2, user_space)
+  density_filler(layer_information_dm3, user_space)
+  density_filler(layer_information_dm4, user_space)
+  density_filler(layer_information_dm5, user_space)
 end
 
 
@@ -737,3 +731,4 @@ end
 
 
 main_metal_fill
+#main_comp_poly_fill
