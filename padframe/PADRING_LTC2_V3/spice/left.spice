@@ -1,0 +1,184 @@
+* ******* DVDD    DVSS     VDD    VSS    gf180mcu_fd_io__cor
+* ******* DVDD    DVSS     VSS    gf180mcu_fd_io__dvdd
+* ******* DVDD    DVSS     VDD    gf180mcu_fd_io__dvss
+* ******* DVDD    DVSS     VDD    VSS    gf180mcu_fd_io__fill**
+* ******* ASIG5V  DVDD     DVSS   VDD    VSS      gf180mcu_fd_io__asig_5p0
+* ******* DVDD    DVSS     PAD       PD          PU      VDD         VSS              Y           gf180mcu_fd_io__in_c
+* ******* DVDD    DVSS     PAD       PD          PU      VDD         VSS              Y           gf180mcu_fd_io__in_s
+* ******* A       CS       DVDD      DVSS        IE      OE          PAD              PD          PDRV0      PDRV1   PU SL VDD VSS Y   gf180mcu_fd_io__bi_t
+
+*****  head_VDD head_DVDD tail_DVDD tail_VDD tail_DVSS 0  DELETE_padring_side_left
+.subckt DELETE_padring_side_left
++ tail_DVDD tail_VDD tail_DVSS tail_VSS
++ head_DVDD head_VDD head_DVSS head_VSS
+
+* ******* DVDD       DVSS       VDD       VSS       gf180mcu_fd_io__cor
+X_cor_0   tail_DVDD  tail_DVSS  tail_VDD  tail_VSS  gf180mcu_fd_io__cor
+
+* ******* DVDD       DVSS       PAD          PD          PU          VDD       VSS        Y          gf180mcu_fd_io__in_c
+X_in_c_0  head_DVDD  head_DVSS  in_c_0_PAD   in_c_0_PD   in_c_0_PU   head_VDD  head_VSS   in_c_0_Y   gf180mcu_fd_io__in_c
+X_in_c_1  head_DVDD  head_DVSS  in_c_1_PAD   in_c_1_PD   in_c_1_PU   head_VDD  head_VSS   in_c_1_Y   gf180mcu_fd_io__in_c
+X_in_c_2  head_DVDD  head_DVSS  in_c_2_PAD   in_c_2_PD   in_c_2_PU   head_VDD  head_VSS   in_c_2_Y   gf180mcu_fd_io__in_c
+X_in_c_3  head_DVDD  head_DVSS  in_c_3_PAD   in_c_3_PD   in_c_3_PU   head_VDD  head_VSS   in_c_3_Y   gf180mcu_fd_io__in_c
+X_in_c_4  head_DVDD  head_DVSS  in_c_4_PAD   in_c_4_PD   in_c_4_PU   head_VDD  head_VSS   in_c_4_Y   gf180mcu_fd_io__in_c
+X_in_c_5  head_DVDD  head_DVSS  in_c_5_PAD   in_c_5_PD   in_c_5_PU   head_VDD  head_VSS   in_c_5_Y   gf180mcu_fd_io__in_c
+X_in_c_6  head_DVDD  head_DVSS  in_c_6_PAD   in_c_6_PD   in_c_6_PU   head_VDD  head_VSS   in_c_6_Y   gf180mcu_fd_io__in_c
+X_in_c_7  head_DVDD  head_DVSS  in_c_7_PAD   in_c_7_PD   in_c_7_PU   head_VDD  head_VSS   in_c_7_Y   gf180mcu_fd_io__in_c
+X_in_c_8  head_DVDD  head_DVSS  in_c_8_PAD   in_c_8_PD   in_c_8_PU   head_VDD  head_VSS   in_c_8_Y   gf180mcu_fd_io__in_c
+X_in_c_10 head_DVDD  head_DVSS  in_c_10_PAD  in_c_10_PD  in_c_10_PU  head_VDD  head_VSS   in_c_10_Y  gf180mcu_fd_io__in_c
+X_in_c_9  head_DVDD  head_DVSS  head_PAD     head_PD     head_PU     head_VDD  head_VSS   head_Y     gf180mcu_fd_io__in_c
+
+* *******     ASIG5V             DVDD       DVSS       VDD       VSS       gf180mcu_fd_io__asig_5p0
+X_asig_5p0_0  asig_5p0_0_ASIG5V  head_DVDD  head_DVSS  head_VDD  head_VSS  gf180mcu_fd_io__asig_5p0
+X_asig_5p0_1  asig_5p0_1_ASIG5V  head_DVDD  head_DVSS  head_VDD  head_VSS  gf180mcu_fd_io__asig_5p0
+
+* ******* DVDD    DVSS     VDD    gf180mcu_fd_io__dvss
+X_dvss_0  head_DVDD  head_DVSS  head_VDD     gf180mcu_fd_io__dvss
+X_dvss_1  head_DVDD  head_DVSS  head_VDD     gf180mcu_fd_io__dvss
+X_dvss_2  head_DVDD  head_DVSS  head_VDD     gf180mcu_fd_io__dvss
+X_dvss_3  head_DVDD  head_DVSS  head_VDD     gf180mcu_fd_io__dvss
+
+* ******* DVDD    DVSS     VDD    VSS    gf180mcu_fd_io__fill**
+X_fill5_88        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_44        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_89        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_45        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_6        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_7        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_8        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_9        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_40       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_30       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_41       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_20       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_31       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_42       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_21       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_32       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_43       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_10       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_90        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_22       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_33       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_11       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_23       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_34       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_91        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_12       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_92        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_24       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_35       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_13       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_25       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_36       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_93        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_83        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_94        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_26       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_37       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_84        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_95        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_27       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_38       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_85        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_28       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill10_39       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_86        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill10_29       head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill10
+X_fill5_43        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+X_fill5_87        head_DVDD    head_DVSS   head_VDD     head_VSS     gf180mcu_fd_io__fill5
+
+* ******* DVDD    DVSS     VDD    VSS    gf180mcu_fd_io__fill**
+X_fill5_33        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_3        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_22        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_11        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_77        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_66        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_55        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_4        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_34        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_23        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_12        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_78        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_67        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_56        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_5        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_35        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_24        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_13        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_79        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_68        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_57        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_46        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_36        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_25        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_14        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_69        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_58        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_47        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_37        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_26        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_15        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_59        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_48        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_38        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_27        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_16        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_49        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_39        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_28        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_17        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_29        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_18        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_0         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_19        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_1         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_2         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_3         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_4         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_5         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_6         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_7         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_8         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_9         tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_80        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_81        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_70        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_82        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_71        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_60        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_14       tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_72        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_61        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_50        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_15       tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_40        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_73        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_62        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_51        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_16       tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_41        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_30        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_0        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_74        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_63        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_52        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_17       tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_42        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_31        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_20        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_1        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_75        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_64        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_53        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_18       tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill5_32        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_21        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_10        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_76        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_65        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill5_54        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill5
+X_fill10_2        tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+X_fill10_19       tail_DVDD    tail_DVSS    tail_VDD    tail_VSS    gf180mcu_fd_io__fill10
+.ends

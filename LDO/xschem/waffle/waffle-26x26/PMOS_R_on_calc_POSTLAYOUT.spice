@@ -1,0 +1,38 @@
+* NGSPICE file - technology: sky130A
+
+**.subckt postlayout_sim
+.include pmos_flat_26x26.spice
+
+XU1 G S D PW pmos_flat_26x26
+
+VGS G S {VGS}
+VDD S GND 5
+VDS D S -5
+VX PW GND 0
+
+
+**** begin user architecture code
+
+.param VGS = -5
+.option temp=70
+.lib /foss/pdks/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+.control
+compose voltage values -5 (-2.5)
+foreach volt $&voltage
+alterparam VGS=$volt
+reset
+save i(VDS)
+dc VDS -3 0 0.0001
+wrdata input_files/SPICE_files/PMOS/POSTLAYOUT/PMOS_R_on_calc_POSTLAYOUT.txt i(VDS)
+set appendwrite
+end
+
+.endc
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end
+.control
+quit
+.endc

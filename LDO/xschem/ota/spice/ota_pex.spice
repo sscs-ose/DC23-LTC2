@@ -1,0 +1,80 @@
+* NGSPICE file created from ota_pex.ext - technology: gf180mcuD
+
+.subckt ota_pex vin_n vin_p vdd iref vout vss
+X0 vdd cm_pmos_FLAT_0.vout2 vout vdd pfet_03v3 ad=6.5p pd=25.519999u as=6.5p ps=25.519999u w=25u l=1u
+X1 vdd cm_pmos_FLAT_0.vout1 cm_pmos_FLAT_0.vout1 vdd pfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X2 vss iref vout vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X3 vss vss vss ppolyf_u_1k r_width=1u r_length=5u
+X4 vout ota_res_FLAT_0.vout cap_mim_2f0_m4m5_noshield c_width=22u c_length=22u
+X5 vss vss vss ppolyf_u_1k r_width=1u r_length=5u
+X6 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=33.475p ps=0.14433m w=2.5u l=1u
+X7 vout cm_pmos_FLAT_0.vout2 vdd vdd pfet_03v3 ad=6.5p pd=25.519999u as=6.5p ps=25.519999u w=25u l=1u
+X8 vss vss vss vss nfet_03v3 ad=1.525p pd=6.22u as=0 ps=0 w=2.5u l=1u
+X9 vss iref iref vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X10 cm_pmos_FLAT_0.vout1 cm_pmos_FLAT_0.vout1 vdd vdd pfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X11 vss vss vss vss nfet_03v3 ad=1.525p pd=6.22u as=0 ps=0 w=2.5u l=1u
+X12 cm_pmos_FLAT_0.vout1 vin_n cm_nmos_FLAT_0.iout vss nfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X13 vss iref vout vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X14 cm_nmos_FLAT_0.iout vin_p cm_pmos_FLAT_0.vout2 vss nfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X15 vdd vdd vdd vdd pfet_03v3 ad=6.5p pd=25.519999u as=85.799995p ps=0.31144m w=25u l=1u
+X16 vdd vdd vdd vdd pfet_03v3 ad=1.3p pd=5.52u as=0 ps=0 w=5u l=1u
+X17 vout iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X18 vout iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X19 vout iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X20 cm_pmos_FLAT_0.vout2 vin_p cm_nmos_FLAT_0.iout vss nfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X21 vss iref cm_nmos_FLAT_0.iout vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X22 cm_pmos_FLAT_0.vout2 a_1516_4725# vss ppolyf_u_1k r_width=1u r_length=5u
+X23 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=0 ps=0 w=2.5u l=1u
+X24 vss iref vout vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X25 iref iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X26 vss iref vout vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X27 ota_res_FLAT_0.vout a_1516_4725# vss ppolyf_u_1k r_width=1u r_length=5u
+X28 vout cm_pmos_FLAT_0.vout2 vdd vdd pfet_03v3 ad=6.5p pd=25.519999u as=6.5p ps=25.519999u w=25u l=1u
+X29 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=0 ps=0 w=2.5u l=1u
+X30 cm_pmos_FLAT_0.vout2 cm_pmos_FLAT_0.vout1 vdd vdd pfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X31 vout iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X32 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=0 ps=0 w=2.5u l=1u
+X33 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=0 ps=0 w=2.5u l=1u
+X34 vss vss vss vss nfet_03v3 ad=1.525p pd=6.22u as=0 ps=0 w=2.5u l=1u
+X35 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=0 ps=0 w=2.5u l=1u
+X36 vdd vdd vdd vdd pfet_03v3 ad=16.25p pd=51.3u as=0 ps=0 w=25u l=1u
+X37 cm_nmos_FLAT_0.iout vss vss vss nfet_03v3 ad=1.3p pd=5.52u as=3.075p ps=11.23u w=5u l=1u
+X38 vdd vdd vdd vdd pfet_03v3 ad=3.25p pd=11.299999u as=0 ps=0 w=5u l=1u
+X39 vss iref vout vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X40 cm_nmos_FLAT_0.iout iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+X41 vdd cm_pmos_FLAT_0.vout2 vout vdd pfet_03v3 ad=6.5p pd=25.519999u as=6.5p ps=25.519999u w=25u l=1u
+X42 vdd cm_pmos_FLAT_0.vout1 cm_pmos_FLAT_0.vout2 vdd pfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X43 vss vss cm_nmos_FLAT_0.iout vss nfet_03v3 ad=3.05p pd=11.219999u as=1.3p ps=5.52u w=5u l=1u
+X44 vss vss vss vss nfet_03v3 ad=0.65p pd=3.02u as=0 ps=0 w=2.5u l=1u
+X45 cm_nmos_FLAT_0.iout vin_n cm_pmos_FLAT_0.vout1 vss nfet_03v3 ad=1.3p pd=5.52u as=1.3p ps=5.52u w=5u l=1u
+X46 vout iref vss vss nfet_03v3 ad=0.65p pd=3.02u as=0.65p ps=3.02u w=2.5u l=1u
+C0 vin_p vin_n 0.101354f
+C1 cm_pmos_FLAT_0.vout2 vout 2.99068f
+C2 iref vout 1.62385f
+C3 cm_nmos_FLAT_0.iout vin_p 0.947286f
+C4 cm_pmos_FLAT_0.vout1 vin_n 1.02168f
+C5 cm_pmos_FLAT_0.vout2 vin_p 1.04528f
+C6 cm_pmos_FLAT_0.vout1 vdd 2.96121f
+C7 cm_nmos_FLAT_0.iout cm_pmos_FLAT_0.vout1 0.214533f
+C8 ota_res_FLAT_0.vout vdd 0.270515f
+C9 cm_pmos_FLAT_0.vout1 cm_pmos_FLAT_0.vout2 1.08231f
+C10 ota_res_FLAT_0.vout cm_pmos_FLAT_0.vout2 0.295236f
+C11 cm_nmos_FLAT_0.iout vin_n 1.0395f
+C12 ota_res_FLAT_0.vout vout 2.70766f
+C13 cm_pmos_FLAT_0.vout1 vin_p 0.104224f
+C14 cm_pmos_FLAT_0.vout2 vdd 9.00741f
+C15 cm_nmos_FLAT_0.iout cm_pmos_FLAT_0.vout2 0.355881f
+C16 cm_nmos_FLAT_0.iout iref 0.22153f
+C17 vdd vout 7.69926f
+C18 vin_n vss 1.17017f
+C19 vin_p vss 1.19743f
+C20 iref vss 10.7807f
+C21 vout vss 19.4455f
+C22 vdd vss 65.1295f
+C23 cm_nmos_FLAT_0.iout vss 3.99476f
+C24 cm_pmos_FLAT_0.vout1 vss 1.9937f
+C25 cm_pmos_FLAT_0.vout2 vss 3.73138f
+C26 a_1516_4725# vss 1.29778f
+C27 ota_res_FLAT_0.vout vss 3.71483f
+.ends
+
