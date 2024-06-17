@@ -20,3 +20,8 @@ there are
 - "std_cell" folder : symbols for standard cell library of GF180MCU
 - "tb" folder : testbenches to simulate each blocks
 ## Layouts : Klayout
+## Digital Synthesis : Openlane
+- "src" folder : RTL code of binary-to-thermometer decoder
+- "runs" folder : results after synthesizing
+- "config.json" file : configure design properly
+- "pin_order.cfg" file : configure pin order 
