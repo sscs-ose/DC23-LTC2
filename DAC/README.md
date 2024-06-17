@@ -1,4 +1,4 @@
-# Team.Korea - Digital-to-Analog Conveter
+# Team.Korea : Digital-to-Analog Conveter
 ## Architecture
 - segmented current steering DAC
   - 6MSB : thermometer coded
