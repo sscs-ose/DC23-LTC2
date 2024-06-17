@@ -1,0 +1,144 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO dac_matrix_decoder
+  CLASS BLOCK ;
+  FOREIGN dac_matrix_decoder ;
+  ORIGIN -8.000 -10.000 ;
+  SIZE 19.000 BY 44.000 ;
+  PIN DVDD
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER Metal4 ;
+        RECT 12.280 11.460 13.880 51.260 ;
+    END
+  END DVDD
+  PIN DVSS
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER Metal4 ;
+        RECT 15.580 11.460 17.180 51.260 ;
+    END
+  END DVSS
+  PIN b_in[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 8.000 16.720 12.000 17.280 ;
+    END
+  END b_in[0]
+  PIN b_in[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 8.000 31.280 12.000 31.840 ;
+    END
+  END b_in[1]
+  PIN b_in[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 8.000 45.840 12.000 46.400 ;
+    END
+  END b_in[2]
+  PIN t_out[0]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 14.480 27.000 15.040 ;
+    END
+  END t_out[0]
+  PIN t_out[1]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 20.080 27.000 20.640 ;
+    END
+  END t_out[1]
+  PIN t_out[2]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 25.680 27.000 26.240 ;
+    END
+  END t_out[2]
+  PIN t_out[3]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 31.280 27.000 31.840 ;
+    END
+  END t_out[3]
+  PIN t_out[4]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 36.880 27.000 37.440 ;
+    END
+  END t_out[4]
+  PIN t_out[5]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 42.480 27.000 43.040 ;
+    END
+  END t_out[5]
+  PIN t_out[6]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 1.986000 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 23.000 48.080 27.000 48.640 ;
+    END
+  END t_out[6]
+  OBS
+      LAYER Metal1 ;
+        RECT 10.080 11.460 24.640 51.260 ;
+      LAYER Metal2 ;
+        RECT 11.500 11.570 22.980 51.150 ;
+      LAYER Metal3 ;
+        RECT 11.500 48.940 23.030 51.100 ;
+        RECT 11.500 47.780 22.700 48.940 ;
+        RECT 11.500 46.700 23.030 47.780 ;
+        RECT 12.300 45.540 23.030 46.700 ;
+        RECT 11.500 43.340 23.030 45.540 ;
+        RECT 11.500 42.180 22.700 43.340 ;
+        RECT 11.500 37.740 23.030 42.180 ;
+        RECT 11.500 36.580 22.700 37.740 ;
+        RECT 11.500 32.140 23.030 36.580 ;
+        RECT 12.300 30.980 22.700 32.140 ;
+        RECT 11.500 26.540 23.030 30.980 ;
+        RECT 11.500 25.380 22.700 26.540 ;
+        RECT 11.500 20.940 23.030 25.380 ;
+        RECT 11.500 19.780 22.700 20.940 ;
+        RECT 11.500 17.580 23.030 19.780 ;
+        RECT 12.300 16.420 23.030 17.580 ;
+        RECT 11.500 15.340 23.030 16.420 ;
+        RECT 11.500 14.180 22.700 15.340 ;
+        RECT 11.500 11.620 23.030 14.180 ;
+  END
+END dac_matrix_decoder
+END LIBRARY
+

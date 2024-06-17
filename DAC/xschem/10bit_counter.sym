@@ -1,0 +1,47 @@
+v {xschem version=3.4.5 file_version=1.2
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname"
+template="name=x1"
+spice_sym_def=".include /home/junbeom/pico/designs/xschem/10bit_Counter.sp"
+}
+V {}
+S {}
+E {}
+L 4 -130 -100 130 -100 {}
+L 4 -130 100 130 100 {}
+L 4 -130 -100 -130 100 {}
+L 4 130 -100 130 100 {}
+L 4 130 -90 150 -90 {}
+L 4 130 -70 150 -70 {}
+L 4 130 -50 150 -50 {}
+L 4 130 -30 150 -30 {}
+L 4 130 -10 150 -10 {}
+L 4 130 10 150 10 {}
+L 4 130 30 150 30 {}
+L 4 130 50 150 50 {}
+L 4 130 70 150 70 {}
+L 4 130 90 150 90 {}
+B 5 147.5 87.5 152.5 92.5 {name=out0 dir=out}
+B 5 147.5 67.5 152.5 72.5 {name=out1 dir=out}
+B 5 147.5 47.5 152.5 52.5 {name=out2 dir=out}
+B 5 147.5 27.5 152.5 32.5 {name=out3 dir=out}
+B 5 147.5 7.5 152.5 12.5 {name=out4 dir=out}
+B 5 147.5 -12.5 152.5 -7.5 {name=out5 dir=out}
+B 5 147.5 -32.5 152.5 -27.5 {name=out6 dir=out}
+B 5 147.5 -52.5 152.5 -47.5 {name=out7 dir=out}
+B 5 147.5 -72.5 152.5 -67.5 {name=out8 dir=out}
+B 5 147.5 -92.5 152.5 -87.5 {name=out9 dir=out}
+T {@symname} -81 -6 0 0 0.3 0.3 {}
+T {@name} 135 -112 0 0 0.2 0.2 {}
+T {out9} 125 -94 0 1 0.2 0.2 {}
+T {out8} 125 -74 0 1 0.2 0.2 {}
+T {out7} 125 -54 0 1 0.2 0.2 {}
+T {out6} 125 -34 0 1 0.2 0.2 {}
+T {out5} 125 -14 0 1 0.2 0.2 {}
+T {out4} 125 6 0 1 0.2 0.2 {}
+T {out3} 125 26 0 1 0.2 0.2 {}
+T {out2} 125 46 0 1 0.2 0.2 {}
+T {out1} 125 66 0 1 0.2 0.2 {}
+T {out0} 125 86 0 1 0.2 0.2 {}
