@@ -20,6 +20,8 @@ there are
 - "std_cell" folder : symbols for standard cell library of GF180MCU
 - "tb" folder : testbenches to simulate each blocks
 ## Layouts : Klayout
+- row and column matrix style (not current soure array(CSA) type)
+  - each cell has both of digital and analog blocks(not separated like CSA)
 ## Digital Synthesis : Openlane
 - "src" folder : RTL code of binary-to-thermometer decoder
 - "runs" folder : results after synthesizing
