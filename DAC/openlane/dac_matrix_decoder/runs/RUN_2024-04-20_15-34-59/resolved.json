@@ -1,0 +1,138 @@
+{
+    "STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+    "VDD_PIN": "DVDD",
+    "VDD_PIN_VOLTAGE": 5,
+    "GND_PIN": "DVSS",
+    "WIRE_LENGTH_THRESHOLD": null,
+    "TECH_LEFS": {
+        "nom_*": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/techlef/gf180mcu_fd_sc_mcu7t5v0__nom.tlef",
+        "min_*": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/techlef/gf180mcu_fd_sc_mcu7t5v0__min.tlef",
+        "max_*": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/techlef/gf180mcu_fd_sc_mcu7t5v0__max.tlef"
+    },
+    "GPIO_PADS_LEF": null,
+    "GPIO_PADS_LEF_CORE_SIDE": null,
+    "GPIO_PADS_VERILOG": null,
+    "GPIO_PAD_CELLS": null,
+    "PRIMARY_GDSII_STREAMOUT_TOOL": "magic",
+    "DEFAULT_MAX_TRAN": null,
+    "DATA_WIRE_RC_LAYER": "Metal2",
+    "CLOCK_WIRE_RC_LAYER": "Metal4",
+    "DEFAULT_CORNER": "nom_tt_025C_5v00",
+    "STA_CORNERS": [
+        "nom_tt_025C_5v00",
+        "nom_ss_125C_4v50",
+        "nom_ff_n40C_5v50",
+        "min_tt_025C_5v00",
+        "min_ss_125C_4v50",
+        "min_ff_n40C_5v50",
+        "max_tt_025C_5v00",
+        "max_ss_125C_4v50",
+        "max_ff_n40C_5v50"
+    ],
+    "FP_TRACKS_INFO": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.tech/openlane/gf180mcu_fd_sc_mcu7t5v0/tracks.info",
+    "FP_TAPCELL_DIST": 20,
+    "FP_IO_HLAYER": "Metal3",
+    "FP_IO_VLAYER": "Metal2",
+    "RT_MIN_LAYER": "Metal2",
+    "RT_MAX_LAYER": "Metal5",
+    "SCL_GROUND_PINS": [
+        "VSS",
+        "VPW"
+    ],
+    "SCL_POWER_PINS": [
+        "VDD",
+        "VNW"
+    ],
+    "TRISTATE_CELLS": [
+        "gf180mcu_fd_sc_mcu7t5v0__bufz*"
+    ],
+    "FILL_CELL": [
+        "gf180mcu_fd_sc_mcu7t5v0__fill_*"
+    ],
+    "DECAP_CELL": [
+        "gf180mcu_fd_sc_mcu7t5v0__fillcap_*"
+    ],
+    "LIB": {
+        "*_tt_025C_5v00": [
+            "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/lib/gf180mcu_fd_sc_mcu7t5v0__tt_025C_5v00.lib"
+        ],
+        "*_ss_125C_4v50": [
+            "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/lib/gf180mcu_fd_sc_mcu7t5v0__ss_125C_4v50.lib"
+        ],
+        "*_ff_n40C_5v50": [
+            "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/lib/gf180mcu_fd_sc_mcu7t5v0__ff_n40C_5v50.lib"
+        ]
+    },
+    "CELL_LEFS": [
+        "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/lef/gf180mcu_fd_sc_mcu7t5v0.lef"
+    ],
+    "CELL_GDS": [
+        "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds"
+    ],
+    "CELL_VERILOG_MODELS": [
+        "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v",
+        "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v"
+    ],
+    "CELL_BB_VERILOG_MODELS": null,
+    "CELL_SPICE_MODELS": [
+        "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/spice/gf180mcu_fd_sc_mcu7t5v0.spice"
+    ],
+    "SYNTH_EXCLUDED_CELL_FILE": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.tech/openlane/gf180mcu_fd_sc_mcu7t5v0/no_synth.cells",
+    "PNR_EXCLUDED_CELL_FILE": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.tech/openlane/gf180mcu_fd_sc_mcu7t5v0/drc_exclude.cells",
+    "OUTPUT_CAP_LOAD": 72.91,
+    "MAX_FANOUT_CONSTRAINT": 10,
+    "MAX_TRANSITION_CONSTRAINT": 3,
+    "MAX_CAPACITANCE_CONSTRAINT": 0.2,
+    "CLOCK_UNCERTAINTY_CONSTRAINT": 0.25,
+    "CLOCK_TRANSITION_CONSTRAINT": 0.15,
+    "TIME_DERATING_CONSTRAINT": 5,
+    "IO_DELAY_CONSTRAINT": 20,
+    "SYNTH_DRIVING_CELL": "gf180mcu_fd_sc_mcu7t5v0__inv_1/ZN",
+    "SYNTH_CLK_DRIVING_CELL": "gf180mcu_fd_sc_mcu7t5v0__inv_4/ZN",
+    "SYNTH_TIEHI_CELL": "gf180mcu_fd_sc_mcu7t5v0__tieh/Z",
+    "SYNTH_TIELO_CELL": "gf180mcu_fd_sc_mcu7t5v0__tiel/ZN",
+    "SYNTH_BUFFER_CELL": "gf180mcu_fd_sc_mcu7t5v0__buf_1/I/Z",
+    "WELLTAP_CELL": "gf180mcu_fd_sc_mcu7t5v0__filltie",
+    "ENDCAP_CELL": "gf180mcu_fd_sc_mcu7t5v0__endcap",
+    "PLACE_SITE": "GF018hv5v_mcu_sc7",
+    "CELL_PAD_EXCLUDE": [
+        "gf180mcu_fd_sc_mcu7t5v0__filltie",
+        "gf180mcu_fd_sc_mcu7t5v0__fill_*",
+        "gf180mcu_fd_sc_mcu7t5v0__endcap"
+    ],
+    "DIODE_CELL": "gf180mcu_fd_sc_mcu7t5v0__antenna/I",
+    "DESIGN_DIR": "/home/junbeom/pico/designs/openlane/dac_matrix_decoder",
+    "PDK_ROOT": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a",
+    "DESIGN_NAME": "dac_matrix_decoder",
+    "PDK": "gf180mcuD",
+    "CLOCK_PERIOD": 10,
+    "CLOCK_PORT": null,
+    "CLOCK_NET": null,
+    "VDD_NETS": null,
+    "GND_NETS": null,
+    "DIE_AREA": [
+        8,
+        10,
+        27,
+        54
+    ],
+    "EXTRA_EXCLUDED_CELLS": null,
+    "MACROS": null,
+    "EXTRA_LEFS": null,
+    "EXTRA_VERILOG_MODELS": null,
+    "EXTRA_SPICE_MODELS": null,
+    "EXTRA_LIBS": null,
+    "EXTRA_GDS_FILES": null,
+    "FALLBACK_SDC_FILE": "/nix/store/kxsjpij4x1r1l8011ifbslbq57ljxwmd-python3-3.11.6-env/lib/python3.11/site-packages/openlane/scripts/base.sdc",
+    "KLAYOUT_TECH": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.tech/klayout/tech/gf180mcu.lyt",
+    "KLAYOUT_PROPERTIES": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.tech/klayout/tech/gf180mcu.lyp",
+    "KLAYOUT_DEF_LAYER_MAP": "/home/junbeom/osic/openmpw/volare/gf180mcu/versions/bdc9412b3e468c102d01b7cf6337be06ec6e9c9a/gf180mcuD/libs.tech/klayout/tech/gf180mcu.map",
+    "KLAYOUT_EDITOR_MODE": false,
+    "KLAYOUT_PRIORITIZE_GDS": true,
+    "meta": {
+        "version": 1,
+        "flow": null,
+        "step": null,
+        "openlane_version": "2.0.0rc2"
+    }
+}

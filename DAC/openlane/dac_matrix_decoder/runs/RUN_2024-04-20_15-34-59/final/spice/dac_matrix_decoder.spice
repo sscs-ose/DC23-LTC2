@@ -1,0 +1,104 @@
+* NGSPICE file created from dac_matrix_decoder.ext - technology: gf180mcuD
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__clkbuf_3 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__clkbuf_3 I Z VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__endcap abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__endcap VDD VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__fill_2 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__fill_2 VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__and2_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__and2_1 A1 A2 Z VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__clkinv_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__clkinv_1 I ZN VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__oai21_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__oai21_1 A1 A2 B ZN VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__aoi21_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__aoi21_1 A1 A2 B ZN VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__or2_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__or2_1 A1 A2 Z VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__clkbuf_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__clkbuf_1 I Z VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__fillcap_8 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__fillcap_8 VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__fill_1 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__fill_1 VDD VNW VPW VSS
+.ends
+
+* Black-box entry subcircuit for gf180mcu_fd_sc_mcu7t5v0__fillcap_4 abstract view
+.subckt gf180mcu_fd_sc_mcu7t5v0__fillcap_4 VDD VNW VPW VSS
+.ends
+
+.subckt dac_matrix_decoder b_in[0] b_in[1] b_in[2] t_out[0] t_out[1] t_out[2] t_out[3] t_out[4] t_out[5] t_out[6] DVDD DVSS 
+Xoutput7 net7 t_out[3] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+Xoutput10 net10 t_out[6] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+Xoutput8 net8 t_out[4] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+XPHY_EDGE_ROW_6_Right_6 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_4_Left_14 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+Xoutput9 net9 t_out[5] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+XPHY_EDGE_ROW_8_Left_18 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_7_2 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_2
+X_09_ net1 net9 net10 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+X_08_ _01_ net8 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+XPHY_EDGE_ROW_1_Right_1 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_9_8 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_2
+X_07_ net1 net2 net3 _01_ DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__oai21_1
+XFILLER_0_5_2 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_2
+X_06_ net2 net3 net9 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__and2_1
+XPHY_EDGE_ROW_5_Right_5 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_3_Left_13 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+X_05_ _00_ net6 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkinv_1
+X_04_ net1 net2 net3 _00_ DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+XPHY_EDGE_ROW_9_Right_9 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_7_Left_17 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+X_03_ net1 net5 net4 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+Xinput1 b_in[0] net1 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_1
+X_02_ net2 net3 net5 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__or2_1
+Xinput2 b_in[1] net2 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_1
+Xinput3 b_in[2] net3 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_1
+XPHY_EDGE_ROW_0_Right_0 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_3_8 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_2
+XPHY_EDGE_ROW_2_Left_12 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_4_Right_4 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_6_Left_16 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_1_8 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_2
+XPHY_EDGE_ROW_8_Right_8 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_8_2 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fillcap_8
+XPHY_EDGE_ROW_3_Right_3 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_1_Left_11 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XPHY_EDGE_ROW_5_Left_15 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_3_10 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_1
+XFILLER_0_0_10 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fillcap_4
+XPHY_EDGE_ROW_7_Right_7 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+XFILLER_0_3_23 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_1
+XFILLER_0_2_2 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fillcap_8
+XPHY_EDGE_ROW_9_Left_19 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+X_10_ net3 net7 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_1
+XFILLER_0_0_14 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fill_2
+XPHY_EDGE_ROW_2_Right_2 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+Xoutput4 net4 t_out[0] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+XFILLER_0_0_2 DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__fillcap_8
+XPHY_EDGE_ROW_0_Left_10 DVDD DVSS gf180mcu_fd_sc_mcu7t5v0__endcap
+Xoutput6 net6 t_out[2] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+Xoutput5 net5 t_out[1] DVDD DVDD DVSS DVSS gf180mcu_fd_sc_mcu7t5v0__clkbuf_3
+.ends
+
