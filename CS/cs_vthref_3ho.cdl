@@ -1,0 +1,13 @@
+** sch_path: /home/keropiyo/cs_vthref_3ho.sch
+.subckt TOP VSS VDD vb
+*.PININFO VSS:B VDD:B vb:O
+M4 vb vb VDD VDD pfet_03v3 L=0.56u W=5.6u nf=1 m=8
+M3 net2 vb VDD VDD pfet_03v3 L=0.56u W=5.6u nf=1 m=8
+M2 vb net2 net1 net1 nfet_03v3_dn L=0.56u W=5.6u nf=1 m=2
+M1 net2 net1 VSS VSS nfet_03v3_dn L=0.56u W=5.6u nf=1 m=2
+R3 net5 net4 VSS ppolyf_u W=0.8e-6 L=22e-6 m=1
+R4 VSS net5 VSS ppolyf_u W=0.8e-6 L=22e-6 m=1
+R1 net3 net1 VSS ppolyf_u W=0.8e-6 L=22e-6 m=1
+R2 net4 net3 VSS ppolyf_u W=0.8e-6 L=22e-6 m=1
+.ends
+.end
