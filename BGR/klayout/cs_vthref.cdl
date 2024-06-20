@@ -1,0 +1,13 @@
+** sch_path: /home/tsuchiya/chipathon/chipathon2023/BGR/xschem/cs_vthref.sch
+.subckt cs_vthref vss vdd vb
+*.PININFO vdd:B vss:B vb:O
+M1 net1 net3 vss vss nfet_03v3_dn L=0.56u W=11.2u nf=1 m=1
+M2 vb net1 net3 net3 nfet_03v3_dn L=0.56u W=11.2u nf=1 m=1
+M3 net1 vb vdd vdd pfet_03v3 L=0.56u W=5.6u nf=1 m=8
+M4 vb vb vdd vdd pfet_03v3 L=0.56u W=5.6u nf=1 m=8
+R2 net2 net4 vss ppolyf_u W=0.8e-6 L=22e-6 m=1
+R1 net4 net3 vss ppolyf_u W=0.8e-6 L=22e-6 m=1
+R3 net5 net2 vss ppolyf_u W=0.8e-6 L=22e-6 m=1
+R4 vss net5 vss ppolyf_u W=0.8e-6 L=22e-6 m=1
+.ends
+.end
