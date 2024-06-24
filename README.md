@@ -7,3 +7,9 @@ Team members:
     - DAC: Korea	
     - Clocking: Japan
     - Voltage Reference: Japan
+
+## Cloning the repo
+
+~~~bash
+git submodule update --init --recursive
+~~~
