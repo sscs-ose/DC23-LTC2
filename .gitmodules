@@ -1,0 +1,10 @@
+[submodule "DC23-LTC2-Japan"]
+	path = DC23-LTC2-Japan
+	url = https://github.com/atuchiya/DC23-LTC2.git
+	branch = japan-test
+[submodule "DC23-LTC2-Chile"]
+	path = DC23-LTC2-Chile
+	url = https://github.com/akiles-esta-usado/DC23-LTC2.git
+[submodule "DC23-LTC2-Korea"]
+	path = DC23-LTC2-Korea
+	url = https://github.com/jbpark0609/DC23-LTC2.git
